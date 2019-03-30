@@ -1,0 +1,154 @@
+{% extends "coordinatepanel/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    {% if "/turnus/" in request.path %}
+                        <span class="float-right">
+                        <a class="link-decoration-none" href="{% url 'coordinatepanel:participant_photo_edit' batch_id participant.id %}">
+                            <button class="btn btn-default m-b-10">Edytuj zdjęcie</button>
+                        </a>
+                    </span>
+                    {% else %}
+                        <span class="float-right">
+                        <a class="link-decoration-none" href="{% url 'coordinatepanel:participant_photo_edit' event_id participant.id %}">
+                            <button class="btn btn-default m-b-10">Edytuj zdjęcie</button>
+                        </a>
+                    </span>
+                    {% endif %}
+
+                    <h2>Podopieczny - {{ participant }}</h2>
+                    <hr /><br />
+
+                    <span class="bold">Wiek: </span>
+                    <span id="age" class="hidden">{{ participant.pesel }}</span>
+
+                    {% if participant.email_address is not None %}
+                        <br />
+                        <span class="bold">Adres e-mail:</span>
+                        {{ participant.email_address }}
+                    {% endif %}
+
+                    <br />
+                    <span class="bold">Płeć:</span> {{ participant.get_sex_display }}
+
+                    {% if participant.phone_number is not None %}
+                        <br />
+                        <span class="bold">Nr telefonu:</span>
+                        {{ participant.phone_number }}
+                    {% endif %}
+
+                    {% if participant.guardian_name is not None %}
+                        <br />
+                        <span class="bold">Dane opiekuna:</span>
+                        {{ participant.guardian_name }}
+                    {% endif %}
+
+                    {% if participant.phone_number is not None %}
+                        <br />
+                        <span class="bold">Nr telefonu opiekuna:</span>
+                        {{ participant.phone_number }}
+                    {% endif %}
+
+                    <br />
+                    <span class="bold">Adres: </span>
+                    {{ participant.address }}, {{ participant.zip_code }} {{ participant.city }}
+                    <br />
+                    <span class="bold">Pierwszy raz:</span>
+                    {% if participant.is_first_time is True %}
+                        Tak
+                    {% else %}
+                        Nie
+                    {% endif %}
+                    <br />
+                    <span class="medium-bold">Skąd zna DJ:</span> {{ participant.get_how_know_dj_display }}
+                    <br />
+                    <span class="bold">Komunikacja:</span> {{ participant.get_communication_display }}
+
+                    {% if participant.foundation is not None %}
+                        <br />
+                        <span class="bold">Fundacja:</span>
+                        {{ participant.foundation }}
+                    {% endif %}
+
+                    {% if participant.drugs == 'T' %}
+                        <br />
+                        <span class="bold">Regularnie przyjmuje leki:</span>
+                        {{ participant.get_drugs_display }}
+                    {% endif %}
+
+                    <br />
+                    <span class="bold">Uwagi:</span>
+                        <ul>
+                        {% if participant.mental_disability is True %}
+                            <li>Niepełnosprawność intelektualna</li>
+                        {% endif %}
+
+                        {% if participant.not_need_help is True %}
+                            <li>Nie potrzebuje pomocy przy codziennych czynnościach</li>
+                        {% endif %}
+
+                        {% if participant.wheelchair is True %}
+                            <li>Porusza się na wózku</li>
+                        {% endif %}
+
+                        {% if participant.disabled_hands is True %}
+                            <li>Niesprawne ręce</li>
+                        {% endif %}
+
+                        {% if participant.crutches is True %}
+                            <li>Porusza się o kulach</li>
+                        {% endif %}
+
+                        {% if participant.disabled_sight is True %}
+                            <li>Niesprawny wzrok</li>
+                        {% endif %}
+
+                        {% if participant.disabled_hearing is True %}
+                            <li>Niesprawny słuch</li>
+                        {% endif %}
+
+                        {% if participant.epilepsy is True %}
+                            <li>Możliwe ataki padaczki</li>
+                        {% endif %}
+                        </ul>
+                    {{ participant.details }}
+
+                    {% if participant.photo.url is not None %}
+                        <br /><br />
+                        <img class="img-fluid d-block col-lg-5 col-md-6 col-sm-8 col-12" src="{{ participant.photo.url }}">
+                    {% endif %}
+
+
+                    <br /><br />
+
+                    {% if "/turnus/" in request.path %}
+                        <span class="hidden" id="begin_date">{{ batch.begin_date|date:"Y.m.d" }}</span>
+                        <span class="hidden" id="end_date">{{ batch.end_date|date:"Y.m.d" }}</span>
+
+                        <a  class="link-decoration-none" href="{% url 'coordinatepanel:participants_list' batch_id %}">
+                            <button class="btn btn-default">Wróć</button>
+                        </a>
+                    {% else %}
+                        <span class="hidden" id="begin_date">{{ event.begin_date|date:"Y.m.d" }}</span>
+                        <span class="hidden" id="end_date">{{ event.end_date|date:"Y.m.d" }}</span>
+
+                        <a  class="link-decoration-none" href="{% url 'coordinatepanel:event_participants' event_id %}">
+                            <button class="btn btn-default">Wróć</button>
+                        </a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/count_age.js' %}"></script>
+{% endblock %}

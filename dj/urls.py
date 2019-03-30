@@ -1,0 +1,45 @@
+from django.conf.urls import url
+from . import views
+from .views import *
+
+app_name = 'dj'
+
+urlpatterns = [
+    url(r'^$', views.index, name='index'),
+    url(r'^koszty/$', views.costs_view, name='costs'),
+    url(r'^kalendarz/$', views.calendar, name='calendar'),
+    url(r'^warsztaty/$', views.workshop_sign, name='workshop_sign'),
+    url(r'^warsztaty/(?P<pk>[0-9]+)/$', views.workshop_details, name='workshop_details'),
+    url(r'^warsztaty-muzyczne/$', views.music_training_sign, name='music_training_sign'),
+    url(r'^warsztaty-muzyczne/(?P<pk>[0-9]+)/$', views.music_training_details, name='music_training_details'),
+    url(r'^rekolekcje/$', views.retreat_sign, name='retreat_sign'),
+    url(r'^rekolekcje/(?P<pk>[0-9]+)/$', views.retreat_details, name='retreat_details'),
+    url(r'^turnusy/$', views.batches_view, name='batches'),
+    url(r'^wydarzenia/$', views.UserEventFormView.as_view(), name='event_registration'),
+    url(r'^wydarzenia/(?P<pk>[0-9]+)/$', views.event_details, name='event_details'),
+    url(r'^turnusy/(?P<pk>[0-9]+)/$', views.batch_view, name='batch_view'),
+    url(r'^turnusy/(?P<pk>[0-9]+)/podopieczni/(?P<participant_id>[0-9]+)/$', views.participant_details,
+        name='participant_details'),
+    url(r'^turnusy/(?P<pk>[0-9]+)/zadania$', views.batch_tasks_edit, name='batch_tasks_edit'),
+    url(r'^dane/$', views.user_account_view, name='user_account'),
+    url(r'^dane/zdjecie/$', views.photo_edit, name='photo_edit'),
+    url(r'^dane/edytuj/$', views.user_account_edit, name='account_edit'),
+    url(r'^dane/haslo/$', views.change_password, name='account_password'),
+    url(r'^rejestracja/$', views.UserFormView.as_view(), name='registration'),
+    url(r'^logowanie/$', views.login_view, name='login'),
+    url(r'^wylogowanie/$', views.logout_view, name='logout'),
+    url(r'^aktualnosci/$', views.news_view, name='news'),
+    url(r'^turnusy/(?P<pk>[0-9]+)/(?P<id>[\w{}.-]{1,36})/zaswiadczenie.pdf$',
+        login_required(CertificatePDFView.as_view()), name='certificate'),
+    url(r'^turnusy/(?P<pk>[0-9]+)/(?P<id>[\w{}.-]{1,36})/zaswiadczenie-pielegniarz.pdf$',
+        login_required(NurseCertificatePDFView.as_view()), name='nurse_certificate'),
+    url(r'^turnusy/(?P<pk>[0-9]+)/(?P<id>[\w{}.-]{1,36})/zaswiadczenie-lekarz.pdf$',
+        login_required(DoctorCertificatePDFView.as_view()), name='doctor_certificate'),
+    url(r'^turnusy/(?P<pk>[0-9]+)/umowa.pdf$',
+        login_required(ContractPDFView.as_view()), name='contract'),
+    url(r'^turnusy/(?P<pk>[0-9]+)/umowa-pielegniarki.pdf$',
+        login_required(NurseContractPDFView.as_view()), name='nurse_contract'),
+    url(r'^turnusy/(?P<pk>[0-9]+)/umowa-lekarza.pdf$',
+        login_required(DoctorContractPDFView.as_view()), name='doctor_contract'),
+    url(r'^pliki/$', views.get_files, name='get_files'),
+]

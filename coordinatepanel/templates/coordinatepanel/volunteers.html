@@ -1,0 +1,202 @@
+{% extends "coordinatepanel/base.html" %}
+{% load mathfilters %}
+{% load static %}
+
+{% block content %}
+    <section id="batch_volunteers">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <a class="float-right" href="{% url 'coordinatepanel:volunteers_report' batch_id %}">
+                        <button class="btn btn-default">Raport</button>
+                    </a>
+
+                    <h2>Lista wolontariuszy</h2>
+                    <hr /><br />
+
+                    <p class="lead">Kobiety</p>
+
+                    <ul>
+                        {% for obj in batch_volunteers_female %}
+                            <li class="lead">
+                                <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                    <span class="col-xs-6 col-sm-5 col-md-4 col-lg-5">
+                                        <a class="medium-bold" href="{% url 'coordinatepanel:volunteer_details' batch_id obj.volunteer.id %}">
+                                            {{ obj.volunteer.surname }} {{ obj.volunteer.first_name }}
+                                        </a>
+                                        <span class="bd_cake"></span>
+                                        - pokój:
+                                        {% if obj.room is not None %}
+                                            {{ obj.room }}
+                                        {% endif %}
+                                        <span class="if_bd hidden">{{ obj.volunteer.pesel }}</span>
+                                    </span>
+                                    <span class="col-xs-6 col-sm-7 col-md-8 col-lg-7 float-right text-right">
+                                        {% if obj.batch.end_date >= now %}
+                                        <a class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:batch_volunteer_edit' batch_id obj.volunteer.id %}">
+                                            <button class="btn btn-success btn-sm">Zarządzaj</button>
+                                        </a>
+                                        <a class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:move_volunteer_to_reserve_list' batch_id obj.volunteer.id %}">
+                                            <button class="btn btn-info btn-sm">Rezerwa</button>
+                                        </a>
+                                        <a onclick="return confirm('Czy na pewno chcesz wypisać tego wolontariusza?')" class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:delete_volunteer' obj.batch.id obj.id %}">
+                                            <button class="btn btn-danger btn-sm">Usuń</button>
+                                        </a>
+                                        {% endif %}
+                                        <a class="link-decoration-none" href="{% url 'coordinatepanel:contract' obj.unique_key %}">
+                                            <button class="btn btn-warning btn-sm">Umowa</button>
+                                        </a>
+                                    </span>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <p class="lead">Mężczyźni</p>
+
+                    <ul>
+                        {% for obj in batch_volunteers_male %}
+                            <li class="lead">
+                                <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                    <span class="col-xs-6 col-sm-5 col-md-4 col-lg-5">
+                                        <a class="medium-bold" href="{% url 'coordinatepanel:volunteer_details' batch_id obj.volunteer.id %}">
+                                            {{ obj.volunteer.surname }} {{ obj.volunteer.first_name }}
+                                        </a>
+                                        <span class="bd_cake"></span>
+                                        - pokój:
+                                        {% if obj.room is not None %}
+                                            {{ obj.room }}
+                                        {% endif %}
+                                        <span class="if_bd hidden">{{ obj.volunteer.pesel }}</span>
+                                    </span>
+                                    <span class="col-xs-6 col-sm-7 col-md-8 col-lg-7 float-right text-right">
+                                        {% if obj.batch.end_date >= now %}
+                                        <a class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:batch_volunteer_edit' batch_id obj.volunteer.id %}">
+                                            <button class="btn btn-success btn-sm">Zarządzaj</button>
+                                        </a>
+                                        <a class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:move_volunteer_to_reserve_list' batch_id obj.volunteer.id %}">
+                                            <button class="btn btn-info btn-sm">Rezerwa</button>
+                                        </a>
+                                        <a onclick="return confirm('Czy na pewno chcesz wypisać tego wolontariusza?')" class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:delete_volunteer' obj.batch.id obj.id %}">
+                                            <button class="btn btn-danger btn-sm">Usuń</button>
+                                        </a>
+                                        {% endif %}
+                                        <a class="link-decoration-none" href="{% url 'coordinatepanel:contract' obj.unique_key %}">
+                                            <button class="btn btn-warning btn-sm">Umowa</button>
+                                        </a>
+                                    </span>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <h2>Lista rezerwowa</h2>
+                    <hr /><br />
+
+                    <p class="lead">Kobiety</p>
+
+                    <ul>
+                        {% for obj in batch_volunteers_reserve_female %}
+                            <li class="lead">
+                                <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                    <span class="col-xs-6 col-sm-5 col-md-4 col-lg-5">
+                                        <a class="medium-bold" href="{% url 'coordinatepanel:volunteer_details' batch_id obj.volunteer.id %}">
+                                            {{ obj.volunteer.surname }} {{ obj.volunteer.first_name }}
+                                        </a>
+                                        <span class="bd_cake"></span>
+                                        - pokój:
+                                        {% if obj.room is not None %}
+                                            {{ obj.room }}
+                                        {% endif %}
+                                        <span class="if_bd hidden">{{ obj.volunteer.pesel }}</span>
+                                    </span>
+                                    <span class="col-xs-6 col-sm-7 col-md-8 col-lg-7 float-right text-right">
+                                        {% if obj.batch.end_date >= now %}
+                                        <a class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:batch_volunteer_edit' batch_id obj.volunteer.id %}">
+                                            <button class="btn btn-success btn-sm">Zarządzaj</button>
+                                        </a>
+                                        <a class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:move_volunteer_to_base_list' batch_id obj.volunteer.id %}">
+                                            <button class="btn btn-info btn-sm">Wpisz</button>
+                                        </a>
+                                        <a onclick="return confirm('Czy na pewno chcesz wypisać tego wolontariusza?')" class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:delete_volunteer' obj.batch.id obj.id %}">
+                                            <button class="btn btn-danger btn-sm">Usuń</button>
+                                        </a>
+                                        {% endif %}
+                                        <a class="link-decoration-none" href="{% url 'coordinatepanel:contract' obj.unique_key %}">
+                                            <button class="btn btn-warning btn-sm">Umowa</button>
+                                        </a>
+                                    </span>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <p class="lead">Mężczyźni</p>
+
+                    <ul>
+                        {% for obj in batch_volunteers_reserve_male %}
+                            <li class="lead">
+                                <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                    <span class="col-xs-6 col-sm-5 col-md-4 col-lg-5">
+                                        <a class="medium-bold" href="{% url 'coordinatepanel:volunteer_details' batch_id obj.volunteer.id %}">
+                                            {{ obj.volunteer.surname }} {{ obj.volunteer.first_name }}
+                                        </a>
+                                        <span class="bd_cake"></span>
+                                        - pokój:
+                                        {% if obj.room is not None %}
+                                            {{ obj.room }}
+                                        {% endif %}
+                                        <span class="if_bd hidden">{{ obj.volunteer.pesel }}</span>
+                                    </span>
+                                    <span class="col-xs-6 col-sm-7 col-md-8 col-lg-7 float-right text-right">
+                                        {% if obj.batch.end_date >= now %}
+                                        <a class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:batch_volunteer_edit' batch_id obj.volunteer.id %}">
+                                            <button class="btn btn-success btn-sm">Zarządzaj</button>
+                                        </a>
+                                        <a class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:move_volunteer_to_base_list' batch_id obj.volunteer.id %}">
+                                            <button class="btn btn-info btn-sm">Wpisz</button>
+                                        </a>
+                                        <a onclick="return confirm('Czy na pewno chcesz wypisać tego wolontariusza?')" class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:delete_volunteer' obj.batch.id obj.id %}">
+                                            <button class="btn btn-danger btn-sm">Usuń</button>
+                                        </a>
+                                        {% endif %}
+                                        <a class="link-decoration-none" href="{% url 'coordinatepanel:contract' obj.unique_key %}">
+                                            <button class="btn btn-warning btn-sm">Umowa</button>
+                                        </a>
+                                    </span>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <span id="begin_date" class="hidden">{{ batch.begin_date|date:"Y.m.d" }}</span>
+                    <span id="end_date" class="hidden">{{ batch.end_date|date:"Y.m.d" }}</span>
+
+                    <br />
+                    <a class="link-decoration-none" href="{% url 'coordinatepanel:batch_view' batch_id %}">
+                        <button class="btn btn-default">Wróć</button>
+                    </a>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/count_birthday.js' %}"></script>
+{% endblock %}

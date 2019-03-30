@@ -1,0 +1,143 @@
+{% block content %}
+    {% load staticfiles %}
+    {% load auth_extras %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+      <div class="container">
+        <a id="logo" class="navbar-brand js-scroll-trigger" href="{% url 'dj:index' %}"><img src="{% static 'images/logo3.png' %}"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+          {% if request.get_full_path == "/" %}
+            <li class="nav-item">
+              <a id="events_link" class="nav-link js-scroll-trigger" href="{% url 'dj:news' %}">Aktualności</a>
+            </li>
+            <li class="nav-item">
+              <a id="about_us_link" class="nav-link js-scroll-trigger" href="#about">O nas</a>
+            </li>
+            <li class="nav-item">
+              <a id="participants_link" class="nav-link js-scroll-trigger" href="#participants">Podopieczni</a>
+            </li>
+            <li class="nav-item">
+              <a id="volunteers_link" class="nav-link js-scroll-trigger" href="#volunteers">Wolontariusze</a>
+            </li>
+            <li class="nav-item">
+              <a id="charity_link" class="nav-link js-scroll-trigger" href="#charity">Dobroczynność</a>
+            </li>
+            <li class="nav-item">
+              <a id="contact_link" class="nav-link js-scroll-trigger" href="#contact">Kontakt</a>
+            </li>
+          {% elif request.get_full_path == "/aktualnosci/" or request.get_full_path == "/koszty/"%}
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="{% url 'dj:news' %}">Aktualności</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="{% url 'dj:index' %}#about">O nas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="{% url 'dj:index' %}#participants">Podopieczni</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="{% url 'dj:index' %}#volunteers">Wolontariusze</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="{% url 'dj:index' %}#charity">Dobroczynność</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="{% url 'dj:index' %}#contact">Kontakt</a>
+            </li>
+          {% endif %}
+            {% if not request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'dj:registration' %}">Rejestracja</a>
+                </li>
+                <li class="nav-item">
+                    <a name="login_href" class="nav-link js-scroll-trigger" href="{% url 'dj:login' %}">Logowanie</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <span class="nav-link js-scroll-trigger bold">Witaj, {{ request.user.username }}!</span>
+                </li>
+            {% endif %}
+
+            {% if request.user|has_group:"Koordynatorzy" and not request.user|has_group:"Wolontariusze" %}
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'coordinatepanel:batches' %}">Panel</a>
+                </li>
+            {% elif request.user|has_group:"Koordynatorzy" and request.user|has_group:"Wolontariusze" %}
+                {% if "/aktualnosci/" in request.path or "/koszty/" in request.path or request.get_full_path == "/" %}
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{% url 'dj:batches' %}">PanelW</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{% url 'coordinatepanel:batches' %}">PanelK</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{% url 'dj:batches' %}">Turnusy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{% url 'dj:event_registration' %}">Wydarzenia</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{% url 'dj:workshop_sign' %}">Warsztaty</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{% url 'dj:retreat_sign' %}">Rekolekcje</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{% url 'dj:calendar' %}">Kalendarz</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{% url 'dj:get_files' %}">Pliki</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="{% url 'dj:user_account' %}">Konto</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+            {% if request.user|has_group:"Koordynatorzy domu" %}
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'homepanel:all_bookings' %}">Panel</a>
+                </li>
+            {% endif %}
+            {% if request.user|has_group:"Wolontariusze" and not request.user|has_group:"Koordynatorzy" %}
+                {% if "/aktualnosci/" in request.path or "/koszty/" in request.path or request.get_full_path == "/" %}
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'dj:batches' %}">Panel</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'dj:batches' %}">Turnusy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'dj:event_registration' %}">Wydarzenia</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'dj:workshop_sign' %}">Warsztaty</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'dj:retreat_sign' %}">Rekolekcje</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'dj:calendar' %}">Kalendarz</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'dj:get_files' %}">Pliki</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'dj:user_account' %}">Konto</a>
+                </li>
+                {% endif %}
+            {% endif %}
+            {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'dj:logout' %}">Wyloguj</a>
+                </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+{% endblock %}

@@ -1,0 +1,179 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+{% load mathfilters %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}" />
+    <style type="text/css">
+        @page {
+            margin-left: 2cm;
+            margin-right: 2cm;
+            margin-top: 1.5cm;
+            margin-bottom: 1.5cm;
+        }
+        @font-face {
+            font-family: Cuprum;
+            src: url(/static/fonts/Cuprum-Regular.ttf); }
+        @font-face {
+            font-family: CuprumBold;
+            src: url(/static/fonts/Cuprum-Bold.ttf); }
+        @font-face {
+            font-family: CuprumItalic;
+            src: url(/static/fonts/Cuprum-Italic.ttf); }
+        .cuprum {
+            font-family: Cuprum, sans-serif;
+        }
+        .italic {
+            font-family: CuprumItalic, sans-serif;
+        }
+        .font-24 {
+            font-size: 24px;
+        }
+        .font-20 {
+            font-size: 20px;
+        }
+        .font-18 {
+            font-size: 18px;
+        }
+        .font-16 {
+            font-size: 16px;
+        }
+        .bold {
+            font-family: CuprumBold, sans-serif;
+        }
+        .font-12 {
+            font-size: 12px;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+        .m-t-8- {
+            margin-top: -8px;
+        }
+        .m-l-8 {
+            margin-left: 8px;
+        }
+        .m-b-8- {
+            margin-bottom: -8px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="main cuprum font-16">
+            <div class="container">
+                <table class="m-0">
+                    <tr>
+                        <td class="center" colspan="2">
+                            <span class="font-24 bold">
+                                Centrum Księdza Orione
+                                <br />
+                                w Brańszczyku
+                                <br/>
+                            </span>
+                            <span class="font-16 font">
+                                Dom Emeryta | Dom Rekolekcyjny <br />
+                                Drabina Jakubowa | Rehabilitacja+
+                            </span>
+                        </td>
+                        <td colspan="3">
+                            <img src="{% static '/images/icons.png' %}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-14" colspan="2">
+                            <br />
+                            <div class="m-0 m-l-25 italic">
+                            „Czyńcie dobro zawsze,
+                            <br />
+                            czyńcie dobro wszystkim,
+                            <br />
+                            zła nigdy i nikomu”
+                            </div>
+                            <div class="m-0 m-r-20" style="text-align: right;">św. Alojzy Orione</div>
+                                <br />
+                        </td>
+                        <td class="right font-18 p-t-5" colspan="3">
+                            <br /><br /><br /><br />
+                            {{ batchparticipant.batch.institution.city }}, {{ batchparticipant.batch.end_date|date:"d.m.Y" }}
+                            <br />
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="center m-0 m-b-15">
+                    <span class="bold font-24">ZAŚWIADCZENIE</span>
+                </div>
+
+            <div class="justify m-0 m-b-5 text-indent font-18">
+                Niniejszym zaświadczam, że
+                {{ batchparticipant.participant.first_name }} {{ batchparticipant.participant.surname }},
+                zam. {{  batchparticipant.participant.zip_code }} {{  batchparticipant.participant.city }},
+                ul. {{ batchparticipant.participant.address }},
+
+                {% if batchparticipant.participant.sex == 'K' %}
+                        przebywała
+                {% else %}
+                        przebywał
+                {% endif %}
+
+                na turnusie rekolekcyjnym w terminie
+                {{ batchparticipant.batch_begin_date|date:"d.m.Y" }} - {{ batchparticipant.batch_end_date|date:"d.m.Y" }} r. w placówce:
+                {{ batchparticipant.batch.institution }} w miejscowości {{ batchparticipant.batch.institution.city }}.
+                <br />
+                Koszt pobytu na turnusie wyniósł {{ batchparticipant.full_cost }} zł.
+                <br />
+                Należność została uiszczona
+
+                {% if batchparticipant.payment_method == 'G' %}
+                    gotówką
+                {% elif batchparticipant.payment_method == 'K' %}
+                    kartą
+                {% else %}
+                    przelewem bankowym
+                {% endif %}
+
+                do kasy placówki.
+                <br /><br />
+                Jako placówka nie możemy wystawić faktury ani rachunku, ponieważ nie prowadzimy działalności gospodarczej.
+                Wspieranie osób niepełnosprawnych, chorych, potrzebujących wsparcia należy do podstawowej
+                i statutowej działalności Kościoła oraz naszego Ośrodka.
+                <br /><br />
+                <div style="text-align: right; margin-right: 50px">
+                    Łączę wyrazy szacunku,
+                </div>
+                <br />
+            </div>
+
+
+                <table class="m-b-25">
+                    <tr>
+                        <td class="font-14 gray m-l-8" colspan="3">
+                            Nr unikatowy zaświadczenia: <span class="bold">{{ batchparticipant.unique_key }}</span> <br />
+                            W celu sprawdzenia poprawności powyższych danych prosimy o kontakt
+                            mailowy na adres <span class="dark-blue underline">{{ home.email_address }}</span>,
+                            podanie numeru unikatowego,
+                            imienia, nazwiska i roku w którym odbył się turnus.
+                        </td>
+                        <td class="center dark-red bold" colspan="2">
+                            <div class="font-18 m-0">Kierownik Wspólnoty</div>
+                            <div class="font-18 m-0 m-b-15">{{ congregation.community }}</div>
+                            <div class="m-0 font-14">{{ congregation.director }}</div>
+                        </td>
+                    </tr>
+                </table>
+
+                <br /><br /><br /><br />
+                <div class="center font-14">
+                    {{ home.address }}, {{ home.zip_code }} {{ home.city }}, {{ home.page_url }} | {{ home.email_address }};
+                    tel. {{ home.phone_number }}
+                    <br />
+                    NIP: {{ home.nip }}, Regon: {{ home.regon }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

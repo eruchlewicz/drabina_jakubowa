@@ -1,0 +1,70 @@
+{% extends "dj/base.html" %}
+{% load auth_extras %}
+{% load static %}
+
+{% block content %}
+    <section id="batches" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Moje rekolekcje</h2>
+                    <hr /><br />
+
+                        <ul>
+                        {% for training in training_list %}
+                            <li class="lead">
+                                <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                     <span class="col-12">
+                                         <a class="medium-bold" href="{% url 'dj:retreat_details' pk=training.retreat_or_music_training.id %}">
+                                             {{ training.retreat_or_music_training.name }}</a>,
+                                         {{ training.retreat_or_music_training.institution.city }}:
+                                         {{  training.retreat_or_music_training.begin_date|date:"d.m.Y" }} - {{  training.retreat_or_music_training.end_date|date:"d.m.Y" }}
+                                     </span>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="new-training">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Zapisz się na rekolekcje</h2>
+                    <hr /><br />
+                    <form class="form-horizontal" action="" role="form" method="post">
+                        {% csrf_token %}
+                        {% include 'dj/includes/retreat_form_template.html' %}
+
+                        <div class="form-group bold">
+                            Oświadczenie:<br />
+                            Klikając przycisk "Zapisz się", niniejszym stwierdzam prawdziwość przypisanych do
+                            konta danych i podpisuję się pod powyższym formularzem.<br /><br />
+                        </div>
+
+                        <div class="small hidden">
+                            <span id="prices_json">{{ prices_json }}</span>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="p-l-5 offset-lg-3 col-lg-10 offset-sm-3 col-sm-9">
+                                <button type="submit" class="btn btn-primary">Zapisz się</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/count_price_retreat.js' %}"></script>
+{% endblock %}

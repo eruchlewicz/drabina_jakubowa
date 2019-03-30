@@ -1,0 +1,53 @@
+{% extends "coordinatepanel/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="files">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Przydatne pliki</h2>
+                    <hr /><br />
+
+                    <ul>
+                        {% for file in files %}
+                            <li class="lead">
+                                <span class="medium-bold">{{ file.title }}</span> -
+                                <a href="{{ file.upload.url }}">
+                                    <i class="fa fa-download red"></i>
+                                </a>
+                            </li>
+                    {% endfor %}
+                    </ul>
+
+                    <br /><br /><br />
+                    <h2>Dodaj nowy plik</h2>
+                    <hr />
+                    <br />
+
+                    <form class="form-horizontal" action="" role="form" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% include 'coordinatepanel/includes/form_template.html' %}
+
+                        <div class="form-group">
+                            <div class="p-l-5 offset-lg-3 col-lg-9 offset-sm-5 col-sm-7">
+                                <button type="submit" class="btn btn-primary">Zapisz</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <br /><br />
+                    <span class="medium-bold">Jeśli plik jest zbyt duży,
+                        <a href="https://drive.google.com/drive/folders/1IQ8zUofDtyx2o16lL97iIIh0Mxzy9zhL?usp=sharing">
+                            umieść go na dysku google.
+                        </a>
+                    </span>
+
+                    <br />
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

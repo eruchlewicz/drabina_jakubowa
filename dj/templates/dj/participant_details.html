@@ -1,0 +1,102 @@
+{% extends "dj/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Podopieczny - {{ participant }}</h2>
+                    <hr /><br />
+
+                    <span class="bold">Wiek: </span>
+                    <span id="age">{{ participant.pesel }}</span>
+                    <br />
+                    {% if participant.phone_number is not None %}
+                        <span class="bold">Telefon: </span>
+                        {{ participant.phone_number }}
+                        <br />
+                    {% endif %}
+                    {% if participant.guardian_phone_number is not None %}
+                        <span class="bold">Telefon opiekuna: </span>
+                        {{ participant.guardian_phone_number }}
+                        <br />
+                    {% endif %}
+                    {% if participant.email_address is not None %}
+                        <span class="bold">Adres e-mail: </span>
+                        {{ participant.email_address }}
+                        <br />
+                    {% endif %}
+
+                    <span class="bold">Pierwszy raz:</span>
+                    {% if participant.is_first_time is True %}
+                        Tak
+                    {% else %}
+                        Nie
+                    {% endif %}
+                    <br />
+                    <span class="bold">Komunikacja: </span>
+                    {{ participant.get_communication_display }}
+                    {% if participant.drugs == 'T' %}
+                        <br />
+                        <span class="bold">Regularnie przyjmuje leki:</span>
+                        {{ participant.get_drugs_display }}
+                    {% endif %}
+                    <br />
+                    <span class="bold">Uwagi:</span>
+                        <ul>
+                        {% if participant.mental_disability is True %}
+                            <li>Niepełnosprawność intelektualna</li>
+                        {% endif %}
+
+                        {% if participant.not_need_help is True %}
+                            <li>Nie potrzebuje pomocy przy codziennych czynnościach</li>
+                        {% endif %}
+
+                        {% if participant.wheelchair is True %}
+                            <li>Porusza się na wózku</li>
+                        {% endif %}
+
+                        {% if participant.disabled_hands is True %}
+                            <li>Niesprawne ręce</li>
+                        {% endif %}
+
+                        {% if participant.crutches is True %}
+                            <li>Porusza się o kulach</li>
+                        {% endif %}
+
+                        {% if participant.disabled_sight is True %}
+                            <li>Niesprawny wzrok</li>
+                        {% endif %}
+
+                        {% if participant.disabled_hearing is True %}
+                            <li>Niesprawny słuch</li>
+                        {% endif %}
+
+                        {% if participant.epilepsy is True %}
+                            <li>Możliwe ataki padaczki</li>
+                        {% endif %}
+                        </ul>
+                    {{ participant.details }}
+
+
+                    <span class="hidden" id="begin_date">{{ batch.begin_date|date:"Y.m.d" }}</span>
+                    <span class="hidden" id="end_date">{{ batch.end_date|date:"Y.m.d" }}</span>
+                    <br />
+                    <br />
+
+                    <a  class="link-decoration-none" href="{% url 'dj:batch_view' batch.id %}">
+                        <button class="btn btn-default">Wróć</button>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/count_age.js' %}"></script>
+{% endblock %}

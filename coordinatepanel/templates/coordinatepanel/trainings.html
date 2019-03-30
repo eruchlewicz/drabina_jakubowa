@@ -1,0 +1,35 @@
+{% extends "coordinatepanel/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="trainings" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <span class="float-right">
+                         <a class="link-decoration-none" href="{% static "rozklad_pomieszczen.pdf" %}">
+                            <button class="btn btn-default btn-sm">Plan budynku</button>
+                         </a>
+                    </span>
+
+                    <h2>Moje warsztaty i rekolekcje</h2>
+                    <hr /><br />
+                    <ul>
+                        {% for training in training_list %}
+                            <li class="lead">
+                                <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                    <span class="col-12">
+                                         <a class="medium-bold" href="{% url 'coordinatepanel:training_details' pk=training.id %}">
+                                            {{ training.name }}</a>, {{ training.institution.city }}: {{ training.begin_date|date:"d.m.Y" }} - {{ training.end_date|date:"d.m.Y" }}
+                                    </span>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

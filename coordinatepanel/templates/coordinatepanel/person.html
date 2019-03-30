@@ -1,0 +1,168 @@
+{% extends "coordinatepanel/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Uczestnik - {{ training_person.person }}</h2>
+                    <hr /><br />
+
+                    <span class="bold">Wiek: </span>
+                    <span id="age" class="hidden">{{ training_person.person.pesel }}</span>
+                    <br />
+
+                    {% if training_person.person.phone_number is not None %}
+                        <span class="bold">Telefon: </span>
+                        {{ training_person.person.phone_number }}
+                        <br />
+                    {% endif %}
+
+                    {% if training_person.person.email_address is not None %}
+                        <span class="bold">Adres e-mail: </span>
+                        {{ training_person.person.email_address }}
+                        <br />
+                    {% endif %}
+
+                    {% if training_person.retreat_or_music_training.type == 'R' %}
+                        <span class="bold">Adres: </span>
+                        {{ training_person.person.address }}
+                        <br />
+                        <span class="bold">Kod pocztowy: </span>
+                        {{ training_person.person.zip_code }}
+                        <br />
+                    {% endif %}
+
+                    <span class="bold">Miasto: </span>
+                    {{ training_person.person.city }}
+                    <br />
+
+                    {% if training_person.retreat_or_music_training.type == 'W' %}
+                            <span class="bold">Skąd dowiedziałeś/aś się o warsztatach:</span>
+                            {{ training_person.get_how_know_training_display }}
+                            <br />
+                    {% elif training_person.retreat_or_music_training.type == 'R' %}
+                        <span class="bold">Skąd dowiedziałeś/aś się o rekolekcjach:</span>
+                            {{ training_person.get_how_know_training_display }}
+                            <br />
+                    {% endif %}
+
+                    {% if training_person.retreat_or_music_training.type == 'M' %}
+                        <span class="bold">Skąd dowiedziałeś/aś się o warsztatach:</span>
+                        {{ training_person.get_how_know_training_display }}
+                        <br />
+
+                        <span class="bold">Głos:</span>
+                        {{ training_person.get_voice_display }}
+                        <br />
+
+                        <span class="bold">Doświadczenie sceniczne:</span>
+                        {{ training_person.get_experience_display }}
+                        <br />
+
+                        {% if not training_person.instrument == None %}
+                            <span class="bold">Instrument:</span>
+                            {{ training_person.instrument }}
+                            <br />
+                        {% endif %}
+                    {% else %}
+
+                        <span class="bold">Wykształcenie:</span> {{ training_person.person.get_education_display }}
+                        <br />
+
+                        {% if training_person.study == True %}
+                            <span class="bold">Uczę się:</span>
+                            Tak
+                            <br />
+                        {% endif %}
+
+                        {% if training_person.work == True %}
+                            <span class="bold">Pracuję:</span>
+                            Tak
+                            <br />
+                        {% endif %}
+
+                        {% if training_person.babysitting == True %}
+                            <span class="bold">Opiekuję się dziećmi:</span>
+                            Tak
+                            <br />
+                        {% endif %}
+
+                        {% if training_person.pensioner == True %}
+                            <span class="bold">Jestem rencistą, emerytem:</span>
+                            Tak
+                            <br />
+                        {% endif %}
+
+                        {% if training_person.unemployed == True %}
+                            <br />
+                            <span class="bold">Jestem bezrobotny/a:</span>
+                            Tak
+                            <br />
+                        {% endif %}
+
+                        {% if training_person.another_work %}
+                            <span class="bold">Inne zajęcie:</span>
+                            {{ training_person.another_work }}
+                            <br />
+                        {% endif %}
+
+                        {% if training_person.guardian_phone_number is not None %}
+                            <span class="bold">Telefon opiekuna: </span>
+                            {{ training_person.guardian_phone_number }}
+                            <br />
+                        {% endif %}
+
+                        {% if training_person.sing_or_play == True %}
+                            <span class="bold">Gram lub śpiewam:</span>
+                            Tak
+                            <br />
+                        {% endif %}
+
+                    {% endif %}
+
+
+                    <span class="bold">Opcja noclegu:</span>
+                    {{ training_person.get_accommodation_display }}
+                    <br />
+
+                    {% if training_person.retreat_or_music_training.type == 'W' %}
+                        <span class="bold">Nocleg sobota/niedziela:</span>
+                        {{ training_person.get_saturday_sunday_display }}
+                        <br />
+                    {% endif %}
+
+                    <span class="bold">Zgoda na fotografowanie:</span>
+                    {% if training_person.person.photographing_agreement == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+
+                    <span class="bold">Koszt:</span>
+                    {{ training_person.total_cost }} zł
+                    <br />
+
+                    <br />
+
+                    <span class="hidden" id="begin_date">{{ training.begin_date|date:"Y.m.d" }}</span>
+                    <span class="hidden" id="end_date">{{ training.end_date|date:"Y.m.d" }}</span>
+
+                    <a  class="link-decoration-none" href="{% url 'coordinatepanel:training_people' training.id %}">
+                        <button class="btn btn-default">Wróć</button>
+                    </a>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/count_age.js' %}"></script>
+{% endblock %}

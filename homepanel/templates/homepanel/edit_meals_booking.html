@@ -1,0 +1,48 @@
+{% extends "homepanel/base.html" %}
+{% load static %}
+
+{% block extra_head_base %}
+    <link rel="stylesheet" href="{% static 'css/jquery-ui/jquery-ui.min.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Edytuj pobyt z posiłkami</h2>
+                    <hr /><br />
+                    <form class="form-horizontal" action="" role="form" method="post">
+                        {% csrf_token %}
+                        {% include 'homepanel/includes/form_template.html' %}
+
+                        <div class="form-group row">
+                            <label class="bold col-form-label col-xs-12 col-sm-3 col-lg-3">Finalna cena</label>
+                            <div class="col-xs-12 col-sm-7 col-lg-5 content-center red bold">
+                                <span id="total_price"></span> zł
+                            </div>
+                            <div class="small hidden">
+                                {% for price in prices %}
+                                    <span id="{{ price.service }}">{{ price.price }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="p-l-5 offset-lg-3 col-lg-9 offset-sm-5 col-sm-7">
+                                <button type="submit" class="btn btn-primary">Zapisz</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/count_meals_price.js' %}"></script>
+{% endblock %}

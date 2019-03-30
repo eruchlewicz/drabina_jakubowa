@@ -1,0 +1,80 @@
+{% extends "homepanel/base.html" %}
+
+{% block content %}
+    <section id="batch_participants" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <span class="float-right">
+                        <a class="link-decoration-none"  href="{% url 'homepanel:get_participants_from_csv' %}">
+                            <button class="btn btn-info m-b-10">Dane z csv</button>
+                        </a>
+                        <a class="link-decoration-none"  href="{% url 'homepanel:update_participants_count' %}">
+                            <button class="btn btn-warning m-b-10">Aktualizuj</button>
+                        </a>
+                        <a class="link-decoration-none" href="{% url 'homepanel:add_participant' %}">
+                            <button class="btn btn-default m-b-10">Dodaj podopiecznego</button>
+                        </a>
+                    </span>
+
+                    <h2>Lista podopiecznych</h2>
+                    <hr /><br />
+
+                    <ul>
+                        {% for participant in participants_list %}
+                            <li class="lead">
+                                <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                     <span class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
+
+                                         <a class="medium-bold" href="{% url 'homepanel:participant_details' participant.id %}">
+                                             {{ participant.surname }} {{ participant.first_name }}
+                                         </a>
+                                     </span>
+                                     <span class="col-xs-6 col-sm-6 col-md-6 col-lg-5 float-right text-right">
+                                         <a class="link-decoration-none" href="{% url 'homepanel:participant_sign' participant.id %}">
+                                            <button class="btn btn-primary btn-sm">Turnusy</button>
+                                         </a>
+                                         <a class="link-decoration-none" href="{% url 'homepanel:event_participant_sign' participant.id %}">
+                                            <button class="btn btn-success btn-sm">Wydarzenia</button>
+                                         </a>
+                                         <a onclick="return confirm('Czy na pewno chcesz usunąć tego podopiecznego? Proces jest nieodwaracalny.')"
+                                            class="link-decoration-none" href="{% url 'homepanel:delete_participant' participant.id %}">
+                                             <button class="btn btn-danger btn-sm">Usuń</button>
+                                         </a>
+                                     </span>
+
+                                </span>
+
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <br /><br />
+
+                      <ul class="pagination offset-5">
+                        {% if participants_list.has_previous %}
+                          <li class="page-item"><a class="page-link" href="?page={{ participants_list.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                          <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                        {% endif %}
+                        {% for i in participants_list.paginator.page_range %}
+                          {% if participants_list.number == i %}
+                            <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                          {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                        {% if participants_list.has_next %}
+                          <li class="page-item"><a class="page-link" href="?page={{ participants_list.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                          <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                        {% endif %}
+                      </ul>
+
+                    <br />
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

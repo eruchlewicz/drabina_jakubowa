@@ -1,0 +1,72 @@
+{% extends "homepanel/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="batch_participants" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Zaświadczenia - wolontariusze</h2>
+                    <hr /><br />
+
+                    <div class="form-group row">
+                        <label class="medium-bold col-form-label col-12 col-sm-3 col-lg-3 m-t-15" for="id_certificate">
+                            Nr zaświadczenia
+                        </label>
+                        <div class="col-12 col-sm-7 col-lg-7 m-t-15">
+                            <input id="id_certificate" class="form-control" type="text" />
+                        </div>
+                        <div class="col-lg-2 col-sm-2 col-8 offset-4 offset-lg-0 offset-sm-0 m-t-15">
+                            <button id="btn_find" type="submit" class="btn btn-primary">Szukaj</button>
+                        </div>
+                    </div>
+
+                    <br /><br />
+
+                    <h5>Szczegóły:</h5>
+                    <div id="id_batch_volunteer">
+                    </div>
+
+                    <div id="certificates_json" class="hidden">
+                        {{ certificates_json }}
+                    </div>
+
+                    <br /><br />
+
+                    <h2>Zaświadczenia - podopieczni</h2>
+                    <hr /><br />
+
+                    <div class="form-group row">
+                        <label class="medium-bold col-form-label col-12 col-sm-3 col-lg-3 m-t-15" for="id_participant_certificate">
+                            Nr zaświadczenia
+                        </label>
+                        <div class="col-12 col-sm-7 col-lg-7 m-t-15">
+                            <input id="id_participant_certificate" class="form-control" type="text" />
+                        </div>
+                        <div class="col-lg-2 col-sm-2 col-8 offset-4 offset-lg-0 offset-sm-0 m-t-15">
+                            <button id="btn_find_participant" type="submit" class="btn btn-primary">Szukaj</button>
+                        </div>
+                    </div>
+
+                    <br /><br />
+
+                    <h5>Szczegóły:</h5>
+                    <div id="id_batch_participant">
+                    </div>
+
+                    <div id="participant_certificates_json" class="hidden">
+                        {{ participant_certificates_json }}
+                    </div>
+
+                    <br /><br />
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/find_certificate.js' %}"></script>
+{% endblock %}

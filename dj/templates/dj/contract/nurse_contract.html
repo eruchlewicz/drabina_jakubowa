@@ -1,0 +1,307 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+{% load mathfilters %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}" />
+    <style type="text/css">
+        @page {
+            margin-left: 0.8cm;
+            margin-right: 0.8cm;
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+        }
+        @font-face {
+            font-family: Cuprum;
+            src: url(/static/fonts/Cuprum-Regular.ttf); }
+        @font-face {
+            font-family: CuprumBold;
+            src: url(/static/fonts/Cuprum-Bold.ttf); }
+        .cuprum {
+            font-family: Cuprum, sans-serif;
+        }
+        .font-24 {
+            font-size: 24px;
+        }
+        .font-16 {
+            font-size: 16px;
+        }
+        .bold {
+            font-family: CuprumBold, sans-serif;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="main cuprum font-16">
+            <div class="container">
+                <div class="center m-0 m-b-15">
+                    <span class="bold font-24">UMOWA PIELĘGNIARZA/PIELĘGNIARKI TURNUSU</span>
+                </div>
+
+            <div class="text-indent justify m-0 m-b-25">
+                W dniu {{ batchvolunteer.batch_begin_date|date:"d.m.Y" }}r. w miejscowości {{ batchvolunteer.batch.institution.city }},
+                pomiędzy {{ congregation }}, {{ congregation.main_institution }},
+                zwanym w dalszej części Organizatorem, które reprezentuje {{ congregation.director }} –
+                kierownik dzieła {{ congregation.community }}, a
+                {% if batchvolunteer.volunteer.sex == 'K' %}
+                     Panią
+                {% else %}
+                    Panem
+                {% endif %}
+                {{ batchvolunteer.volunteer.first_name }} {{ batchvolunteer.volunteer.surname }},
+                zam. w {{ batchvolunteer.volunteer.zip_code }} {{  batchvolunteer.volunteer.city }},
+                {{ batchvolunteer.volunteer.address }}, nr PESEL {{ batchvolunteer.volunteer.pesel }},
+                {% if batchvolunteer.volunteer.sex == 'K' %}
+                     pełniącą
+                {% else %}
+                    pełniącym
+                {% endif %}
+                funkcję
+                {% if batchvolunteer.volunteer.sex == 'K' %}
+                     Pielęgniarki, zwaną
+                {% else %}
+                    Pielęgniarza, zwanym
+                {% endif %}
+                dalej Pielęgniarką/Pielęgniarzem,
+                została zawarta umowa następującej treści:
+            </div>
+
+
+            <div class="m-0">
+                <div class="center">§ 1 </div>
+                <div class="left">
+                    <span class="bold">Pielęgniarka/Pielęgniarz</span> turnusu, w duchu i według ideału wolontariatu,
+                    pracuje bezinteresownie,
+                    za swoją pracę nie pobiera wynagrodzenia. Wartość świadczeń
+                    <span class="bold">Pielęgniarki/Pielęgniarza</span> turnusu nie
+                    stanowi darowizny na rzecz Organizatora w rozumieniu przepisów Kodeksu Cywilnego i przepisów
+                    podatkowych.
+                </div>
+                <div class="center">§ 2 </div>
+                <div class="left">
+                    <span class="bold">Pielęgniarka/Pielęgniarz</span>, z którą/którym podpisano umowę jest
+                    zobowiązana/y do wykonywania
+                    świadczeń zgodnie ze sztuką zawodu oraz ze szczególną troską o dobro i bezpieczeństwo podopiecznych.
+                    Wszelkie zmiany w umowie powinny być sporządzone w formie pisemnej.
+                </div>
+                <div class="center">§ 3 </div>
+                <div class="left">
+                    <span class="bold">Pielęgniarką/Pielęgniarzem</span> podczas turnusu może zostać osoba,
+                    która posiada wykształcenie oraz
+                    prawo wykonywania zawodu oraz w ocenie organizatora posiada predyspozycje do pracy z osobami
+                    niepełnosprawnymi. To organizator powołuje wolontariusza na funkcję
+                    <span class="bold">Pielęgniarki/Pielęgniarza</span>.
+                    <span class="bold">Pielęgniarka/Pielęgniarz</span> ściśle współpracuje z koordynatorem turnusu,
+                    który jest jej bezpośrednim
+                    zwierzchnikiem i stosuje się do zarządzeń koordynatora, chyba że kłóci się to z należytym
+                    wykonywaniem swoich obowiązków.
+                </div>
+            </div>
+            <div class="bold center m-0 m-t-10">Zakres odpowiedzialności i zakres świadczeń wykonywanych przez
+                Pielęgniarkę/Pielęgniarza turnusu</div>
+            <div class="m-0">
+                <div class="center">§ 4 </div>
+                <div class="left">
+                        Szczegółowy zakres świadczeń wykonywanych przez
+                        <span class="bold">Pielęgniarkę/Pielęgniarza</span>, ustalany jest z
+                        Organizatorem i  obejmuje następujące czynności:
+                        <br />
+                        1.	Szkolenie wolontariuszy z zakresu pielęgnacji osób chorych, niepełnosprawnych, starszych
+                        <br />
+                        2.	Przyjęcie podopiecznych w dzień przyjazdu i zebranie wywiadu o stanie ich zdrowia
+                        <br />
+                        3.	Sporządzenie listy czynności do wykonania dla dyżuru nocnego
+                        <br />
+                        4.	Odnotowanie, kto ma konieczną dietę i zgłoszenie tego do koordynatora
+                        <br />
+                        5.	Monitorowanie stanu zdrowia podopiecznych i wolontariuszy
+                        <br />
+                        6.	Prawidłowe dysponowanie lekami podopiecznych wg zlecenia lekarskiego oraz aplikowanie
+                        ich (wraz z iniekcjami itp.)
+                        <br />
+                        7.	Zmiana opatrunków
+                        <br />
+                        8.	Podejmowanie decyzji o wezwaniu pogotowia lub lekarza
+                        <br />
+                        9.	Udzielenie pierwszej pomocy medycznej
+                        <br />
+                        10.	Dysponowanie zasobem podręcznych leków i środków opatrunkowych na wypadek nagłych sytuacji,
+                        wraz z obowiązkiem zlecania ich uzupełnienia w razie wyczerpania
+                        <br />
+                        11.	Pielęgnowanie podopiecznych wymagających fachowej opieki
+                        <br />
+                        12.	Prowadzenie profilaktyki przeciwodleżynowej
+                        <br />
+                        13.	Współpraca z koordynatorem turnusu w celu zapewnienia podopiecznym bezpieczeństwa i zdrowia
+                </div>
+            </div>
+                <br />
+            <div class="bold center m-0 m-t-5">Prawa Pielęgniarki/ Pielęgniarza turnusu</div>
+            <div class="m-0">
+                <div class="center">§ 5 </div>
+                <div class="left">
+                        1.	<span class="bold">Pielęgniarka/Pielęgniarz</span> ma prawo do uzyskania informacji o
+                        przysługujących mu prawach i obowiązkach.
+                        <br />
+                        2.	<span class="bold">Pielęgniarka/Pielęgniarz</span> ma prawo do bezpiecznych i
+                        higienicznych warunków wykonywania świadczeń.
+                        <br />
+                        3.	<span class="bold">Pielęgniarka/Pielęgniarz</span> ma prawo do uzyskania informacji o
+                        ryzyku dla zdrowia i bezpieczeństwa związanych z wykonywanymi świadczeniami oraz o zasadach
+                        ochrony przed zagrożeniami.
+                        <br />
+                        4.	<span class="bold">Pielęgniarka/Pielęgniarz</span> ma prawo do szkoleń i formacji
+                        przygotowujących go do pracy podczas turnusu.
+                        <br />
+                        5.	<span class="bold">Pielęgniarka/Pielęgniarz</span> ma prawo do uzyskania wsparcia w
+                        sytuacjach kryzysowych, wynikających z pełnionej posługi w czasie turnusu.
+                        <br />
+                        6.	<span class="bold">Pielęgniarka/Pielęgniarz</span> ma prawo do otrzymania pisemnego
+                        zaświadczenia o wykonywaniu świadczeń, z określeniem ich zakresu.
+                </div>
+            </div>
+            <div class="bold center m-0 m-t-5">Obowiązki Pielęgniarki/Pielęgniarza turnusu</div>
+            <div class="m-0">
+                <div class="center">§ 6 </div>
+                <div class="left">
+                    W czasie współpracy  turnusu jest zobowiązany:
+                    <br />
+                    1.	Przestrzegać obowiązujących przepisów prawa, oraz przepisów wewnętrznych Centrum Księdza
+                    Orione w szczególności <span class="bold">Regulaminu Turnusów Drabiny Jakubowej</span> i zasad
+                    zawartych w umowie pielęgniarskiej oraz w niniejszym regulaminie.
+                    <br />
+                    2.	Nosić identyfikator w trakcie pracy.
+                    <br />
+                    3.	Przestrzegać praw podopiecznego, które wyszczególnione zostały w regulaminie turnusów Drabiny
+                    Jakubowej.
+                    <br />
+                    4.	Zwracać baczną uwagę na sposób w jaki wolontariusze sprawują opiekę nad podopiecznymi tak by
+                    ich praca nie stwarzała zagrożeń dla nich oraz podopiecznych. W przypadku zauważenia
+                    nieprawidłowości <span class="bold">Pielęgniarka/Pielęgniarz</span> powinna/powinien niezwłocznie
+                    zwrócić uwagę wolontariuszowi, a jeśli to niemożliwe lub wolontariusz nie stosuje się do zaleceń,
+                    poinformować koordynatora turnusu.
+                    <br />
+                    5.	Wykonywać podjęte zadania sumiennie, z zachowaniem należytej staranności, w poszanowaniu
+                    godności wszystkich osób uczestniczących w turnusie oraz we współpracy z innymi wolontariuszami i
+                    personelem.
+                    <br />
+                    6.	Dbać o majątek powierzony przez Organizatora.
+                    <br />
+                    7.	Przestrzegać ochrony danych osobowych.
+                    <br />
+                    8.	Przekazywać jak najszybciej każdą zauważoną zmianę w stanie chorego
+                    <span class="bold">Koordynatorowi/Organizatorowi</span>.
+                    <br />
+                    9.	W przypadku nieprzewidzianej konieczności wyjazdu z turnusu
+                    <span class="bold">Pielęgniarka/Pielęgniarz</span> przekazuje
+                    swoje obowiązki  zastępcy wyznaczonemu przez Koordynatora. Wyjazd
+                    <span class="bold">Pielęgniarka/Pielęgniarz</span> może
+                    nastąpić jedynie po wcześniejszej konsultacji z <span class="bold">Organizatorem</span> i
+                    <span class="bold">Koordynatorem.</span>
+                    <br />
+                    10.	Uczestniczyć w zebraniach wolontariuszy, pomagać rozwiązywać problemy wolontariuszy, które są
+                    związane z pielęgnacją podopiecznego.
+                    <br />
+                    11.	Natychmiastowo przerwać pracę, gdy stan terenu, budynku, pomieszczenia, sprzętu, instalacji,
+                    materiału zagraża podopiecznym, wolontariuszom, pracownikom lub innym osobom.
+                    <br />
+                    12.	Natychmiastowo udzielić lub zapewnić udzielenie podopiecznemu i wolontariuszowi pierwszej pomocy
+                    i dalszej opieki.
+                    <br />
+                    13.	W razie nieszczęśliwego wypadku, powiadomić o wypadku Organizatora turnusu lub osobę
+                    zastępującą, przeciwdziałać ujemnym skutkom wypadku i podjąć inne niezbędne środki.
+                    <br />
+                    14.	Współpracować z wolontariatami innych dzieł Zgromadzenia Małe Dzieło Boskiej Opatrzności.
+                </div>
+            </div>
+                <br /><br />
+            <div class="bold center m-0 m-t-5">Zakończenie pracy Pielęgniarki/Pielęgniarza</div>
+            <div class="m-0">
+                <div class="center">§ 7 </div>
+                <div class="left">
+                    1.	Umowa kończy się z datą zawartą w jej treści.
+                    <br />
+                    2.	Każda ze stron może wypowiedzieć Umowę Wolontariatu z zachowaniem 5–dniowego okresu
+                    wypowiedzenia.
+                    <br />
+                    3.	Organizator może rozwiązać Umowę w trybie natychmiastowym w razie niewykonania lub
+                    nienależytego wypełnienia przez Pielęgniarkę/Pielęgniarza podstawowych obowiązków wynikających
+                    z Umowy, a w szczególności:
+                    <br />
+                    a) Za naruszenie <span class="bold">Regulaminu Turnusów Drabiny Jakubowej</span> lub
+                    innych wewnętrznych aktów normatywnych Centrum Księdza Orione
+                    <br />
+                    b) Za spożywanie alkoholu i środków odurzających podczas trwającego turnusu
+                    <br />
+                    c) Za nieobyczajne zachowanie.
+                </div>
+            </div>
+            <div class="bold center m-0 m-t-5">Postanowienia końcowe</div>
+            <div class="m-0">
+                <div class="center">§ 8 </div>
+                <div class="left">
+                    <div>
+                    1.	W sprawach nie uregulowanych porozumieniem zastosowanie ma regulamin turnusu, warunki
+                    uczestnictwa, ustawa Kodeks cywilny oraz ustawa o działalności pożytku publicznego i o wolontariacie.
+                    <br />
+                    2.	Regulamin może ulec zmianie. Organizator ma obowiązek poinformować o zmianach wszystkich,
+                    którzy mają podpisaną i trwającą umowę opartą na regulaminie.
+                    <br />
+                    3.  Umowa Pielęgniarki/Pielęgniarza zawarta jest na okres trwania turnusu tj.:
+                    {{ batchvolunteer.batch_begin_date|date:"d.m.Y" }} - {{ batchvolunteer.batch_end_date|date:"d.m.Y" }}
+                    <br />
+                    4.	<span class="bold">Pielęgniarka/Pielęgniarz</span> podpisując się wyraża zgodę na
+                        przetwarzanie podanych danych osobowych
+                    do celów organizacji turnusu Zgromadzeniu Zakonnemu Małe Dzieło Boskiej Opatrzności – Orioniści
+                    Prowincja Polska zgodnie z ustawą z dnia 29.08.1997 o Ochronie Danych Osobowych Dz. U. Nr 133 poz.
+                    883 z póź. zm.
+                    </div>
+                    <div class="light-blue m-0" style="display: inline-block;">
+                            5.	<span class="bold">Pielęgniarka/Pielęgniarz</span> wyraża zgodę
+                    </div>
+                            <img src="{% static '/images/checkbox-empty-small.jpg' %}" />
+                    <div class="light-blue m-0" style="display: inline-block;">/ nie wyraża zgody
+                    </div>
+                            <img src="{% static '/images/checkbox-empty-small.jpg' %}" />
+                    <div class="light-blue m-0" style="display: inline-block;">*
+                            (zaznacz właściwe) Zgromadzeniu Zakonnemu Małe Dzieło Boskiej Opatrzności - Orioniści
+                                Prowincja Polska na fotografowanie/filmowanie i publikację materiałów ze swoją osobą
+                                tylko do celów promocji Drabiny Jakubowej - Rekolekcji dla osób niepełnosprawnych.
+                    </div>
+                </div>
+            </div>
+
+
+                <table>
+                    <tr>
+                        <td align="center"><br /></td>
+                        <td align="center"><br /></td>
+                    </tr>
+                    <tr>
+                        <td align="center">................................................................</td>
+                        <td align="center">................................................................</td>
+                    </tr>
+                    <tr>
+                        <td align="center">ORGANIZATOR</td>
+                        <td align="center">PIELĘGNIARKA/PIELĘGNIARZ</td>
+                    </tr>
+                </table>
+
+                <br /><br /><br /><br /><br /><br /><br />
+
+                 <div class="center font-14">
+                    ul. Jana Pawła II 1, 07-221 Brańszczyk, branszczyk.orione.pl | branszczyk@orione.pl; tel. 297423565
+                    <br />
+                    NIP: PL7621267298, Regon: 550462602
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,461 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+{% load mathfilters %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}" />
+    <style type="text/css">
+        @page {
+            margin-left: 0.8cm;
+            margin-right: 0.8cm;
+            margin-top: 0.5cm;
+            margin-bottom: 0.5cm;
+        }
+        @font-face {
+            font-family: Cuprum;
+            src: url(/static/fonts/Cuprum-Regular.ttf); }
+        @font-face {
+            font-family: CuprumBold;
+            src: url(/static/fonts/Cuprum-Bold.ttf); }
+        .cuprum {
+            font-family: Cuprum, sans-serif;
+        }
+        .small {
+            font-size: 12px;
+            line-height: 5px;
+        }
+        .font-24 {
+            font-size: 24px;
+        }
+        .font-18 {
+            font-size: 18px;
+        }
+        .font-16 {
+            font-size: 16px;
+        }
+        .bold {
+            font-family: CuprumBold, sans-serif;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="main cuprum font-16">
+            <div class="container">
+                <table class="m-0 m-b-25">
+                     <tr>
+                        <td class="center" colspan="2">
+                            <span class="font-24 bold">
+                                Centrum Księdza Orione
+                                <br />
+                                w Brańszczyku
+                                <br/>
+                            </span>
+                            <span class="font-16 font">
+                                Dom Emeryta | Dom Rekolekcyjny <br />
+                                Drabina Jakubowa | Rehabilitacja+
+                            </span>
+                        </td>
+                        <td colspan="3">
+                            <img src="{% static '/images/icons.png' %}" />
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="center m-0 m-b-15">
+                    <span class="bold font-24">UMOWA WOLONTARIACKA</span>
+                </div>
+
+            <div class="justify m-b-5">
+            <div class="text-indent m-0 m-b-15">
+                W dniu {{ batchvolunteer.batch_begin_date|date:"d.m.Y" }}r. w miejscowości {{ batchvolunteer.batch.institution.city }},
+                pomiędzy {{ congregation }},
+                które reprezentuje {{ congregation.director }} - kierownik dzieła {{ congregation.community }}, zwanym w dalszej części
+                Organizatorem, a Panią/Panem zwanym w dalszej części Wolontariuszem:
+            </div>
+
+            <table class="font-18 center">
+                <tr>
+                    <td class="right bold">Nazwisko i imię:</td>
+                    <td class="left p-l-5">{{ batchvolunteer.volunteer.surname }} {{ batchvolunteer.volunteer.first_name }}</td>
+                </tr>
+                <tr>
+                    <td class="right bold">PESEL:</td>
+                    <td class="left p-l-5">{{ batchvolunteer.volunteer.pesel }}</td>
+                </tr>
+                <tr>
+                    <td class="right bold">Wiek:</td>
+                    <td class="left p-l-5">{{ batchvolunteer.volunteer.get_age_display }}</td>
+                </tr>
+                <tr>
+                    <td class="right bold"></td>
+                    <td class="left p-l-5">---</td>
+                </tr>
+                <tr>
+                    <td class="right bold">Adres zamieszkania:</td>
+                    <td class="left p-l-5">{{ batchvolunteer.volunteer.address }}</td>
+                </tr>
+                <tr>
+                    <td class="right bold">Kod pocztowy:</td>
+                    <td class="left p-l-5">{{ batchvolunteer.volunteer.zip_code }}</td>
+                </tr>
+                <tr>
+                    <td class="right bold">Miejscowość:</td>
+                    <td class="left p-l-5">{{  batchvolunteer.volunteer.city }}</td>
+                </tr>
+                <tr>
+                    <td class="right bold">Wykształcenie:</td>
+                    <td class="left p-l-5">{{  batchvolunteer.volunteer.get_education_display }}</td>
+                </tr><tr>
+                    <td class="right bold">Numer telefonu:</td>
+                    <td class="left p-l-5">{{  batchvolunteer.volunteer.phone_number }}</td>
+                </tr>
+                <tr>
+                    <td class="right bold">Adres e-mail:</td>
+                    <td class="left p-l-5">{{  batchvolunteer.volunteer.email_address }}</td>
+                </tr>
+                <tr>
+                    <td class="right bold">Skąd dowiedzałeś/aś się o Drabinie Jakuba?:</td>
+                    <td class="left p-l-5">{{  batchvolunteer.volunteer.get_how_know_dj_display }}</td>
+                </tr>
+                <tr>
+                    <td class="right bold"></td>
+                    <td class="left p-l-5">---</td>
+                </tr>
+                <tr>
+                    <td class="right bold">Wybór miejsca:</td>
+                    <td class="left p-l-5">{{  batchvolunteer.batch.institution.city }}</td>
+                </tr>
+                <tr>
+                    <td class="right bold">Wybór turnusu:</td>
+                    <td class="left p-l-5">{{  batchvolunteer.batch.name }}
+                        {{  batchvolunteer.batch.begin_date|date:"d.m.Y" }} -
+                        {{  batchvolunteer.batch.end_date|date:"d.m.Y" }}</td>
+                </tr>
+                <tr>
+                    <td class="right bold"></td>
+                    <td class="left p-l-5">---</td>
+                </tr>
+                <tr>
+                    <td class="right bold">Uczę się:</td>
+                    <td class="left p-l-5">
+                        {% if batchvolunteer.volunteer.study == False %}
+                            Nie
+                        {% else %}
+                            Tak
+                        {% endif %}</td>
+                </tr>
+                <tr>
+                    <td class="right bold">Pracuję:</td>
+                    <td class="left p-l-5">
+                        {% if batchvolunteer.volunteer.work == False %}
+                            Nie
+                        {% else %}
+                            Tak
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="right bold">Opiekuję się dziećmi:</td>
+                    <td class="left p-l-5">
+                        {% if batchvolunteer.volunteer.babysitting == False %}
+                            Nie
+                        {% else %}
+                            Tak
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="right bold">Jestem rencistą, emerytem:</td>
+                    <td class="left p-l-5">
+                        {% if batchvolunteer.volunteer.pensioner == False %}
+                            Nie
+                        {% else %}
+                            Tak
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="right bold">Jestem bezrobotny/a:</td>
+                    <td class="left p-l-5">
+                        {% if batchvolunteer.volunteer.unemployed == False %}
+                            Nie
+                        {% else %}
+                            Tak
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="right bold">
+                        Czy Twój stan zdrowia fizycznego pozwala Ci na to, by brać udział w turnusie jako wolontariusz?:</td>
+                    <td class="left p-l-5">
+                        {% if batchvolunteer.volunteer.physical_health == False %}
+                            Nie
+                        {% else %}
+                            Tak
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="right bold">
+                        Czy Twój stan zdrowia psychicznego pozwala Ci na to, by być wolontariuszem w takim miejscu?:
+                    </td>
+                    <td class="left p-l-5">
+                        {% if batchvolunteer.volunteer.mental_health == False %}
+                            Nie
+                        {% else %}
+                            Tak
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="right bold">Czy musisz regularnie przyjmować leki?:</td>
+                    <td class="left p-l-5">{{ batchvolunteer.volunteer.get_drugs_display }}</td>
+                </tr>
+                <tr>
+                    <td class="right bold">
+                        Numer telefonu osoby, którą będziemy mogli powiadomić w przypadku Twoich problemów ze zdrowiem:</td>
+                    <td class="left p-l-5">
+                        {% if batchvolunteer.volunteer.guardian_phone_number is not None %}
+                            {{ batchvolunteer.volunteer.guardian_phone_number }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="right bold"></td>
+                    <td class="left p-l-5">---</td>
+                </tr>
+            </table>
+            </div>
+            <div class="m-0 m-b-10">
+                zostało zawarte porozumienie następującej treści:
+            </div>
+
+                <table class="m-0 small">
+                    <tr>
+                        <td valign="top">
+                            <div class="m-0">
+                            § 1 <span class="bold">Wolontariusz</span> pracuje bezinteresownie, za swoją pracę nie pobiera wynagrodzenia.
+                            Wartość świadczeń wolontariusza nie stanowi darowizny na rzecz Organizatora w rozumieniu
+                            przepisów Kodeksu Cywilnego i przepisów podatkowych.
+                            <br />
+                            § 2 <span class="bold">Wolontariusz</span>, z którym podpisano umowę jest zobowiązany do wykonywania świadczeń
+                            zgodnie z harmonogramem ustalonym z <span class="bold">Koordynatorem turnusu</span>. Wszelkie zmiany w umowie powinny
+                            być sporządzone w formie pisemnej.
+                            </div>
+                            <div class="bold center m-0 font-14 m-t-5">Zakres świadczeń wykonywanych przez wolontariusza</div>
+                            <div class="m-0">
+                            § 3 Szczegółowy zakres świadczeń wykonywanych przez <span class="bold">Wolontariusza</span>,
+                            ustalany jest przez niego indywidualnie z <span class="bold">Koordynatorem</span> i może
+                            obejmować m.in. następujące czynności:
+                            <br />
+                            1. Towarzyszenie podopiecznemu
+                            <br />
+                            2. apoznanie podopiecznego z obiektem, w którym odbywa się turnus.
+                            <br />
+                            3. Pomoc podopiecznym w codziennych czynnościach - ubieraniu się, spacerze, spożywaniu
+                            posiłków.
+                            <br />
+                            4. Stałe towarzyszenie i pomoc w uczestniczeniu w zajęciach zgodnie z przewidzianym
+                            planem dnia.
+                            <br />
+                            5. Organizację czasu wolnego (aktywizację podopiecznych poprzez zabawę, gry, czytanie,
+                            spacery)
+                            <br />
+                            6. Robienie drobnych zakupów.
+                            <br />
+                            7. Rozpoznawanie potrzeb duchowo-religijnych podopiecznego.
+                            <br />
+                            8. Pomoc w toalecie ciała, zaspakajaniu potrzeb fizjologicznych.
+                            <br />
+                            9. Prace różne na rzecz Organizatora (m.in. prace porządkowe w domu i w otoczeniu Domu,
+                            pomoc w pracach konserwacyjnych w zależności od posiadanych umiejętności)
+                            <br />
+                            10. Obejmowanie dyżurów nocnych przy podopiecznych
+                            <br />
+                            <span class="bold">Wolontariusz</span> może wykonywać czynności opiekuńcze, po odbyciu
+                            odpowiedniego szkolenia, które zapewnia Organizator.
+                            </div>
+                            <div class="bold center m-0 font-14 m-t-5">Prawa Wolontariusza</div>
+                            <div class="m-0">
+                            § 4 Wolontariusz ma prawo do uzyskania informacji o przysługujących mu prawach i obowiązkach.
+                            <br />
+                            1.	Wolontariusz ma prawo do bezpiecznych i higienicznych warunków wykonywania świadczeń.
+                            <br />
+                            2.	Wolontariusz ma prawo do uzyskania informacji o ryzyku dla zdrowia i bezpieczeństwa
+                            związanych z wykonywanymi świadczeniami oraz o zasadach ochrony przed zagrożeniami.
+                            <br />
+                            3.	Wolontariusz ma prawo do szkoleń i formacji zgodnie z programem przewidzianym na czas
+                            trwania turnusu.
+                            <br />
+                            4.	Wolontariusz ma prawo do uzyskania wsparcia w sytuacjach kryzysowych, wynikających z
+                            pełnionej posługi w czasie turnusu.
+                            <br />
+                            5.	Wolontariusz ma prawo do otrzymania pisemnego zaświadczenia o wykonywaniu świadczeń, z
+                            określeniem ich zakresu.
+                            </div>
+                            <div class="bold center m-0 font-14 m-t-5">Obowiązki Wolontariusza</div>
+                            <div class="m-0">
+                            § 5 W czasie turnusu Wolontariusz jest zobowiązany:
+                            <br />
+                            1.	Przestrzegać obowiązujących przepisów prawa, oraz przepisów wewnętrznych Organizatora
+                            w szczególności <span class="bold">Regulaminu Turnusów Drabiny Jakubowej</span> i zasad
+                                zawartych w niniejszej umowie.
+                            <br />
+                            2.	Nosić identyfikator w trakcie pracy.
+                            <br />
+                            3.	Przestrzegać praw pacjenta.
+                            <br />
+                            4.	Sprawować opiekę nad powierzonym podopiecznym – odpowiadać za jego bezpieczeństwo,
+                            wygląd, higienę i zdrowie.
+                            <br />
+                            5.	Wykonywać podjęte zadania sumiennie, z zachowaniem należytej staranności, w poszanowaniu
+                            godności wszystkich osób uczestniczących w turnusie oraz we współpracy z innymi
+                            wolontariuszami i personelem.
+                            <br />
+                            6.	Dbać o majątek powierzony przez Organizatora.
+                            <br />
+                            7.	Przestrzegać ochrony danych osobowych.
+                            <br />
+                            8.	Przekazywać jak najszybciej każdą zauważoną zmianę w stanie chorego
+                                <span class="bold">Pielęgniarce/Koordynatorowi</span>.
+                            <br />
+                            9.	Podejmować codzienne zadania zgodnie z harmonogramem pracy i planem dnia, który ustala
+                            wraz z Koordynatorem.
+                            <br />
+                            10.	W przypadku nieprzewidzianej konieczności wyjazdu uzgodnić go z
+                                <span class="bold">Koordynatorem turnusu</span>.
+                            <br />
+                                11.	Uczestniczyć w zebraniach wolontariuszy. <span class="bold">Koordynator</span>
+                                Wolontariatu może częściowo lub w całości zwolnić Wolontariusza z obowiązku uczestnictwa
+                                w zebraniach dla Wolontariuszy.
+                            </div>
+                        </td>
+                        <td class="p-l-5" valign="top">
+                            <div class="m-0">
+                            12.	Kontrolować miejsca zajęć podopiecznych (teren, budynek, pomieszczenia) oraz dróg do
+                            nich prowadzących, w szczególności sprawdzić, czy ich aktualny stan odpowiada wymogom i
+                            przepisom z zakresu bezpieczeństwa i higieny.
+                            <br />
+                            13.	Kontrolować wyposażenie i stan urządzeń technicznych, instalacji, sprzętu.
+                            <br />
+                            14.	Podejmować próbę usunięcia wszelkich dostrzeżonych braków i usterek, jeżeli usunięcie
+                            ich we własnym zakresie jest możliwe. Niezwłoczne zgłosić
+                                <span class="bold">Koordynatorowi lub Organizatorowi</span>
+                            wszelkie spostrzeżone braki i błędy zagrażające zdrowiu i życiu podopiecznych.
+                            <br />
+                            15.	Natychmiastowo przerwać zajęcia, gdy stan terenu, budynku, pomieszczenia, sprzętu,
+                            instalacji, materiału zagraża podopiecznym, wolontariuszom, pracownikom lub innym osobom.
+                            <br />
+                            16.	Natychmiastowo udzielić lub zapewnić udzielenie podopiecznemu pierwszej pomocy i dalszej
+                            opieki.
+                            <br />
+                            17.	W razie nieszczęśliwego wypadku, powiadomić o wypadku
+                                <span class="bold">Organizatora</span> lub osobę zastępującą,
+                            przeciwdziałać ujemnym skutkom wypadku i podjąć inne niezbędne środki.
+                            <br />
+                            18.	Współpracować z wolontariatami innych dzieł Organizatora.
+                            </div>
+                            <div class="bold center m-0 font-14 m-t-5">Obowiązki Organizatora</div>
+                            <div class="m-0">
+                                § 6 <span class="bold">Organizator</span> ma obowiązek udostępnić i zapoznać
+                                Wolontariusza z <span class="bold">Regulaminem Turnusów</span>
+                                Drabiny Jakubowej zawartym w niniejszej umowie.
+                                <br />
+                            1.	Organizator zapewnia Wolontariuszowi bezpłatny pobyt (nocleg i wyżywienie) na czas
+                                trwania turnusu.
+                                <br />
+                            2.	Organizator zapewnia Wolontariuszowi identyfikator.
+                                <br />
+                            3.	Organizator ma obowiązek poinformować Wolontariusza o ryzyku dla zdrowia i
+                                bezpieczeństwa związanym z wykonywanymi świadczeniami oraz o zasadach ochrony przed
+                                zagrożeniami.
+                                <br />
+                            4.	Organizator zapewnia Wolontariuszowi wsparcia w sytuacjach kryzysowych, wynikających z
+                                pełnionej posługi w czasie turnusu.
+                                <br />
+                            5.	Organizator ma obowiązek wydania zaświadczenia o wykonywaniu świadczeń przez
+                                Wolontariusza, na jego prośbę.
+                                <br />
+                            6.	Organizator zapewnia przeszkolenie Wolontariuszy.
+                                <br />
+                            7.	Organizator ma obowiązek zapewnić Wolontariuszowi ubezpieczenie od następstw
+                                nieszczęśliwych wypadków (NNW), oraz ubezpieczenie od odpowiedzialności cywilnej
+                                (OC) zgodnie z obowiązującymi przepisami.
+                            </div>
+                            <div class="bold center m-0 font-14 m-t-5 m-t-5">Zakończenie pracy na zasadzie wolontariatu</div>
+                            <div class="m-0">
+                            § 7 Każda ze stron może wypowiedzieć Umowę Wolontariatu z zachowaniem 2–dniowego okresu
+                                wypowiedzenia.
+                                <br />
+                            1.	Organizator może rozwiązać Umowę w trybie natychmiastowym w razie niewykonania lub
+                                nienależytego wypełnienia przez Wolontariusza podstawowych obowiązków wynikających z
+                                Umowy, a w szczególności:
+                                <br />
+                            2.	Za naruszenie przez Wolontariusza postanowień tej umowy, Regulaminu Turnusów Drabiny
+                                Jakubowej lub innych wewnętrznych aktów normatywnych Centrum Księdza Orione,
+                                <br />
+                            3.	Za spożywanie alkoholu i środków odurzających podczas trwającego turnusu,
+                                <br />
+                            4.	Za nieobyczajne zachowanie.
+                            </div>
+                            <div class="bold center m-0 font-14 m-t-5">Postanowienia końcowe</div>
+                            <div class="m-0">
+                            § 8 W sprawach nieuregulowanych porozumieniem zastosowanie ma ustawa Kodeks cywilny oraz
+                                ustawa o działalności pożytku publicznego i o wolontariacie.
+                                <br />
+                            1.	Porozumienie sporządzono w dwóch jednobrzmiących egzemplarzach, po jednym dla każdej
+                                ze stron.
+                            <div class="light-blue m-0">
+                            2.	Umowa zawarta jest na okres od {{ batchvolunteer.batch_begin_date|date:"d.m.Y" }} do
+                                {{ batchvolunteer.batch_end_date|date:"d.m.Y" }}
+                            </div>
+                            <div>
+                            3.	Wolontariusz podpisując się wyraża zgodę na przetwarzanie podanych danych osobowych
+                                do celów organizacji turnusu Zgromadzeniu Zakonnemu Małe Dzieło Boskiej Opatrzności –
+                                Orioniści Prowincja Polska zgodnie z ustawą z dnia 29.08.1997 o Ochronie Danych
+                                Osobowych Dz. U. Nr 133 poz. 883 z póź. zm.
+                            </div>
+                            <div class="light-blue m-0" style="display: inline-block;">
+                            4.	Wolontariusz wyraża zgodę
+                            </div>
+                            <img src="{% static '/images/checkbox-empty-small.jpg' %}" />
+                            <div class="light-blue m-0" style="display: inline-block;">/ nie wyraża zgody
+                            </div>
+                            <img src="{% static '/images/checkbox-empty-small.jpg' %}" />
+                            <div class="light-blue m-0" style="display: inline-block;">*
+                            (zaznacz właściwe) Zgromadzeniu Zakonnemu Małe Dzieło Boskiej Opatrzności - Orioniści
+                                Prowincja Polska na fotografowanie/filmowanie i publikację materiałów ze swoją osobą
+                                tylko do celów promocji Drabiny Jakubowej - Rekolekcji dla osób niepełnosprawnych.
+                            </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+
+                <table>
+                    <tr>
+                        <td align="center"><br /></td>
+                        <td align="center"><br /></td>
+                    </tr>
+                    <tr>
+                        <td align="center">................................................................</td>
+                        <td align="center">................................................................</td>
+                    </tr>
+                    <tr>
+                        <td align="center">WOLONTARIUSZ</td>
+                        <td align="center">ORGANIZATOR</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

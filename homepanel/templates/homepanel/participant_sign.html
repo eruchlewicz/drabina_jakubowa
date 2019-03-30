@@ -1,0 +1,93 @@
+{% extends "homepanel/base.html" %}
+{% load mathfilters %}
+{% load static %}
+
+{% block content %}
+    <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <a class="float-right" href="{% url 'homepanel:all_participants' %}">
+                        <button class="btn btn-default">Wróć</button>
+                    </a>
+
+                    <h2>{{ participant }} - turnusy</h2>
+                    <hr /><br />
+
+                    <ul>
+                        {% for batch_participant in batch_participant_list %}
+                            <li class="lead m-b-10">
+                            <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                     <span class="col-xs-6 col-sm-6 col-md-7 col-lg-7">
+                                        <span class="medium-bold">{{ batch_participant.batch }}</span>,
+                                        {{ batch_participant.batch.begin_date|date:"d.m.Y" }} -
+                                        {{ batch_participant.batch.end_date|date:"d.m.Y" }}
+                                        {% if batch_participant.is_paid is True %}
+                                            <span class="green medium-bold">(opłacono)</span>
+                                        {% elif batch_participant.is_part_paid is True %}
+                                            <span class="blue medium-bold">(zaliczka)</span>
+                                        {% else %}
+                                            <span class="red medium-bold">(nie zapłacono)</span>
+                                        {% endif %}
+                                        {% if batch_participant.reserve_list is True %}
+                                            <span class="color-gray medium-bold">(rezerwowy)</span>
+                                        {% endif %}
+                                     </span>
+                                     <span class="col-xs-6 col-sm-6 col-md-5 col-lg-5 float-right text-right">
+                                         {% if batch_participant.batch.end_date >= now %}
+                                         <a class="link-decoration-none" onclick="return confirm('Czy na pewno chcesz wypisać tego podopiecznego?')"
+                                            href="{% url 'homepanel:batch_participant_delete' batch_participant.participant.id batch_participant.batch.id %}">
+                                             <button class="btn btn-danger btn-sm">Wypisz</button>
+                                         </a>
+                                         {% if batch_participant.reserve_list is True %}
+                                            <a class="link-decoration-none" onclick="return confirm('Czy na pewno chcesz przenieść podopiecznego na listę podstawową?')"
+                                            href="{% url 'homepanel:move_participant_to_list' batch_participant.participant.id batch_participant.batch.id %}">
+                                             <button class="btn btn-info btn-sm">Lista</button>
+                                         </a>
+                                         {% endif %}
+                                         {% endif %}
+                                         <a class="link-decoration-none" href="{% url 'homepanel:certificate' batch_participant.batch.id batch_participant.unique_key %}">
+                                            <button class="btn btn-success btn-sm">Zaświadczenie</button>
+                                        </a>
+                                         <a class="link-decoration-none"
+                                            href="{% url 'homepanel:participant_payment' batch_participant.participant.id batch_participant.batch.id %}">
+                                             <button class="btn btn-warning btn-sm">Płatności</button>
+                                         </a>
+                                     </span>
+
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <br /><br />
+
+                    <h2>Zapisz</h2>
+                    <hr /><br />
+
+                    <form class="form-horizontal" action="" role="form" method="post">
+                        {% csrf_token %}
+                        {% include 'homepanel/includes/form_template.html' %}
+
+                        <div class="form-group">
+                            <div class="p-l-5 offset-lg-3 col-lg-9 offset-sm-5 col-sm-7">
+                                <button type="submit" class="btn btn-primary">Zapisz</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <span id="id_batch_people" hidden>{{ item_list }}</span>
+                    <br />
+                    <div id="all_batch_people"></div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/display_batch_people.js' %}"></script>
+{% endblock %}

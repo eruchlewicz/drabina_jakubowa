@@ -1,0 +1,31 @@
+{% extends "dj/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="login" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Zadania</h2>
+                    <hr /><br />
+                    <form class="form-horizontal" action="" role="form" method="post">
+                        {% csrf_token %}
+                        {% include 'dj/includes/reverse_form_template.html' %}
+
+                        <br />
+
+                        <div class="form-group">
+                            <div class="p-l-5 offset-lg-3 col-lg-10 offset-sm-3 col-sm-9">
+                                <button id="login_btn" type="submit" class="btn btn-primary">Zapisz</button>
+                            </div>
+                        </div>
+                    </form>
+                    <br />
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

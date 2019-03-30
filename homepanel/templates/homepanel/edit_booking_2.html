@@ -1,0 +1,81 @@
+{% extends "homepanel/base.html" %}
+{% load static %}
+
+{% block extra_head_base %}
+    <link rel="stylesheet" href="{% static 'css/jquery-ui/jquery-ui.min.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Rezerwacja - {{ booking }} - krok 2.</h2>
+                    <hr /><br />
+                    <form class="form-horizontal" action="" role="form" method="post">
+                        {% csrf_token %}
+                        {% include 'homepanel/includes/form_template.html' %}
+
+                        <div class="form-group row">
+                            <label class="medium-bold col-form-label col-xs-12 col-sm-3 col-lg-3">Liczba osób</label>
+                            <div id="id_for_setting" class="col-xs-12 col-sm-7 col-lg-5">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="bold col-form-label col-xs-12 col-sm-3 col-lg-3"></label>
+                            <div class="col-xs-12 col-sm-7 col-lg-5 content-center">
+                                <input id="id_count_rooms_people" class="btn btn-default" type="button" value="Przelicz"/>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <label class="bold col-form-label col-xs-12 col-sm-3 col-lg-3">Finalna cena</label>
+                            <div class="col-xs-12 col-sm-7 col-lg-5 content-center red bold">
+                                <span id="total_price"></span> zł
+                            </div>
+                            <div class="small hidden">
+                                {% for price in prices %}
+                                    <span id="{{ price.service }}">{{ price.price }}</span>
+                                {% endfor %}
+                                <span id="all_rooms_json">{{ rooms_json }}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="p-l-5 offset-lg-3 col-lg-9 offset-sm-5 col-sm-7">
+                                <button type="submit" class="btn btn-primary">Zapisz rezerwację</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <span class="offset-sm-3">
+                        <a class="link-decoration-none" href="{% url 'homepanel:edit_booking' booking.id %}">
+                            <button class="btn btn-warning"><< Wróć</button>
+                        </a>
+                    </span>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/room_set_people.js' %}"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#id_begin_date').datetimepicker({
+                locale: 'pl',
+                format: 'DD.MM.YYYY'
+            });
+            $('#id_end_date').datetimepicker({
+                locale: 'pl',
+                format: 'DD.MM.YYYY'
+            });
+        });
+    </script>
+{% endblock %}

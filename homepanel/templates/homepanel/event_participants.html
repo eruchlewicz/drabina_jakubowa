@@ -1,0 +1,55 @@
+{% extends "homepanel/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="batch_participants" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Lista podopiecznych</h2>
+                    <hr /><br />
+
+                    <ul>
+                        {% for obj in participants_list %}
+                            <li class="lead">
+                            <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                    <span class="col-xs-6 col-sm-5 col-md-4 col-lg-5 medium-bold">
+                                        <a class="medium-bold" href="{% url 'homepanel:participant_details' obj.participant.id %}">
+                                            {{ obj.participant.surname }} {{ obj.participant.first_name }}&nbsp;
+                                        </a>
+                                        {% if obj.is_paid is True %}
+                                            <span class="green medium-bold">(zapłacono)</span>
+                                        {% else %}
+                                            <span class="red medium-bold">(nie zapłacono)</span>
+                                        {% endif %}
+                                    </span>
+                                    <span class="col-xs-6 col-sm-7 col-md-8 col-lg-7 float-right text-right">
+                                        {% if obj.event.end_date >= now %}
+                                        <a onclick="return confirm('Czy na pewno chcesz wypisać tego podopiecznego?')" class="link-decoration-none"
+                                           href="{% url 'homepanel:from_event_participant_delete' obj.event.id obj.id %}">
+                                            <button class="btn btn-danger btn-sm">Usuń</button>
+                                        </a>
+                                        {% endif %}
+                                        <a class="link-decoration-none"
+                                           href="{% url 'homepanel:from_event_participant_payment' obj.event.id obj.id %}">
+                                            <button class="btn btn-success btn-sm">Płatności</button>
+                                        </a>
+                                    </span>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <br />
+
+                    <a  class="link-decoration-none" href="{% url 'homepanel:event_details' event.id %}">
+                        <button class="btn btn-default">Wróć</button>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

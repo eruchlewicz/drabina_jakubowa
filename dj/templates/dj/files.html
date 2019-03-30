@@ -1,0 +1,32 @@
+{% extends "dj/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="files">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Przydatne pliki</h2>
+                    <hr /><br />
+
+                    <ul>
+                        {% for file in files %}
+                            <li class="lead">
+                                <span class="medium-bold">{{ file.title }}</span> -
+                                <a href="{{ file.upload.url }}">
+                                    <i class="fa fa-download red"></i>
+                                </a>
+                            </li>
+                    {% endfor %}
+                    </ul>
+
+                    <br /><br /><br />
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

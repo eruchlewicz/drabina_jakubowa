@@ -1,0 +1,210 @@
+{% extends "dj/base.html" %}
+
+{% block content %}
+    <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <span class="float-right">
+                        <a class="link-decoration-none" href="{% url 'dj:account_password' %}">
+                            <button class="btn btn-danger m-b-10">Zmień hasło</button>
+                        </a>
+                        <a class="link-decoration-none" href="{% url 'dj:photo_edit' %}">
+                            <button class="btn btn-success m-b-10">Zmień zdjęcie</button>
+                        </a>
+                    </span>
+
+
+                    <h2>Dane</h2>
+
+                    <hr /><br />
+
+                    {% if user_details.photo.url is not None %}
+                        <img class="img-fluid d-block col-lg-4 col-md-5 col-sm-6 col-8" src="{{ user_details.photo.url }}">
+                    {% endif %}
+
+                    <br />
+                    <span class="bold">Imię:</span> {{ user_details.first_name }}
+                    <br />
+                    <span class="bold">Nazwisko:</span> {{ user_details.surname }}
+                    <br />
+                    <span class="bold">Adres e-mail:</span> {{ user_details.email_address }}
+                    <br />
+                    <span class="bold">Płeć:</span> {{ user_details.get_sex_display }}
+                    <br />
+                    <span class="bold">PESEL:</span> {{ user_details.pesel }}
+                    <br />
+                    <span class="bold">Wiek:</span> {{ user_details.get_age_display }}
+                    <br />
+                    <span class="bold">Nr telefonu:</span> {{ user_details.phone_number }}
+                    <br />
+                    <span class="bold">Miejscowość:</span> {{ user_details.city }}
+                    <br />
+                    <span class="bold">Kod pocztowy:</span> {{ user_details.zip_code }}
+                    <br />
+                    <span class="bold">Adres zamieszkania:</span> {{ user_details.address }}
+                    <br />
+                    <span class="bold">Wykształcenie:</span> {{ user_details.get_education_display }}
+                    <br />
+                    <span class="bold">Uczę się:</span>
+                    {% if user_details.study == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Pracuję:</span>
+                    {% if user_details.work == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Opiekuję się dziećmi:</span>
+                    {% if user_details.babysitting == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Jestem rencistą, emerytem:</span>
+                    {% if user_details.pensioner == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Jestem bezrobotny/a:</span>
+                    {% if user_details.unemployed == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Inne zajęcie:</span> {{ user_details.another_work }}
+                    <br />
+                    <span class="bold">Mój stan zdrowia fizycznego pozwala mi na to, by brać udział w turnusie
+                        jako wolontariusz:</span>
+                    {% if user_details.physical_health == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Mój stan zdrowia psychicznego pozwala mi na to, by być wolontariuszem
+                        w takim miejscu:</span>
+                    {% if user_details.mental_health == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Czy musisz regularnie przyjmować leki?:</span> {{ user_details.get_drugs_display }}
+                    <br />
+                    <span class="bold">Numer telefonu osoby, którą będziemy mogli powiadomić w przypadku Twoich
+                        problemów ze zdrowiem:</span> {{ user_details.guardian_phone_number }}
+                    <br />
+                    <span class="bold">Posiadam szkolenie z udzielania pierwszej pomocy:</span>
+                    {% if user_details.first_air_training == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Posiadam aktualną książeczkę sanepidowską:</span>
+                    {% if user_details.sanitary_book == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Szkolenia/kursy, które mogą przydać się w pracy jako wolontariusz:</span>
+                    {{ user_details.training_courses }}
+                    <br />
+                    <span class="bold">Mam doświadczenie w pracy z niepełnosprawnymi:</span>
+                    {% if user_details.experience_with_disabled == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Mam łatwość w nawiązywaniu kontaktu z ludźmi, również chorymi:</span>
+                    {% if user_details.easy_going == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Dobrze odnajduję się w pracy zespołowej:</span>
+                    {% if user_details.teamwork == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Umiem zorganizować czas innym, zaprosić do wspólnej zabawy itp.:</span>
+                    {% if user_details.entertaining == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Gram lub śpiewam:</span>
+                    {% if user_details.sing_or_play == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Zajmuję się fotografowaniem:</span>
+                    {% if user_details.photographing == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Lubię i umiem pisać artykuły:</span>
+                    {% if user_details.writing_articles == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Znam się na IT, programuję, obsługuję YT, FB, Twitter:</span>
+                    {% if user_details.it == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Lubię i potrafię utrzymać porządek:</span>
+                    {% if user_details.tidiness == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Kilka słów o sobie:</span> {{ user_details.description }}
+                    <br />
+                    <span class="bold">Wyrażam zgodę na fotografowanie i przetwarzanie wizerunku:</span>
+                    {% if user_details.photographing_agreement == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+
+                    <br /><br />
+                    <a id="account_edit_link" href="{% url 'dj:account_edit' %}">
+                        <button class="btn btn-warning">
+                            <span class="fa fa-wrench"></span>
+                                 edytuj
+                        </button>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

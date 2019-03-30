@@ -1,0 +1,205 @@
+{% extends "coordinatepanel/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Wolontariusz - {{ volunteer }}</h2>
+                    <hr /><br />
+
+                    {% if volunteer.photo.url is not None %}
+                        <img class="img-fluid d-block col-lg-4 col-md-5 col-sm-6 col-8" src="{{ volunteer.photo.url }}">
+                    {% endif %}
+
+					{% if volunteer.is_first_time == True %}
+                        <br />
+                        <span class="bold">Będę pierwszy raz!</span>
+                    {% endif %}
+					<br />
+                    <span class="bold">Wiek: </span>
+                    <span id="age" class="hidden">{{ volunteer.pesel }}</span>
+                    <br />
+                    {% if volunteer.phone_number is not None %}
+                        <span class="bold">Telefon: </span>
+                        {{ volunteer.phone_number }}
+                        <br />
+                    {% endif %}
+                    {% if volunteer.guardian_phone_number is not None %}
+                        <span class="bold">Telefon opiekuna: </span>
+                        {{ volunteer.guardian_phone_number }}
+                        <br />
+                    {% endif %}
+                    {% if volunteer.email_address is not None %}
+                        <span class="bold">Adres e-mail: </span>
+                        {{ volunteer.email_address }}
+                        <br />
+                    {% endif %}
+                    <span class="bold">Adres: </span>
+                    {{ volunteer.address }}, {{ volunteer.zip_code }} {{ volunteer.city }}
+                    <br />
+
+                    <span class="bold">Wykształcenie:</span> {{ volunteer.get_education_display }}
+
+                    {% if volunteer.study == True %}
+                        <br />
+                        <span class="bold">Uczę się:</span>
+                        Tak
+                    {% endif %}
+
+                    {% if volunteer.work == True %}
+                        <br />
+                        <span class="bold">Pracuję:</span>
+                        Tak
+                    {% endif %}
+
+                    {% if volunteer.babysitting == True %}
+                        <br />
+                        <span class="bold">Opiekuję się dziećmi</span>
+                    {% endif %}
+
+                    {% if volunteer.pensioner == True %}
+                        <br />
+                        <span class="bold">Jestem rencistą, emerytem</span>
+                    {% endif %}
+
+                    {% if volunteer.unemployed == True %}
+                        <br />
+                        <span class="bold">Jestem bezrobotny/a</span>
+                    {% endif %}
+
+                    {% if volunteer.another_work %}
+                        <br />
+                        <span class="bold">Inne zajęcie:</span>
+                        {{ volunteer.another_work }}
+                    {% endif %}
+
+                    <br />
+                    <span class="bold">Zdrowie fizyczne:</span>
+                    {% if volunteer.physical_health == True %}
+                        Tak
+                    {% else %}
+                        Nie
+                    {% endif %}
+
+                    <br />
+                    <span class="bold">Zdrowie psychiczne:</span>
+                    {% if volunteer.mental_health == True %}
+                        Tak
+                    {% else %}
+                        Nie
+                    {% endif %}
+
+                    {% if volunteer.drugs == 'T' %}
+                        <br />
+                        <span class="bold">Czy musisz regularnie przyjmować leki?:</span>
+                        {{ volunteer.get_drugs_display }}
+                    {% endif %}
+
+                    {% if volunteer.first_air_training == True %}
+                        <br />
+                        <span class="bold">Posiadam szkolenie z udzielania pierwszej pomocy</span>
+                    {% endif %}
+
+                    {% if volunteer.sanitary_book == True %}
+                        <br />
+                        <span class="bold">Posiadam aktualną książeczkę sanepidowską</span>
+                    {% endif %}
+
+                    {% if volunteer.training_courses %}
+                        <br />
+                        <span class="bold">Szkolenia/kursy, które mogą przydać się w pracy jako wolontariusz:</span>
+                        {{ volunteer.training_courses }}
+                    {% endif %}
+
+                    {% if volunteer.experience_with_disabled == True %}
+                        <br />
+                        <span class="bold">Mam doświadczenie w pracy z niepełnosprawnymi</span>
+                    {% endif %}
+
+                    {% if volunteer.easy_going == True %}
+                        <br />
+                        <span class="bold">Mam łatwość w nawiązywaniu kontaktu z ludźmi, również chorymi</span>
+                    {% endif %}
+
+                    {% if volunteer.teamwork == True %}
+                        <br />
+                        <span class="bold">Dobrze odnajduję się w pracy zespołowej</span>
+                    {% endif %}
+
+                    {% if volunteer.entertaining == True %}
+                        <br />
+                        <span class="bold">Umiem zorganizować czas innym, zaprosić do wspólnej zabawy itp.</span>
+                    {% endif %}
+
+                    {% if volunteer.sing_or_play == True %}
+                        <br />
+                        <span class="bold">Gram lub śpiewam</span>
+                    {% endif %}
+
+                    {% if volunteer.photographing == True %}
+                        <br />
+                        <span class="bold">Zajmuję się fotografowaniem</span>
+                    {% endif %}
+
+                    {% if volunteer.writing_articles == True %}
+                        <br />
+                        <span class="bold">Lubię i umiem pisać artykuły</span>
+                    {% endif %}
+
+                    {% if volunteer.it == True %}
+                        <br />
+                        <span class="bold">Znam się na IT, programuję, obsługuję YT, FB, Twitter</span>
+                    {% endif %}
+
+                    {% if volunteer.tidiness == True %}
+                        <br />
+                        <span class="bold">Lubię i potrafię utrzymać porządek</span>
+                    {% endif %}
+
+                    {% if volunteer.description %}
+                        <br />
+                        <span class="bold">Kilka słów o sobie:</span>
+                        {{ volunteer.description }}
+                    {% endif %}
+
+                    <br />
+                    <span class="bold">Zgoda na fotografowanie:</span>
+                    {% if volunteer.photographing_agreement == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+
+                    <br />
+                    <br />
+
+                    {% if "/turnus/" in request.path %}
+                        <span class="hidden" id="begin_date">{{ batch.begin_date|date:"Y.m.d" }}</span>
+                        <span class="hidden" id="end_date">{{ batch.end_date|date:"Y.m.d" }}</span>
+
+                        <a  class="link-decoration-none" href="{% url 'coordinatepanel:volunteers_list' batch_id %}">
+                            <button class="btn btn-default">Wróć</button>
+                        </a>
+                    {% else %}
+                        <span class="hidden" id="begin_date">{{ event.begin_date|date:"Y.m.d" }}</span>
+                        <span class="hidden" id="end_date">{{ event.end_date|date:"Y.m.d" }}</span>
+
+                        <a  class="link-decoration-none" href="{% url 'coordinatepanel:event_volunteers' event_id %}">
+                            <button class="btn btn-default">Wróć</button>
+                        </a>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/count_age.js' %}"></script>
+{% endblock %}

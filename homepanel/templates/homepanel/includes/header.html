@@ -1,0 +1,68 @@
+{% block content %}
+    {% load staticfiles %}
+    {% load auth_extras %}
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top home-coordinate-nav" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="{% url 'dj:index' %}"><img src="{% static 'images/logo3.png' %}"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse medium-bold" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    {% if request.get_full_path == "/" %}
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" href="{% url 'news' %}">Aktualności</a>
+                        </li>
+                    {% endif %}
+                    {% if not request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" href="{% url 'homepanel:home_coordinator_login' %}">Logowanie</a>
+                        </li>
+                    {% endif %}
+                    {% if request.user|has_group:"Koordynatorzy domu" or request.user|has_group:"Koordynatorzy zapisów" %}
+                        <li class="nav-item">
+                            <span class="nav-link js-scroll-trigger bold">Witaj, {{ request.user.username }}!</span>
+                        </li>
+                    {% endif %}
+                    {% if request.user|has_group:"Koordynatorzy domu" %}
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" href="{% url 'homepanel:all_bookings' %}">Rezerwacje</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" href="{% url 'homepanel:all_bookings_meals' %}">Posiłki</a>
+                        </li>
+                    {% endif %}
+                    {% if request.user|has_group:"Koordynatorzy domu" or request.user|has_group:"Koordynatorzy zapisów" %}
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" href="{% url 'homepanel:batches' %}">Turnusy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" href="{% url 'homepanel:events' %}">Wydarzenia</a>
+                        </li>
+                        {% if request.user|has_group:"Koordynatorzy domu" %}
+                            <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger" href="{% url 'homepanel:retreats_and_trainings' %}">Warsztaty/ rekolekcje</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger" href="{% url 'homepanel:retreats_and_trainings' %}">Warsztaty/rekolekcje</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" href="{% url 'homepanel:all_participants' %}">Podopieczni</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" href="{% url 'homepanel:certificates' %}">Zaświadczenia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" href="{% url 'homepanel:calendar' %}">Kalendarz</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" href="{% url 'homepanel:logout' %}">Wyloguj</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}

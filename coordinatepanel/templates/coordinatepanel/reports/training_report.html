@@ -1,0 +1,258 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% load auth_extras %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}" />
+    <style type="text/css">
+        @page {
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+        }
+        @font-face {
+            font-family: Cuprum;
+            src: url(/static/fonts/Cuprum-Regular.ttf); }
+        @font-face {
+            font-family: CuprumBold;
+            src: url(/static/fonts/Cuprum-Bold.ttf); }
+        .cuprum {
+            font-family: Cuprum, sans-serif;
+        }
+        .font-18 {
+            font-size: 18px;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+        .bold {
+            font-family: CuprumBold, sans-serif;
+        }
+        .border {
+            border: 1px solid black;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="main cuprum font-14">
+            <div class="container">
+
+                <div class="font-18 m-0 m-b-15 bold">{{ training.name }},
+                    {% if training.begin_date.day == training.end_date.day %}
+                        {{ training.begin_date|date:"d.m.Y" }}
+                    {% else %}
+                        {{ training.begin_date|date:"d.m.Y" }} - {{ training.end_date|date:"d.m.Y" }}
+                    {% endif %}
+                </div>
+
+                <table class="m-0 border m-b-25">
+
+                    {% if training.type == 'R' or training.type == 'W'%}
+
+                        <thead>
+                            <tr class="p-t-2 bold">
+                                <th class="gray-background">Nr</th>
+                                <th class="gray-background" colspan="6">Nazwisko i imię</th>
+                                <th class="gray-background" colspan="2">Wiek</th>
+                                <th class="gray-background" colspan="3">Miasto</th>
+                                <th class="gray-background" colspan="3">Telefon</th>
+                                <th class="gray-background" colspan="2">Pokój</th>
+                            </tr>
+                        </thead>
+
+                        {% for obj in trainingperson %}
+                            <tr class="p-t-2">
+                                <td class="center">
+                                     {{ forloop.counter }}.
+                                </td>
+                                <td class="center" colspan="6">
+                                    {{ obj.person.surname }} {{ obj.person.first_name }}
+                                </td>
+                                 <td class="center" colspan="2">
+                                    {{ obj.person.pesel|get_age }}
+                                </td>
+                                <td class="center" colspan="3">
+                                    {{ obj.person.city }}
+                                </td>
+                                <td class="center" colspan="3">
+                                    {% if obj.person.phone_number is not None %}
+                                        {{ obj.person.phone_number }}
+                                    {% endif %}
+                                </td>
+                                <td class="center" colspan="2">
+                                    {% if obj.room is not None %}
+                                        {{ obj.room }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                    {% else %}
+
+                        <thead>
+                            <tr class="p-t-2 bold">
+                                <th class="gray-background">Nr</th>
+                                <th class="gray-background" colspan="6">Nazwisko i imię</th>
+                                <th class="gray-background" colspan="2">Wiek</th>
+                                <th class="gray-background" colspan="3">Miasto</th>
+                                <th class="gray-background" colspan="3">Telefon</th>
+                                <th class="gray-background" colspan="2">Głos</th>
+                                <th class="gray-background" colspan="2">Pokój</th>
+                            </tr>
+                        </thead>
+
+                        {% for obj in trainingperson %}
+                        {% if obj.voice == 'S' %}
+                            <tr class="p-t-2">
+                                <td class="center pink-background">
+                                     {{ forloop.counter }}.
+                                </td>
+                                <td class="center pink-background" colspan="6">
+                                    {{ obj.person.surname }} {{ obj.person.first_name }}
+                                </td>
+                                 <td class="center pink-background" colspan="2">
+                                    {{ obj.person.pesel|get_age }}
+                                </td>
+                                <td class="center pink-background" colspan="3">
+                                    {{ obj.person.city }}
+                                </td>
+                                <td class="center pink-background" colspan="3">
+                                    {% if obj.person.phone_number is not None %}
+                                        {{ obj.person.phone_number }}
+                                    {% endif %}
+                                </td>
+                                <td class="center pink-background" colspan="2">
+                                    {{ obj.get_voice_display }}
+                                </td>
+                                <td class="center pink-background" colspan="2">
+                                    {% if obj.room is not None %}
+                                        {{ obj.room }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% elif obj.voice == 'A' %}
+                            <tr class="p-t-2">
+                                <td class="center yellow-background">
+                                     {{ forloop.counter }}.
+                                </td>
+                                <td class="center yellow-background" colspan="6">
+                                    {{ obj.person.surname }} {{ obj.person.first_name }}
+                                </td>
+                                 <td class="center yellow-background" colspan="2">
+                                    {{ obj.person.pesel|get_age }}
+                                </td>
+                                <td class="center yellow-background" colspan="3">
+                                    {{ obj.person.city }}
+                                </td>
+                                <td class="center yellow-background" colspan="3">
+                                    {% if obj.person.phone_number is not None %}
+                                        {{ obj.person.phone_number }}
+                                    {% endif %}
+                                </td>
+                                <td class="center yellow-background" colspan="2">
+                                    {{ obj.get_voice_display }}
+                                </td>
+                                <td class="center yellow-background" colspan="2">
+                                    {% if obj.room is not None %}
+                                        {{ obj.room }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% elif obj.voice == 'T' %}
+                            <tr class="p-t-2">
+                                <td class="center green-background">
+                                     {{ forloop.counter }}.
+                                </td>
+                                <td class="center green-background" colspan="6">
+                                    {{ obj.person.surname }} {{ obj.person.first_name }}
+                                </td>
+                                 <td class="center green-background" colspan="2">
+                                    {{ obj.person.pesel|get_age }}
+                                </td>
+                                <td class="center green-background" colspan="3">
+                                    {{ obj.person.city }}
+                                </td>
+                                <td class="center green-background" colspan="3">
+                                    {% if obj.person.phone_number is not None %}
+                                        {{ obj.person.phone_number }}
+                                    {% endif %}
+                                </td>
+                                <td class="center green-background" colspan="2">
+                                    {{ obj.get_voice_display }}
+                                </td>
+                                <td class="center green-background" colspan="2">
+                                    {% if obj.room is not None %}
+                                        {{ obj.room }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% elif obj.voice == 'B' %}
+                            <tr class="p-t-2">
+                                <td class="center blue-background">
+                                     {{ forloop.counter }}.
+                                </td>
+                                <td class="center blue-background" colspan="6">
+                                    {{ obj.person.surname }} {{ obj.person.first_name }}
+                                </td>
+                                 <td class="center blue-background" colspan="2">
+                                    {{ obj.person.pesel|get_age }}
+                                </td>
+                                <td class="center blue-background" colspan="3">
+                                    {{ obj.person.city }}
+                                </td>
+                                <td class="center blue-background" colspan="3">
+                                    {% if obj.person.phone_number is not None %}
+                                        {{ obj.person.phone_number }}
+                                    {% endif %}
+                                </td>
+                                <td class="center blue-background" colspan="2">
+                                    {{ obj.get_voice_display }}
+                                </td>
+                                <td class="center blue-background" colspan="2">
+                                    {% if obj.room is not None %}
+                                        {{ obj.room }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr class="p-t-2">
+                                <td class="center">
+                                     {{ forloop.counter }}.
+                                </td>
+                                <td class="center" colspan="6">
+                                    {{ obj.person.surname }} {{ obj.person.first_name }}
+                                </td>
+                                 <td class="center" colspan="2">
+                                    {{ obj.person.pesel|get_age }}
+                                </td>
+                                <td class="center" colspan="3">
+                                    {{ obj.person.city }}
+                                </td>
+                                <td class="center" colspan="3">
+                                    {% if obj.person.phone_number is not None %}
+                                        {{ obj.person.phone_number }}
+                                    {% endif %}
+                                </td>
+                                <td class="center" colspan="2">
+                                    {{ obj.get_voice_display }}
+                                </td>
+                                <td class="center" colspan="2">
+                                    {% if obj.room is not None %}
+                                        {{ obj.room }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

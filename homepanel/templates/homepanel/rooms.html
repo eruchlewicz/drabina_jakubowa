@@ -1,0 +1,31 @@
+{% extends "homepanel/base.html" %}
+{% load mathfilters %}
+
+{% block content %}
+    <section id="batch_volunteers" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Pokoje</h2>
+                    <hr /><br />
+                    <ul>
+                        {% for room in rooms_list %}
+                            <li class="lead">
+                                <span class="bold">
+                                    {{ room.number }}
+                                </span>
+                                {% if room.has_bathroom == True %}
+                                    (piętro: {{ room.get_floor_number_display }}, łóżka: {{ room.beds_number }}, łazienka)
+                                {% else %}
+                                    (piętro: {{ room.get_floor_number_display }}, łóżka: {{ room.beds_number }})
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

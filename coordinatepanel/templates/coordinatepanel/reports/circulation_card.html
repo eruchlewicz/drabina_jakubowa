@@ -1,0 +1,252 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% load auth_extras %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}" />
+    <style type="text/css">
+        @page {
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+        }
+        @font-face {
+            font-family: Cuprum;
+            src: url(/static/fonts/Cuprum-Regular.ttf); }
+        @font-face {
+            font-family: CuprumBold;
+            src: url(/static/fonts/Cuprum-Bold.ttf); }
+        .cuprum {
+            font-family: Cuprum, sans-serif;
+        }
+        .font-18 {
+            font-size: 18px;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+        .font-16 {
+            font-size: 16px;
+        }
+        .bold {
+            font-family: CuprumBold, sans-serif;
+        }
+        .border {
+            border: 1px solid black;
+        }
+        .bg-gray {
+            background-color: #d9d9d9;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="main cuprum font-14">
+            <div class="container">
+
+                <div class="font-18 m-0 m-b-15 bold">
+                    Załącznik nr 4 – Karta obiegowa. Wypełniają koordynator i organizator turnusu Drabiny Jakubowej
+                </div>
+
+                <div class="m-0 font-16 m-b-25">
+                    Imię i nazwisko koordynatora: {{ coordinator.first_name }} {{ coordinator.surname }}
+                    <br />
+                    Data i miejsce turnusu: {{ batch.begin_date|date:"d.m.Y" }} - {{ batch.end_date|date:"d.m.Y" }},
+                    {{ batch.institution }} - {{ batch.institution.city }}
+                    <br />
+                    Imię i nazwisko osoby przekazującej sprzęt z ramienia organizatora: {{ batch.institution.director }}
+
+                </div>
+
+                <table class="m-0 border font-16 m-b-25">
+                    <thead>
+                        <tr class="p-t-2">
+                            <th class="bg-gray" colspan="7">Przekazanie sprzętu i mienia Organizatora</th>
+                        </tr>
+                        <tr class="p-t-2">
+                            <th class="bg-gray">Rodzaj sprzętu</th>
+                            <th class="bg-gray" colspan="4">Dokładny opis sprzętu/ilość</th>
+                            <th class="bg-gray">Data i podpis  <br />przejęcia (wypełnia koordynator)</th>
+                            <th class="bg-gray">Data i podpis  <br />zwrotu (wypełnia organizator)</th>
+                        </tr>
+                    </thead>
+                    <tr class="p-t-2">
+                        <td class="center bg-gray">Sprzęt audio/video</td>
+                        <td colspan="4"><br /><br /></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td class="center bg-gray">Sprzęt sprzątający</td>
+                        <td colspan="4"><br /><br /></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td class="center bg-gray">Sprzęt biurowy/<br />akcesoria biurowe</td>
+                        <td colspan="4"><br /><br /></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td class="center bg-gray">Klucze</td>
+                        <td colspan="4"><br /><br /></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td class="center bg-gray">Pasy superbohatera</td>
+                        <td colspan="4"><br /><br /></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <br />
+
+                <table class="m-0 border font-16 m-b-25">
+                    <thead>
+                        <tr class="p-t-2">
+                            <th class="bg-gray" colspan="8">
+                                Rozliczenie Finansowe (numer paragonu zapisuje koordynator na odwrocie paragonu lub FV)
+                            </th>
+                        </tr>
+                        <tr class="p-t-2">
+                            <th class="bg-gray" colspan="2">Numer Paragonu lub VF</th>
+                            <th class="bg-gray">Kwota</th>
+                            <th class="bg-gray" colspan="5">Co i w jakim celu zakupiono</th>
+                        </tr>
+                    </thead>
+                    <tr class="p-t-2">
+                        <td colspan="2"></td>
+                        <td><br /></td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td colspan="2"></td>
+                        <td><br /></td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td colspan="2"></td>
+                        <td><br /></td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td colspan="2"></td>
+                        <td><br /></td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td colspan="2"></td>
+                        <td><br /></td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td colspan="2"></td>
+                        <td><br /></td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td colspan="2"></td>
+                        <td><br /></td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td colspan="2"></td>
+                        <td><br /></td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td colspan="2"></td>
+                        <td><br /></td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td colspan="2"></td>
+                        <td><br /></td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td colspan="2"></td>
+                        <td><br /></td>
+                        <td colspan="5"></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td colspan="2"></td>
+                        <td><br /></td>
+                        <td colspan="5"></td>
+                    </tr>
+                </table>
+
+                <table class="m-0 border font-16 m-b-25">
+                    <thead>
+                        <tr class="p-t-2">
+                            <th class="bg-gray" colspan="2">Rozliczenie Finansowe</th>
+                            <th class="bg-gray" colspan="3"></th>
+                            <th class="bg-gray">Data i podpis koordynatora</th>
+                            <th class="bg-gray">Data i podpis organizatora</th>
+                        </tr>
+                    </thead>
+                    <tr class="p-t-2">
+                        <td class="center bg-gray" colspan="2">Kwota przekazana koordynatorowi</td>
+                        <td colspan="3"><br /></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td class="center bg-gray" colspan="2">Kwota zwrócona po turnusie</td>
+                        <td colspan="3"><br /></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <table class="m-0 border font-16">
+                    <thead>
+                        <tr class="p-t-2">
+                            <th class="bg-gray" colspan="4">
+                                Rozliczenie Dokumentów
+                            </th>
+                        </tr>
+                        <tr class="p-t-2">
+                            <th class="bg-gray">Rodzaj dokumentów</th>
+                            <th class="bg-gray">Ilość pobranych/<br />zwróconych dokumentów</th>
+                            <th class="bg-gray">Data odebrania druków/kart<br />i podpis koordynatora</th>
+                            <th class="bg-gray">Data odebrania podpisanych umów<br />i oświadczeń przez organizatora</th>
+                        </tr>
+                    </thead>
+                    <tr class="p-t-2">
+                        <td class="center bg-gray">Karty podopiecznych</td>
+                        <td class="center">/</td>
+                        <td><br/></td>
+                        <td></td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td class="center bg-gray">Umowy wolontariackie</td>
+                        <td class="center">/</td>
+                        <td><br/></td>
+                        <td></td>
+                    </tr>
+                     <tr class="p-t-2">
+                        <td class="center bg-gray">Oświadczenia opiekunów niepełnosprawnych wolontariuszy</td>
+                        <td class="center">/</td>
+                        <td><br/></td>
+                        <td></td>
+                    </tr>
+                     <tr class="p-t-2">
+                        <td class="center bg-gray">Oświadczenia<br />podopiecznych/opiekunów</td>
+                        <td class="center">/</td>
+                        <td><br/></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

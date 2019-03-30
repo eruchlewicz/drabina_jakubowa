@@ -1,0 +1,29 @@
+{% extends "homepanel/base.html" %}
+{% load mathfilters %}
+
+{% block content %}
+    <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>{{ batch_participant.participant }} - przepisz na inny turnus</h2>
+                    <hr /><br />
+
+                    <form class="form-horizontal" action="" role="form" method="post">
+                        {% csrf_token %}
+                        {% include 'homepanel/includes/form_template.html' %}
+
+                        <div class="form-group">
+                            <div class="p-l-5 offset-lg-3 col-lg-9 offset-sm-5 col-sm-7">
+                                <button type="submit" class="btn btn-primary">Zapisz</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

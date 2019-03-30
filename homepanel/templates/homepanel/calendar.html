@@ -1,0 +1,359 @@
+{% extends "homepanel/base.html" %}
+{% load static %}
+{% load mathfilters %}
+
+{% block content %}
+    <section id="calendar" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Kalendarz</h2>
+                    <hr />
+
+                    <div class="offset-lg-3 m-b-15">
+                        <h4>
+                        {% if now|date:"m" == "01" %}
+                            Styczeń
+                        {% elif now|date:"m" == "02" %}
+                            Luty
+                        {% elif now|date:"m" == "03" %}
+                            Marzec
+                        {% elif now|date:"m" == "04" %}
+                            Kwiecień
+                        {% elif now|date:"m" == "05" %}
+                            Maj
+                        {% elif now|date:"m" == "06" %}
+                            Czerwiec
+                        {% elif now|date:"m" == "07" %}
+                            Lipiec
+                        {% elif now|date:"m" == "08" %}
+                            Sierpień
+                        {% elif now|date:"m" == "09" %}
+                            Wrzesień
+                        {% elif now|date:"m" == "10" %}
+                            Październik
+                        {% elif now|date:"m" == "11" %}
+                            Listopad
+                        {% else %}
+                            Grudzień
+                        {% endif %}
+                        {{ now.year }}
+                        </h4>
+                    </div>
+                    <div class="calendar col-lg-12 row text-right m-0 p-0">
+
+                        {% if first.weekday == 0 %}
+                            <div class="col-lg-1 text-center">Pon</div>
+                            <div class="col-lg-1 text-center">Wt</div>
+                            <div class="col-lg-1 text-center">Śr</div>
+                            <div class="col-lg-1 text-center">Cz</div>
+                            <div class="col-lg-1 text-center">Pt</div>
+                            <div class="col-lg-1 text-center blue">So</div>
+                            <div class="col-lg-1 text-center red">Nd</div>
+                        {% elif first.weekday == 1 %}
+                            <div class="col-lg-1 text-center">Wt</div>
+                            <div class="col-lg-1 text-center">Śr</div>
+                            <div class="col-lg-1 text-center">Cz</div>
+                            <div class="col-lg-1 text-center">Pt</div>
+                            <div class="col-lg-1 text-center blue">So</div>
+                            <div class="col-lg-1 text-center red">Nd</div>
+                            <div class="col-lg-1 text-center">Pon</div>
+                        {% elif first.weekday == 2 %}
+                            <div class="col-lg-1 text-center">Śr</div>
+                            <div class="col-lg-1 text-center">Cz</div>
+                            <div class="col-lg-1 text-center">Pt</div>
+                            <div class="col-lg-1 text-center blue">So</div>
+                            <div class="col-lg-1 text-center red">Nd</div>
+                            <div class="col-lg-1 text-center">Pon</div>
+                            <div class="col-lg-1 text-center">Wt</div>
+                        {% elif first.weekday == 3 %}
+                            <div class="col-lg-1 text-center">Cz</div>
+                            <div class="col-lg-1 text-center">Pt</div>
+                            <div class="col-lg-1 text-center blue">So</div>
+                            <div class="col-lg-1 text-center red">Nd</div>
+                            <div class="col-lg-1 text-center">Pon</div>
+                            <div class="col-lg-1 text-center">Wt</div>
+                            <div class="col-lg-1 text-center">Śr</div>
+                        {% elif first.weekday == 4 %}
+                            <div class="col-lg-1 text-center">Pt</div>
+                            <div class="col-lg-1 text-center blue">So</div>
+                            <div class="col-lg-1 text-center red">Nd</div>
+                            <div class="col-lg-1 text-center">Pon</div>
+                            <div class="col-lg-1 text-center">Wt</div>
+                            <div class="col-lg-1 text-center">Śr</div>
+                            <div class="col-lg-1 text-center">Cz</div>
+                        {% elif first.weekday == 5 %}
+                            <div class="col-lg-1 text-center blue">So</div>
+                            <div class="col-lg-1 text-center red">Nd</div>
+                            <div class="col-lg-1 text-center">Pon</div>
+                            <div class="col-lg-1 text-center">Wt</div>
+                            <div class="col-lg-1 text-center">Śr</div>
+                            <div class="col-lg-1 text-center">Cz</div>
+                            <div class="col-lg-1 text-center">Pt</div>
+                        {% else %}
+                            <div class="col-lg-1 text-center red">Nd</div>
+                            <div class="col-lg-1 text-center">Pon</div>
+                            <div class="col-lg-1 text-center">Wt</div>
+                            <div class="col-lg-1 text-center">Śr</div>
+                            <div class="col-lg-1 text-center">Cz</div>
+                            <div class="col-lg-1 text-center">Pt</div>
+                            <div class="col-lg-1 text-center blue">So</div>
+                        {% endif %}
+
+                    <div class="col-lg-5"></div>
+                        {% for d in days %}
+                            {% if d|add:1 == now.day %}
+                                <div class="square col-lg-1 gray-background">
+                            {% else %}
+                                <div class="square col-lg-1 light-gray-background">
+                            {% endif %}
+                                <span class="bold">{{ d|add:1 }}</span> <br />
+                                {% for b in batches %}
+                                    <span>
+                                    {% if not b.begin_date.month == now.month and b.end_date.day >= d|add:1 %}
+                                        <a class="dark-red link-decoration-none" href="{% url 'homepanel:batch_view' b.id %}">{{b.name}}</a> <br />
+                                    {% elif not b.end_date.month == now.month and b.begin_date.day <= d|add:1 %}
+                                        <a class="dark-red link-decoration-none" href="{% url 'homepanel:batch_view' b.id %}">{{b.name}}</a> <br />
+                                    {% elif b.begin_date.day <= d|add:1 and b.end_date.day >= d|add:1 %}
+                                        <a class="dark-red link-decoration-none" href="{% url 'homepanel:batch_view' b.id %}">{{b.name}}</a> <br />
+                                    {% endif %}
+                                    </span>
+                                {% endfor %}
+                                {% for e in events %}
+                                    <span class="purple">
+                                    {% if not e.begin_date.month == now.month and e.end_date.day >= d|add:1 %}
+                                        <a class="purple link-decoration-none" href="{% url 'homepanel:event_details' e.id %}">{{e.name}}</a> <br />
+                                    {% elif not e.end_date.month == now.month and e.begin_date.day <= d|add:1 %}
+                                        <a class="purple link-decoration-none" href="{% url 'homepanel:event_details' e.id %}">{{e.name}}</a> <br />
+                                    {% elif e.begin_date.day <= d|add:1 and e.end_date.day >= d|add:1 %}
+                                        <a class="purple link-decoration-none" href="{% url 'homepanel:event_details' e.id %}">{{e.name}}</a> <br />
+                                    {% endif %}
+                                    </span>
+                                {% endfor %}
+                                {% for t in trainings %}
+                                    <span class="green">
+                                    {% if not t.begin_date.month == now.month and t.end_date.day >= d|add:1 %}
+                                        <a class="green link-decoration-none" href="{% url 'homepanel:training_details' t.id %}">{{t.name}}</a> <br />
+                                    {% elif not t.end_date.month == now.month and t.begin_date.day <= d|add:1 %}
+                                        <a class="green link-decoration-none" href="{% url 'homepanel:training_details' t.id %}">{{t.name}}</a> <br />
+                                    {% elif t.begin_date.day <= d|add:1 and t.end_date.day >= d|add:1 %}
+                                        <a class="green link-decoration-none" href="{% url 'homepanel:training_details' t.id %}">{{t.name}}</a> <br />
+                                    {% endif %}
+                                    </span>
+                                {% endfor %}
+                                {% for b in bookings %}
+                                    <span class="dark-blue">
+                                    {% if not b.begin_date.month == now.month and b.end_date.day >= d|add:1 %}
+                                        <a class="dark-blue link-decoration-none" href="{% url 'homepanel:booking_details' b.id %}">{{b}} -
+                                            {% if b.room.count is not 0 %}
+                                                {% for obj in b.room.all %}
+                                                    {{ obj }},
+                                                {% endfor %}
+                                            {% endif %}
+                                        </a> <br />
+                                    {% elif not b.end_date.month == now.month and b.begin_date.day <= d|add:1 %}
+                                        <a class="dark-blue link-decoration-none" href="{% url 'homepanel:booking_details' b.id %}">{{b}} -
+                                            {% if b.room.count is not 0 %}
+                                                {% for obj in b.room.all %}
+                                                    {{ obj }},
+                                                {% endfor %}
+                                            {% endif %}
+                                        </a> <br />
+                                    {% elif b.begin_date.day <= d|add:1 and b.end_date.day >= d|add:1 %}
+                                        <a class="dark-blue link-decoration-none" href="{% url 'homepanel:booking_details' b.id %}">{{b}} -
+                                            {% if b.room.count is not 0 %}
+                                                {% for obj in b.room.all %}
+                                                    {{ obj }},
+                                                {% endfor %}
+                                            {% endif %}
+                                        </a> <br />
+                                    {% endif %}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                            {% if d in num_list %}
+                                <div class="col-lg-5">
+
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <br />
+                    <hr />
+                    <br />
+
+                    <div class="offset-lg-3 m-b-15">
+                        <h4>
+                        {% if next|date:"m" == "01" %}
+                            Styczeń
+                        {% elif next|date:"m" == "02" %}
+                            Luty
+                        {% elif next|date:"m" == "03" %}
+                            Marzec
+                        {% elif next|date:"m" == "04" %}
+                            Kwiecień
+                        {% elif next|date:"m" == "05" %}
+                            Maj
+                        {% elif next|date:"m" == "06" %}
+                            Czerwiec
+                        {% elif next|date:"m" == "07" %}
+                            Lipiec
+                        {% elif next|date:"m" == "08" %}
+                            Sierpień
+                        {% elif next|date:"m" == "09" %}
+                            Wrzesień
+                        {% elif next|date:"m" == "10" %}
+                            Październik
+                        {% elif next|date:"m" == "11" %}
+                            Listopad
+                        {% else %}
+                            Grudzień
+                        {% endif %}
+                        {{ next.year }}
+                        </h4>
+                    </div>
+                    <div class="calendar col-lg-12 row text-right m-0 p-0">
+
+                        {% if first_next.weekday == 0 %}
+                            <div class="col-lg-1 text-center">Pon</div>
+                            <div class="col-lg-1 text-center">Wt</div>
+                            <div class="col-lg-1 text-center">Śr</div>
+                            <div class="col-lg-1 text-center">Cz</div>
+                            <div class="col-lg-1 text-center">Pt</div>
+                            <div class="col-lg-1 text-center blue">So</div>
+                            <div class="col-lg-1 text-center red">Nd</div>
+                        {% elif first_next.weekday == 1 %}
+                            <div class="col-lg-1 text-center">Wt</div>
+                            <div class="col-lg-1 text-center">Śr</div>
+                            <div class="col-lg-1 text-center">Cz</div>
+                            <div class="col-lg-1 text-center">Pt</div>
+                            <div class="col-lg-1 text-center blue">So</div>
+                            <div class="col-lg-1 text-center red">Nd</div>
+                            <div class="col-lg-1 text-center">Pon</div>
+                        {% elif first_next.weekday == 2 %}
+                            <div class="col-lg-1 text-center">Śr</div>
+                            <div class="col-lg-1 text-center">Cz</div>
+                            <div class="col-lg-1 text-center">Pt</div>
+                            <div class="col-lg-1 text-center blue">So</div>
+                            <div class="col-lg-1 text-center red">Nd</div>
+                            <div class="col-lg-1 text-center">Pon</div>
+                            <div class="col-lg-1 text-center">Wt</div>
+                        {% elif first_next.weekday == 3 %}
+                            <div class="col-lg-1 text-center">Cz</div>
+                            <div class="col-lg-1 text-center">Pt</div>
+                            <div class="col-lg-1 text-center blue">So</div>
+                            <div class="col-lg-1 text-center red">Nd</div>
+                            <div class="col-lg-1 text-center">Pon</div>
+                            <div class="col-lg-1 text-center">Wt</div>
+                            <div class="col-lg-1 text-center">Śr</div>
+                        {% elif first_next.weekday == 4 %}
+                            <div class="col-lg-1 text-center">Pt</div>
+                            <div class="col-lg-1 text-center blue">So</div>
+                            <div class="col-lg-1 text-center red">Nd</div>
+                            <div class="col-lg-1 text-center">Pon</div>
+                            <div class="col-lg-1 text-center">Wt</div>
+                            <div class="col-lg-1 text-center">Śr</div>
+                            <div class="col-lg-1 text-center">Cz</div>
+                        {% elif first_next.weekday == 5 %}
+                            <div class="col-lg-1 text-center blue">So</div>
+                            <div class="col-lg-1 text-center red">Nd</div>
+                            <div class="col-lg-1 text-center">Pon</div>
+                            <div class="col-lg-1 text-center">Wt</div>
+                            <div class="col-lg-1 text-center">Śr</div>
+                            <div class="col-lg-1 text-center">Cz</div>
+                            <div class="col-lg-1 text-center">Pt</div>
+                        {% else %}
+                            <div class="col-lg-1 text-center red">Nd</div>
+                            <div class="col-lg-1 text-center">Pon</div>
+                            <div class="col-lg-1 text-center">Wt</div>
+                            <div class="col-lg-1 text-center">Śr</div>
+                            <div class="col-lg-1 text-center">Cz</div>
+                            <div class="col-lg-1 text-center">Pt</div>
+                            <div class="col-lg-1 text-center blue">So</div>
+                        {% endif %}
+
+                    <div class="col-lg-5"></div>
+                        {% for d in days_next %}
+                                <div class="square col-lg-1 light-gray-background">
+                                <span class="bold">{{ d|add:1 }}</span> <br />
+                                {% for b in batches_list_next %}
+                                    <span class="dark-red">
+                                    {% if not b.begin_date.month == next.month and b.end_date.day >= d|add:1 %}
+                                        <a class="dark-red link-decoration-none" href="{% url 'homepanel:batch_view' b.id %}">{{b.name}}</a> <br />
+                                    {% elif not b.end_date.month == next.month and b.begin_date.day <= d|add:1 %}
+                                        <a class="dark-red link-decoration-none" href="{% url 'homepanel:batch_view' b.id %}">{{b.name}}</a> <br />
+                                    {% elif b.begin_date.day <= d|add:1 and b.end_date.day >= d|add:1 %}
+                                        <a class="dark-red link-decoration-none" href="{% url 'homepanel:batch_view' b.id %}">{{b.name}}</a> <br />
+                                    {% endif %}
+                                    </span>
+                                {% endfor %}
+                                {% for e in events_next %}
+                                    <span class="purple">
+                                    {% if not e.begin_date.month == next.month and e.end_date.day >= d|add:1 %}
+                                        <a class="purple link-decoration-none" href="{% url 'homepanel:event_details' e.id %}">{{e.name}}</a> <br />
+                                    {% elif not e.end_date.month == next.month and e.begin_date.day <= d|add:1 %}
+                                        <a class="purple link-decoration-none" href="{% url 'homepanel:event_details' e.id %}">{{e.name}}</a> <br />
+                                    {% elif e.begin_date.day <= d|add:1 and e.end_date.day >= d|add:1 %}
+                                        <a class="purple link-decoration-none" href="{% url 'homepanel:event_details' e.id %}">{{e.name}}</a> <br />
+                                    {% endif %}
+                                    </span>
+                                {% endfor %}
+                                {% for t in trainings_next %}
+                                    <span class="green">
+                                    {% if not t.begin_date.month == next.month and t.end_date.day >= d|add:1 %}
+                                        <a class="green link-decoration-none" href="{% url 'homepanel:training_details' t.id %}">{{t.name}}</a> <br />
+                                    {% elif not t.end_date.month == next.month and t.begin_date.day <= d|add:1 %}
+                                        <a class="green link-decoration-none" href="{% url 'homepanel:training_details' t.id %}">{{t.name}}</a> <br />
+                                    {% elif t.begin_date.day <= d|add:1 and t.end_date.day >= d|add:1 %}
+                                        <a class="green link-decoration-none" href="{% url 'homepanel:training_details' t.id %}">{{t.name}}</a> <br />
+                                    {% endif %}
+                                    </span>
+                                {% endfor %}
+                                {% for b in bookings_next %}
+                                    <span class="dark-blue">
+                                    {% if not b.begin_date.month == next.month and b.end_date.day >= d|add:1 %}
+                                        <a class="dark-blue link-decoration-none" href="{% url 'homepanel:booking_details' b.id %}">{{b}} -
+                                            {% if b.room.count is not 0 %}
+                                                {% for obj in b.room.all %}
+                                                    {{ obj }},
+                                                {% endfor %}
+                                            {% endif %}
+                                        </a> <br />
+                                    {% elif not b.end_date.month == next.month and b.begin_date.day <= d|add:1 %}
+                                        <a class="dark-blue link-decoration-none" href="{% url 'homepanel:booking_details' b.id %}">{{b}} -
+                                            {% if b.room.count is not 0 %}
+                                                {% for obj in b.room.all %}
+                                                    {{ obj }},
+                                                {% endfor %}
+                                            {% endif %}
+                                        </a> <br />
+                                    {% elif b.begin_date.day <= d|add:1 and b.end_date.day >= d|add:1 %}
+                                        <a class="dark-blue link-decoration-none" href="{% url 'homepanel:booking_details' b.id %}">{{b}} -
+                                            {% if b.room.count is not 0 %}
+                                                {% for obj in b.room.all %}
+                                                    {{ obj }},
+                                                {% endfor %}
+                                            {% endif %}
+                                        </a> <br />
+                                    {% endif %}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                            {% if d in num_list %}
+                                <div class="col-lg-5">
+
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    </div>
+
+                    </div>
+                </div>
+            <br /><br /><br />
+
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% block content %}
+    <h2>Wolontariusze</h2>
+    <hr />
+    <p class="lead">
+        Przez całe wakacje, a nawet do połowy września w Brańszczyku (powiat wyszkowski, około 60 km od Warszawy w
+        kierunku na Białystok, przy samej trasie S8) prowadzimy rekolekcje dla osób z niepełnosprawnościami (około
+        50 podopiecznych tworzy jeden turnus). Przez 10 dni towarzyszą im wolontariusze (około 40). Nasi podopieczni
+        to osoby na wózku, osoby z upośledzeniem intelekualnym (z zespołem Downa, Aspergera, autystycy) oraz osoby
+        starsze, schorowane. Żeby mogli przeżyć te wyczekiwane przez cały rok rekolekcje potrzebują kogoś, kto pomoże
+        im w codziennych czynnościach. Niektórzy są dość samodzielni (wymagają tylko dopilnowania) inni znów potrzebują
+        kogoś, kto pomoże przy wszystkim (od porannej toalety, przez ubieranie, karmienie). Podopieczni są zasadniczo
+        przydzielani do wolontariuszy pojedynczo (1 do 1) z uwzględnieniem doświadczenia wolontariusza i potrzeb
+        podopiecznego. Wolontariusze pracują w zespołach minimum 2 osobowych, a dzień przed przyjazdem robimy
+        całodniowe, kompletne szkolenie przygotowujące do pracy (savoir vivre z osobami z niepełnosprawnością,
+        bhp, pierwsza pomoc, zasady i techniki pielęgnacji chorych, zagadnienia medyczne, szkoła jazdy wózkiem
+        inwalidzkim i używania sprzętu ułatwiającego pracę), więc nawet zupełny nowicjusz zaczyna wolontariat z
+        niezłym przygotowaniem.
+        <br /><br />
+        W ciągu dnia wolontariusze towarzyszą podopiecznym przy wstawaniu, podczas posiłków, w kaplicy, na Mszy Świętej,
+        na spacerach, podczas pogodnych wieczorków. Niektórzy też dyżurują w nocy. Co wieczór, przed pójściem spać,
+        wolontariusze mają odprawę z koordynatorem turnusu i z księdzem prowadzącym rekolekcje oraz spotkanie
+        towarzyskie wolontariuszy.
+        <br /><br />
+    </p>
+    <h4>Co robimy?</h4>
+    <hr />
+    <p class="lead">
+        Szereg turnusów po 10 dni:
+        <br />
+        +2 dni dla wolontariuszy,
+        <br />
+        50 podopiecznych,
+        <br />
+        35 wolontariuszy.
+        <br />
+        Mocne tematy rekolekcji.
+        <br />
+        Szkolenie wolontariuszy.
+        <br />
+        Zero barier - w architekturze i między ludźmi!
+        <br /><br />
+    </p>
+    <h4>Koszt</h4>
+    <hr />
+    <p class="lead">
+        <span class="bold">FREE!</span>
+        <br />
+        (koszt pobytu pokrywają księża orioniści i darczyńcy)
+        <br />
+        <a href="{% url 'dj:costs' %}">Więcej...</a>
+        <br /><br />
+    </p>
+    <h4>Terminy {{ now.year }}/{{ now.year|add:1 }}</h4>
+    <hr />
+    <p class="lead">
+        {% for city in cities %}
+            <span class="bold">{{ city.institution__city }}:</span>
+            {% for batch in batches %}
+                {% if batch.institution.city == city.institution__city %}
+                    <br />
+                    {{ batch.name }}: {{ batch.begin_date|date:"d E" }} - {{ batch.end_date|date:"d E" }}
+                {% endif %}
+            {% endfor %}
+            <br/><br/>
+        {% endfor %}
+        <span class="bold">Uwaga! Wolontariusze przyjeżdżają wcześniej (w piątki) niż podopieczni (w niedziele).</span>
+        <br /><br />
+        Zgłaszamy się wypełniając formularz <a id="register_link" href="{% url 'dj:registration' %}">on-line</a> w celu utworzenia konta i zapisania się na konkretny turnus.
+        <br /><br />
+    </p>
+{% endblock %}

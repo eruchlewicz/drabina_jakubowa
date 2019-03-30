@@ -1,0 +1,14 @@
+{% load widget_tweaks %}
+{% load static %}
+
+{% for field in form %}
+    <div id="reversed" class="form-group form-check row col-12 m-b-5 m-l-5">
+        {{ field|attr:"class:form-check form-check-input" }}
+        <label for="{{ field.id_for_label }}" class="medium-bold col-form-label p-t-0">{{ field.label_tag }}</label>
+        <span class="text-danger small">{{ field.errors }}</span>
+    </div>
+{% endfor %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/remove_label_colon.js' %}"></script>
+{% endblock %}
