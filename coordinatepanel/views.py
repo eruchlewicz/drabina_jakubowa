@@ -261,8 +261,10 @@ def participant_details(request, **kwargs):
     if user.groups.filter(name__in=['Koordynatorzy']).exists():
         participant = Participant.objects.filter(id=kwargs['participant_id']).first()
         batch = Batch.objects.filter(id=kwargs["pk"]).first()
+        all_batches = BatchParticipant.objects.filter(participant=participant)
         return render(request, 'coordinatepanel/participant_details.html', {'batch_id': batch.id, 'batch': batch,
-                                                                            'participant': participant})
+                                                                            'participant': participant,
+                                                                            'all_batches': all_batches})
     else:
         return redirect('coordinatepanel:coordinator_login')
 
@@ -273,8 +275,10 @@ def volunteer_details(request, **kwargs):
     if user.groups.filter(name__in=['Koordynatorzy']).exists():
         volunteer = Volunteer.objects.filter(id=kwargs['volunteer_id']).first()
         batch = Batch.objects.filter(id=kwargs["pk"]).first()
+        all_batches = BatchVolunteer.objects.filter(volunteer=volunteer)
         return render(request, 'coordinatepanel/volunteer_details.html', {'batch_id': kwargs["pk"], 'batch': batch,
-                                                                          'volunteer': volunteer})
+                                                                          'volunteer': volunteer,
+                                                                          'all_batches': all_batches})
     else:
         return redirect('coordinatepanel:coordinator_login')
 
@@ -317,6 +321,23 @@ class VolunteerContractPDFView(PDFTemplateResponseMixin, DetailView):
             pagesize='A4',
             title='Umowa',
             congregation=Congregation.objects.first(),
+            date=now,
+            **kwargs
+        )
+
+
+class AllVolunteersContractPDFView(PDFTemplateResponseMixin, ListView):
+    template_name = 'coordinatepanel/contract/all_contracts.html'
+    download_filename = 'contracts.pdf'
+    model = BatchVolunteer
+
+    def get_context_data(self, **kwargs):
+        print(BatchVolunteer.objects.filter(id=self.kwargs["pk"]))
+        return super(AllVolunteersContractPDFView, self).get_context_data(
+            pagesize='A4',
+            title='Umowy',
+            congregation=Congregation.objects.first(),
+            all_volunteers=BatchVolunteer.objects.filter(batch__id=self.kwargs["pk"]),
             date=now,
             **kwargs
         )

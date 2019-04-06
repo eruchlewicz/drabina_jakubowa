@@ -8,9 +8,14 @@
             <div class="row">
                 <div class="col-lg-10 mx-auto">
 
-                    <a class="float-right" href="{% url 'coordinatepanel:volunteers_report' batch_id %}">
-                        <button class="btn btn-default">Raport</button>
-                    </a>
+                    <span class="float-right">
+                        <a class="link-decoration-none" href="{% url 'coordinatepanel:contracts' batch_id %}">
+                            <button class="btn btn-primary m-b-10">Umowy do druku</button>
+                        </a>
+                        <a class="link-decoration-none" href="{% url 'coordinatepanel:volunteers_report' batch_id %}">
+                            <button class="btn btn-default m-b-10">Raport</button>
+                        </a>
+                    </span>
 
                     <h2>Lista wolontariuszy</h2>
                     <hr /><br />

@@ -64,6 +64,8 @@ urlpatterns = [
         login_required(CertificatePDFView.as_view()), name='certificate'),
     url(r'^turnusy/wolontariusze/(?P<pk>[\w{}.-]{1,36})/umowa.pdf/$',
         login_required(VolunteerContractPDFView.as_view()), name='contract'),
+    url(r'^turnusy/wolontariusze/(?P<pk>[0-9]+)/umowy.pdf/$',
+        login_required(AllVolunteersContractPDFView.as_view()), name='contracts'),
     url(r'^turnusy/(?P<pk>[\w{}.-]{1,36})/umowa.pdf/$',
         login_required(ContractPDFView.as_view()), name='coordinator_contract'),
     url(r'^wydarzenia/$', views.events_view, name='events'),

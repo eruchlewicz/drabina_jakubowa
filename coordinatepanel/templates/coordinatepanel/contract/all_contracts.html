@@ -53,6 +53,7 @@
 {% endblock %}
 
 {% block content %}
+{% for batchvolunteer in all_volunteers %}
     <div id="content">
         <div class="main cuprum font-16">
             <div class="container">
@@ -422,5 +423,6 @@
             </div>
         </div>
     </div>
+{% endfor %}
 
 {% endblock %}

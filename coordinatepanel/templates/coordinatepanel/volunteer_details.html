@@ -176,6 +176,17 @@
                     <br />
                     <br />
 
+                    <ul>
+                        {% for v in all_batches %}
+                            {% if v.note is not None and v.note != "" %}
+                                <li>{{ v.note }} - {{ v.batch }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+
+                    <br />
+                    <br />
+
                     {% if "/turnus/" in request.path %}
                         <span class="hidden" id="begin_date">{{ batch.begin_date|date:"Y.m.d" }}</span>
                         <span class="hidden" id="end_date">{{ batch.end_date|date:"Y.m.d" }}</span>
@@ -191,7 +202,6 @@
                             <button class="btn btn-default">Wróć</button>
                         </a>
                     {% endif %}
-
 
                 </div>
             </div>
