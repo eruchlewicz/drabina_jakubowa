@@ -14,6 +14,12 @@ from easy_pdf.views import PDFTemplateResponseMixin
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib import messages
+import smtplib
+from django.conf import settings
+from email.header import Header
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from django.template.loader import render_to_string
 
 now = timezone.now()
 logger = logging.getLogger(__name__)
@@ -1072,3 +1078,52 @@ def get_files(request):
     template_name = 'dj/files.html'
     files = File.objects.filter(volunteers=True)
     return render(request, template_name, {'files': files})
+
+
+def remind_password(request):
+    form_class = UserRemindPasswordForm
+    template_name = 'dj/remind_password.html'
+
+    if request.method == 'POST':
+        form = form_class(data=request.POST)
+        form.fields['email'].label = "Adres e-mail"
+
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            user = User.objects.filter(email=email)
+            new_password = User.objects.make_random_password()
+            for u in user:
+                u.set_password(new_password)
+                u.save()
+                print(new_password)
+            if user.count() > 0:
+                print(user)
+
+                admin_email = settings.EMAIL_HOST_USER
+                to_email = user.first().email
+
+                msg = MIMEMultipart('alternative')
+                subject = "Przypomnienie hasła"
+                msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
+                msg['From'] = "Drabina Jakubowa - Centrum Księdza Orione"
+                msg['To'] = to_email
+
+                html = render_to_string('dj/includes/password_email.html', {'user': user, 'new_password': new_password})
+                part = MIMEText(html, 'html')
+                msg.attach(part)
+
+                mail = smtplib.SMTP('smtp.gmail.com', 587)
+                mail.ehlo()
+                mail.starttls()
+                mail.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                mail.sendmail(admin_email, to_email, msg.as_string())
+                mail.quit()
+
+                messages.success(request, 'Wysłano wiadomość na adres e-mail przypisany do konta.')
+                return redirect('dj:login')
+            else:
+                messages.error(request, 'Brak konta powiązanego z tym adresem e-mail.')
+    else:
+        form = form_class()
+        form.fields['email'].label = "Adres e-mail"
+    return render(request, template_name, {'form': form})

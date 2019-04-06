@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^rejestracja/$', views.UserFormView.as_view(), name='registration'),
     url(r'^logowanie/$', views.login_view, name='login'),
     url(r'^wylogowanie/$', views.logout_view, name='logout'),
+    url(r'^logowanie/haslo/$', views.remind_password, name='remind_password'),
     url(r'^aktualnosci/$', views.news_view, name='news'),
     url(r'^turnusy/(?P<pk>[0-9]+)/(?P<id>[\w{}.-]{1,36})/zaswiadczenie.pdf$',
         login_required(CertificatePDFView.as_view()), name='certificate'),

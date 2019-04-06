@@ -753,3 +753,21 @@ class WorkshopVolunteerSignForm(forms.ModelForm):
         if not cleaned_how_know_training:
             msg = _("Pole jest wymagane.")
             self.errors["how_know_training"] = self.error_class([msg])
+
+
+class UserRemindPasswordForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['email']
+        labels = {
+            'email': _('Adres e-mail'),
+        }
+
+    def clean(self):
+        cleaned_data = super(UserRemindPasswordForm, self).clean()
+        cleaned_email = cleaned_data.get('email')
+
+        if cleaned_email is None:
+            msg = _("Pole jest wymagane.")
+            self.errors["email"] = self.error_class([msg])

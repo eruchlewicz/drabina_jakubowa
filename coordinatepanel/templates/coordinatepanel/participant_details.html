@@ -123,12 +123,12 @@
                         <img class="img-fluid d-block col-lg-5 col-md-6 col-sm-8 col-12" src="{{ participant.photo.url }}">
                     {% endif %}
 
-                    <br />
+                    <br /><br />
 
                     <span class="bold">Notatki:</span>
                     <ul>
                         {% for p in all_batches %}
-                            {% if p.note is not None %}
+                            {% if p.note is not None and p.note != "" %}
                                 <li>{{ p.note }} - {{ p.batch }}</li>
                             {% endif %}
                         {% endfor %}
