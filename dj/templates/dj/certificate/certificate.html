@@ -138,7 +138,7 @@
                 <table class="m-t-5 m-b-5">
                     <tr>
                         <td class="center">
-                            {% if batchvolunteer.batch|volunteer_participant:batchvolunteer.volunteer %}
+                            {% if batchvolunteer.batch|volunteer_participant:batchvolunteer.volunteer or batchvolunteer.participant_helper is True %}
                                 praca przy podopiecznym,
                             {% else %}
                                 praca przy organizacji,

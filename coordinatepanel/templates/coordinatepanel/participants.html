@@ -20,7 +20,7 @@
                         {% for obj in batch_participants_female %}
                             <li class="lead">
                             <span class="col-sm-12 col-xs-12 col-md-12 row">
-                                <span class="col-xs-6 col-sm-6 col-md-8 col-lg-7 parent">
+                                <span class="col-xs-6 col-sm-6 col-md-8 col-lg-5 parent">
                                     <a class="medium-bold" href="{% url 'coordinatepanel:participant_details' batch_id obj.participant.id %}">
                                         {{ obj.participant.surname }} {{ obj.participant.first_name }}
                                     </a>
@@ -36,7 +36,7 @@
                                     {% if obj.volunteer is not None %}, wolontariusz: {{ obj.volunteer }}{% endif %}
                                     <span class="if_bd hidden">{{ obj.participant.pesel }}</span>
                                 </span>
-                                <span class="col-xs-6 col-sm-6 col-md-4 col-lg-5 float-right text-right">
+                                <span class="col-xs-6 col-sm-6 col-md-4 col-lg-7 float-right text-right">
                                     {% if obj.batch.end_date >= now %}
                                         <a class="link-decoration-none"
                                            href="{%  url 'coordinatepanel:batch_participant_edit' batch_id obj.participant.id %}">
@@ -45,6 +45,9 @@
                                         <a class="link-decoration-none" onclick="return confirm('Czy na pewno chcesz przenieść podopiecznego na listę rezerwową?')"
                                            href="{% url 'coordinatepanel:move_participant_to_reserve_list' obj.batch.id obj.participant.id %}">
                                             <button class="btn btn-info btn-sm">Rezerwa</button>
+                                        </a>
+                                        <a class="link-decoration-none" href="{% url 'coordinatepanel:participant_certificate' batch_id obj.unique_key %}">
+                                            <button class="btn btn-primary btn-sm">Zaświadczenie</button>
                                         </a>
                                         <a onclick="return confirm('Czy na pewno chcesz wypisać tego podopiecznego?')" class="link-decoration-none"
                                            href="{% url 'coordinatepanel:delete_participant' obj.batch.id obj.id %}">
@@ -67,7 +70,7 @@
                         {% for obj in batch_participants_male %}
                             <li class="lead">
                             <span class="col-sm-12 col-xs-12 col-md-12 row">
-                                <span class="col-xs-6 col-sm-6 col-md-8 col-lg-7 parent">
+                                <span class="col-xs-6 col-sm-6 col-md-8 col-lg-5 parent">
                                     <a class="medium-bold" href="{% url 'coordinatepanel:participant_details' batch_id obj.participant.id %}">
                                         {{ obj.participant.surname }} {{ obj.participant.first_name }}
                                     </a>
@@ -83,7 +86,7 @@
                                     {% if obj.volunteer is not None %}, wolontariusz: {{ obj.volunteer }}{% endif %}
                                     <span class="if_bd hidden">{{ obj.participant.pesel }}</span>
                                 </span>
-                                <span class="col-xs-6 col-sm-6 col-md-4 col-lg-5 float-right text-right">
+                                <span class="col-xs-6 col-sm-6 col-md-4 col-lg-7 float-right text-right">
                                     {% if obj.batch.end_date >= now %}
                                         <a class="link-decoration-none"
                                            href="{%  url 'coordinatepanel:batch_participant_edit' batch_id obj.participant.id %}">
@@ -92,6 +95,9 @@
                                         <a class="link-decoration-none" onclick="return confirm('Czy na pewno chcesz przenieść podopiecznego na listę rezerwową?')"
                                            href="{% url 'coordinatepanel:move_participant_to_reserve_list' obj.batch.id obj.participant.id %}">
                                             <button class="btn btn-info btn-sm">Rezerwa</button>
+                                        </a>
+                                        <a class="link-decoration-none" href="{% url 'coordinatepanel:participant_certificate' batch_id obj.unique_key %}">
+                                            <button class="btn btn-primary btn-sm">Zaświadczenie</button>
                                         </a>
                                         <a onclick="return confirm('Czy na pewno chcesz wypisać tego podopiecznego?')" class="link-decoration-none"
                                            href="{% url 'coordinatepanel:delete_participant' obj.batch.id obj.id %}">

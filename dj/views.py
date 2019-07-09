@@ -367,7 +367,7 @@ def batch_view(request, **kwargs):
     batch_participants = BatchParticipant.objects.filter(batch=batch_details, volunteer=volunteer)
     batch_volunteer = BatchVolunteer.objects.filter(batch=batch_details, volunteer=volunteer).first()
     return render(request, template_name, {'batch_details': batch_details, 'batch_participants': batch_participants,
-                                           'batch_volunteer': batch_volunteer})
+                                           'batch_volunteer': batch_volunteer, 'now': now})
 
 
 @login_required

@@ -16,8 +16,8 @@ class BatchVolunteerAdmin(admin.ModelAdmin):
 class BatchParticipantAdmin(admin.ModelAdmin):
     ordering = ('-batch__begin_date', 'batch__name', 'batch__institution__city')
     list_filter = ('batch', 'batch__institution__city', 'batch__begin_date')
-    list_display = ('batch', 'participant', 'unique_key', 'is_part_paid', 'is_paid')
-    search_fields = ['participant__surname', 'participant__first_name', 'batch__begin_date']
+    list_display = ('batch', 'participant', 'unique_key', 'is_part_paid', 'is_paid', 'payment_id')
+    search_fields = ['participant__surname', 'participant__first_name', 'batch__begin_date', 'payment_id', 'unique_key']
 
 
 class BatchAdmin(admin.ModelAdmin):
@@ -105,7 +105,8 @@ class RetreatOrMusicTrainingAdmin(admin.ModelAdmin):
 class RetreatOrMusicTrainingPersonAdmin(admin.ModelAdmin):
     ordering = ('-retreat_or_music_training__begin_date', 'retreat_or_music_training__name',
                 'retreat_or_music_training__institution__city')
-    list_filter = ('retreat_or_music_training__institution__city', 'retreat_or_music_training__begin_date')
+    list_filter = ('retreat_or_music_training__name', 'retreat_or_music_training__institution__city',
+                   'retreat_or_music_training__begin_date')
     list_display = ('retreat_or_music_training', 'person', 'accommodation', 'saturday_sunday', 'is_paid')
     search_fields = ['person__surname', 'person__first_name', 'retreat_or_music_training__begin_date']
 
@@ -143,9 +144,9 @@ class EventParticipantAdmin(admin.ModelAdmin):
     get_details.short_description = 'Opis'
     get_details.admin_order_field = 'participant__details'
     ordering = ('-event__begin_date', 'event__name')
-    list_filter = ('event__begin_date', 'participant__communication')
-    list_display = ('event', 'participant', 'get_communication', 'get_details', 'is_paid')
-    search_fields = ['participant__surname', 'participant__first_name', 'event__begin_date']
+    list_filter = ('event__name', 'event__begin_date', 'participant__communication')
+    list_display = ('event', 'participant', 'get_communication', 'get_details', 'is_paid', 'payment_id')
+    search_fields = ['participant__surname', 'participant__first_name', 'event__begin_date', 'payment_id']
 
 
 class EventVolunteerAdmin(admin.ModelAdmin):
@@ -159,7 +160,7 @@ class EventVolunteerAdmin(admin.ModelAdmin):
     get_city.short_description = 'Miasto'
     get_city.admin_order_field = 'volunteer__city'
     ordering = ('-event__begin_date', 'event__name')
-    list_filter = ('event__begin_date', 'volunteer__city')
+    list_filter = ('event__name', 'event__begin_date', 'volunteer__city')
     list_display = ('event', 'volunteer', 'get_city', 'get_phone_number', 'is_paid')
     search_fields = ['volunteer__surname', 'volunteer__first_name', 'event__begin_date']
 

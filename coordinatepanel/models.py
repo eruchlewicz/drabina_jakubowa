@@ -4,6 +4,7 @@ from dj.models import Room
 from django.contrib.auth.models import User
 import uuid
 from django.utils import timezone
+from random import randrange
 
 now = timezone.now()
 
@@ -276,6 +277,7 @@ class BatchVolunteer(models.Model):
     reserve_list = models.BooleanField("Lista rezerwowa", default=False, blank=False)
     note = models.TextField("Notatka", max_length=500, null=True, blank=True)
     sign_date = models.DateTimeField("Kiedy zapisano", default=timezone.now, null=False, blank=True)
+    participant_helper = models.BooleanField("Pomoc przy popdopiecznych", default=False, blank=False)
 
     def __str__(self):
         return self.batch.name+" "+str(self.batch.begin_date.year)+" "+self.batch.institution.city+" "\
@@ -378,6 +380,7 @@ class BatchParticipant(models.Model):
     full_cost = models.FloatField("Pełny koszt", default=700, blank=True)
     is_paid = models.BooleanField("Zapłacono", default=False, blank=False)
     payment_method = models.CharField("Metoda płatności", max_length=1, null=True, blank=True, choices=PAYMENT_METHOD)
+    payment_id = models.CharField("ID Płatności", default=str(randrange(100000000, 999999999)), max_length=15)
     room = models.ForeignKey(Room, verbose_name="Pokój", null=True, blank=True)
     room_sex = models.CharField("Płeć osób w pokoju", max_length=1, null=True, blank=True, choices=SEX)
     room_person_category = models.CharField("Kategoria pokoju", max_length=1, null=True, blank=True, choices=CATEGORY)
@@ -444,6 +447,7 @@ class EventParticipant(models.Model):
                                     blank=False)
     total_cost = models.FloatField("Pełny koszt", default=0, blank=True)
     is_paid = models.BooleanField("Zapłacono", default=False, blank=True, null=False)
+    payment_id = models.CharField("ID Płatności", default=str(randrange(100000000, 999999999)), max_length=15)
     sign_date = models.DateTimeField("Kiedy zapisano", default=timezone.now, null=False, blank=True)
     volunteer = models.ForeignKey(Volunteer, verbose_name="Wolontariusz", null=True, blank=True)
 

@@ -31,7 +31,7 @@ def get_age(pesel):
     else:
         yy = "19" + yy
 
-    if int(mm) <= 12 and int(dd) <= 31:
+    if 0 < int(mm) <= 12 and 0 < int(dd) <= 31:
         birthday = datetime.strptime(str(yy) + " " + str(mm) + " " + str(dd), '%Y %m %d')
         age = abs(datetime.now() - birthday).days / 365.25
         age = int(age)

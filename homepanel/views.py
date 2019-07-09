@@ -180,11 +180,6 @@ def all_participants(request):
         paginator = Paginator(participants_all, 50)
         page = request.GET.get('page', 1)
 
-        batch_participants = BatchParticipant.objects.all()
-        for participant in batch_participants:
-            participant.full_cost = participant.batch.batch_price
-            participant.save()
-
         try:
             participants_list = paginator.page(page)
         except PageNotAnInteger:
@@ -316,6 +311,8 @@ def participant_sign(request, **kwargs):
                 batch_participant.batch_end_date = batch.end_date
                 batch_participant.participant = participant
                 batch_participant.full_cost = batch.batch_price
+                batch_participant.payment_id = str(batch.begin_date.year) + str(batch.begin_date.month) + \
+                    str(batch.begin_date.day) + str(participant.id)
                 batch_participant.save()
                 batch.participants += 1
                 batch.save()
@@ -824,6 +821,8 @@ def event_participant_sign(request, **kwargs):
                 event = form.cleaned_data['event']
                 event_participant.participant = participant
                 event_participant.total_cost = event.price
+                event_participant.payment_id = str(event.begin_date.year) + str(event.begin_date.month) + \
+                    str(event.begin_date.day) + str(participant.id)
                 event_participant.save()
                 event.participants += 1
                 event.save()

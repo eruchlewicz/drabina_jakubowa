@@ -187,12 +187,9 @@ def batch_participant_edit(request, **kwargs):
     auxiliary_coordinator = batch.auxiliary_coordinator
     if auxiliary_coordinator is not None:
         auxiliary_coordinator = batch.auxiliary_coordinator.volunteer
-        volunteers_list = BatchVolunteer.objects.filter(batch=kwargs['pk'])\
-            .exclude(volunteer=coordinator)\
-            .exclude(volunteer=auxiliary_coordinator)
+        volunteers_list = BatchVolunteer.objects.filter(batch=kwargs['pk'])
     else:
-        volunteers_list = BatchVolunteer.objects.filter(batch=kwargs['pk']) \
-            .exclude(volunteer=coordinator)
+        volunteers_list = BatchVolunteer.objects.filter(batch=kwargs['pk'])
     form = form_class(request.POST or None, instance=batch_participant)
     form.fields["volunteer"].queryset = Volunteer.objects.filter(vol__in=volunteers_list)
     form.fields["room"].queryset = empty_rooms_participant(batch, batch_participant)
@@ -200,13 +197,6 @@ def batch_participant_edit(request, **kwargs):
         if request.POST and form.is_valid():
             form.save(commit=False)
             batch_participant.room_sex = participant.sex
-            print(batch_participant.batch_begin_date)
-            if batch_participant.batch_begin_date < batch.begin_date + timedelta(days=2) - timedelta(hours=10) \
-                    or batch_participant.batch_begin_date > batch.end_date:
-                batch_participant.batch_begin_date = batch.begin_date + timedelta(days=2) - timedelta(hours=10)
-            if batch_participant.batch_end_date > batch.end_date \
-                    or batch_participant.batch_end_date < batch.begin_date + timedelta(days=2) - timedelta(hours=10):
-                batch_participant.batch_end_date = batch.end_date
             batch_participant.save()
 
             messages.success(request, 'Zapisano zmiany.')
@@ -281,6 +271,28 @@ def volunteer_details(request, **kwargs):
                                                                           'all_batches': all_batches})
     else:
         return redirect('coordinatepanel:coordinator_login')
+
+
+class ParticipantCertificatePDFView(PDFTemplateResponseMixin, DetailView):
+    template_name = 'coordinatepanel/certificate/participant-certificate.html'
+    download_filename = 'certificate.pdf'
+    model = BatchParticipant
+
+    def get_object(self, queryset=None):
+        obj = BatchParticipant.objects.filter(unique_key=self.kwargs["id"]).first()
+        if obj:
+            return obj
+        return None
+
+    def get_context_data(self, **kwargs):
+        return super(ParticipantCertificatePDFView, self).get_context_data(
+            pagesize='A4',
+            title='Zaświadczenie',
+            congregation=Congregation.objects.first(),
+            home=Home.objects.first(),
+            date=now,
+            **kwargs
+        )
 
 
 class CertificatePDFView(PDFTemplateResponseMixin, DetailView):

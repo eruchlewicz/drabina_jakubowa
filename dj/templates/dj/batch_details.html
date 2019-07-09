@@ -51,13 +51,15 @@
                     {% endif %}
                     <br />
                     <span class="bold">Moi podopieczni: </span>
-                    {% for obj in batch_participants %}
-                        <a href="{% url 'dj:participant_details' batch_details.id obj.participant.id %}">
-                            {{ obj.participant }}
-                        </a>
-                        - pokój:
-                        {% if obj.room is not None %}{{ obj.room }}{% endif %},
-                    {% endfor %}
+                    {% if batch_details.begin_date <= now %}
+                        {% for obj in batch_participants %}
+                            <a href="{% url 'dj:participant_details' batch_details.id obj.participant.id %}">
+                                {{ obj.participant }}
+                            </a>
+                            - pokój:
+                            {% if obj.room is not None %}{{ obj.room }}{% endif %},
+                        {% endfor %}
+                    {% endif %}
                     <br />
                     <br />
 

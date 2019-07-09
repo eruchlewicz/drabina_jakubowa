@@ -42,11 +42,12 @@ class BatchVolunteerForm(forms.ModelForm):
 
     class Meta:
         model = BatchVolunteer
-        fields = ['room', 'batch_begin_date', 'batch_end_date', 'nights', 'was_there', 'note']
+        fields = ['room', 'batch_begin_date', 'batch_end_date', 'participant_helper', 'nights', 'was_there', 'note']
         labels = {
             'room': _('Pokój'),
             'batch_begin_date': _('Data przyjazdu na turnus'),
             'batch_end_date': _('Data opuszczenia turnusu'),
+            'participant_helper': _('Pomoc przy podopiecznych'),
             'nights': _('Dyżury nocne'),
             'was_there': _('Odbył turnus'),
             'note': _('Notatka'),
@@ -105,10 +106,6 @@ class BatchParticipantForm(forms.ModelForm):
         print(cleaned_begin_date)
         if cleaned_begin_date:
             cleaned_begin_date = cleaned_begin_date.replace(tzinfo=utc)
-
-            if cleaned_begin_date < today:
-                msg = _("Ten dzień już minął.")
-                self.add_error('batch_begin_date', msg)
             if cleaned_end_date:
                 cleaned_end_date = cleaned_end_date.replace(tzinfo=utc)
                 if cleaned_begin_date.date() >= cleaned_end_date.date():
