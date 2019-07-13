@@ -1133,6 +1133,8 @@ def event_registration(request):
     if request.user.is_authenticated:
         return events_view(request)
     else:
+        prices_list = Event.objects.all().values('id', 'price')
+        prices_json = json.dumps(list(prices_list), cls=DjangoJSONEncoder)
         form_class = PersonForm
         form_class2 = EventSignForm
         template_name = 'dj/event_simple_registration.html'
@@ -1172,4 +1174,5 @@ def event_registration(request):
                  Event.objects.filter(begin_date__year=now.year+1, begin_date__gte=now, account_needed=False))\
                 .distinct().order_by('begin_date')
 
-    return render(request, template_name, {'today': today, 'form': form, 'form2': form2 })
+    return render(request, template_name, {'today': today, 'user_form': form, 'event_person': form2,
+                                           'prices_json': prices_json})

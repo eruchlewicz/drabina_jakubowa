@@ -29,12 +29,16 @@
                     <hr /><br />
                     <form class="form-horizontal" action="" role="form" method="post">
                         {% csrf_token %}
-                        {% include 'dj/includes/event_registration_form.html' %}
+                        {% include 'dj/includes/event_simple_registration_form.html' %}
 
                         <div class="form-group bold">
                             Oświadczenie:<br />
                             Klikając przycisk "Zarejestruj", niniejszym stwierdzam prawdziwość wprowadzonych do
                             formularza danych i podpisuję się pod nim.<br /><br />
+                        </div>
+
+                        <div class="small hidden">
+                            <span id="prices_json">{{ prices_json }}</span>
                         </div>
 
                         <div class="form-group">
@@ -49,4 +53,8 @@
         </div>
     </section>
 
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/count_price_event.js' %}"></script>
 {% endblock %}
