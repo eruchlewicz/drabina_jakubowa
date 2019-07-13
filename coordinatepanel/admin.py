@@ -10,14 +10,16 @@ class BatchVolunteerAdmin(admin.ModelAdmin):
     ordering = ('-batch__begin_date', 'batch__name', 'batch__institution__city')
     list_filter = ('batch', 'batch__institution__city', 'batch__begin_date')
     list_display = ('batch', 'volunteer', 'unique_key', 'was_there')
-    search_fields = ['volunteer__surname', 'volunteer__first_name', 'unique_key', 'batch__begin_date']
+    search_fields = ['volunteer__surname', 'volunteer__first_name', 'unique_key', 'batch__begin_date', 'batch__name',
+                     'batch__institution__city']
 
 
 class BatchParticipantAdmin(admin.ModelAdmin):
     ordering = ('-batch__begin_date', 'batch__name', 'batch__institution__city')
     list_filter = ('batch', 'batch__institution__city', 'batch__begin_date')
     list_display = ('batch', 'participant', 'unique_key', 'is_part_paid', 'is_paid', 'payment_id')
-    search_fields = ['participant__surname', 'participant__first_name', 'batch__begin_date', 'payment_id', 'unique_key']
+    search_fields = ['participant__surname', 'participant__first_name', 'batch__begin_date', 'payment_id',
+                     'unique_key', 'batch__name', 'batch__institution__city']
 
 
 class BatchAdmin(admin.ModelAdmin):
@@ -38,7 +40,7 @@ class BatchAdmin(admin.ModelAdmin):
     list_filter = ('name', 'institution__city', 'begin_date')
     list_display = ('name', 'begin_date', 'end_date', 'get_institution', 'main_coordinator', 'auxiliary_coordinator', 'main_priest',
                     'auxiliary_priest', 'get_nurses', 'get_doctors')
-    search_fields = ['batch__begin_date']
+    search_fields = ['begin_date', 'name']
 
 
 class CoordinatorAdmin(admin.ModelAdmin):

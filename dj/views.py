@@ -1127,3 +1127,49 @@ def remind_password(request):
         form = form_class()
         form.fields['email'].label = "Adres e-mail"
     return render(request, template_name, {'form': form})
+
+
+def event_registration(request):
+    if request.user.is_authenticated:
+        return events_view(request)
+    else:
+        form_class = PersonForm
+        form_class2 = EventSignForm
+        template_name = 'dj/simple_event_registration.html'
+        today = now
+        form = form_class(request.POST or None)
+        form2 = form_class2(request.POST or None)
+        form2.fields["event"].queryset = \
+            (Event.objects.filter(begin_date__year=now.year, begin_date__gte=now, account_needed=False) |
+             Event.objects.filter(begin_date__year=now.year+1, begin_date__gte=now, account_needed=False))\
+            .distinct().order_by('begin_date')
+        if request.method == 'POST':
+            if form.is_valid() and form2.is_valid():
+                event = form2.cleaned_data['event']
+                if event is not None:
+                    person = form.save(commit=False)
+                    person_exists_in_event = \
+                        EventPerson.objects.filter(event=event, person__email_address=person.email_address).count()
+                    if person_exists_in_event == 0:
+                        form.save()
+                        event_person = form2.save()
+                        event_person.person = person
+                        volunteer = Volunteer.objects.filter(email_address=person.email_address).first()
+                        if volunteer is not None:
+                            event_person.volunteer = volunteer
+
+                        event_person.save()
+
+                        messages.success(request, 'Zapisano na wydarzenie.')
+
+                        return redirect('dj:index')
+
+        else:
+            form = form_class()
+            form2 = form_class2()
+            form2.fields["event"].queryset = \
+                (Event.objects.filter(begin_date__year=now.year, begin_date__gte=now, account_needed=False) |
+                 Event.objects.filter(begin_date__year=now.year+1, begin_date__gte=now, account_needed=False))\
+                .distinct().order_by('begin_date')
+
+    return render(request, template_name, {'today': today, 'form': form, 'form2': form2 })

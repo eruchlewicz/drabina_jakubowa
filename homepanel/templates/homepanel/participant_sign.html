@@ -19,7 +19,7 @@
                         {% for batch_participant in batch_participant_list %}
                             <li class="lead m-b-10">
                             <span class="col-sm-12 col-xs-12 col-md-12 row">
-                                     <span class="col-xs-6 col-sm-6 col-md-7 col-lg-7">
+                                     <span class="col-xs-6 col-sm-6 col-md-7 col-lg-6">
                                         <span class="medium-bold">{{ batch_participant.batch }}</span>,
                                         {{ batch_participant.batch.begin_date|date:"d.m.Y" }} -
                                         {{ batch_participant.batch.end_date|date:"d.m.Y" }}
@@ -34,7 +34,7 @@
                                             <span class="color-gray medium-bold">(rezerwowy)</span>
                                         {% endif %}
                                      </span>
-                                     <span class="col-xs-6 col-sm-6 col-md-5 col-lg-5 float-right text-right">
+                                     <span class="col-xs-6 col-sm-6 col-md-5 col-lg-6 float-right text-right">
                                          {% if batch_participant.batch.end_date >= now %}
                                          <a class="link-decoration-none" onclick="return confirm('Czy na pewno chcesz wypisać tego podopiecznego?')"
                                             href="{% url 'homepanel:batch_participant_delete' batch_participant.participant.id batch_participant.batch.id %}">
@@ -53,6 +53,10 @@
                                          <a class="link-decoration-none"
                                             href="{% url 'homepanel:participant_payment' batch_participant.participant.id batch_participant.batch.id %}">
                                              <button class="btn btn-warning btn-sm">Płatności</button>
+                                         </a>
+                                         <a class="link-decoration-none"
+                                            href="{% url 'homepanel:letter' batch_participant.batch.id batch_participant.unique_key %}">
+                                             <button class="btn btn-primary btn-sm">List</button>
                                          </a>
                                      </span>
 

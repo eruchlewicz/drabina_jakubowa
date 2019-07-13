@@ -380,7 +380,7 @@ class BatchParticipant(models.Model):
     full_cost = models.FloatField("Pełny koszt", default=700, blank=True)
     is_paid = models.BooleanField("Zapłacono", default=False, blank=False)
     payment_method = models.CharField("Metoda płatności", max_length=1, null=True, blank=True, choices=PAYMENT_METHOD)
-    payment_id = models.CharField("ID Płatności", default=str(randrange(100000000, 999999999)), max_length=15)
+    payment_id = models.CharField("ID Płatności", default="#"+str(randrange(100000000, 999999999)), max_length=15)
     room = models.ForeignKey(Room, verbose_name="Pokój", null=True, blank=True)
     room_sex = models.CharField("Płeć osób w pokoju", max_length=1, null=True, blank=True, choices=SEX)
     room_person_category = models.CharField("Kategoria pokoju", max_length=1, null=True, blank=True, choices=CATEGORY)
@@ -413,6 +413,7 @@ class Event(models.Model):
     doctor = models.ManyToManyField(Doctor, verbose_name="Lekarze", blank=True)
     info = models.TextField("Informacje", max_length=5000, null=True, blank=True)
     price = models.FloatField("Koszt", default=0, blank=True)
+    account_needed = models.BooleanField("Konto wymagane", default=True, blank=False)
 
     def __str__(self):
         if self.begin_date.year == self.end_date.year:
@@ -626,3 +627,40 @@ class RetreatOrMusicTrainingPerson(models.Model):
     class Meta:
         verbose_name = "Uczestnik warsztatów lub rekolekcji"
         verbose_name_plural = "Warsztaty/rekolekcje - uczestnik"
+
+
+class EventPerson(models.Model):
+    SEX = (
+        ('K', 'Kobieta'),
+        ('M', 'Mężczyzna'),
+    )
+    HOW_KNOW = (
+        ("Z", 'Od znajomych wolontariuszy'),
+        ("K", 'Z kościoła'),
+        ("D", 'Ze spotkania w moim duszpasterstwie'),
+        ("AD", 'Z Anielskiej Domówki'),
+        ("US", 'Z uczelni lub ze szkoły'),
+        ("FB", 'Z Facebooka'),
+        ("TV", 'Z radia, TV, prasy'),
+        ("S", 'Z tej strony internetowej'),
+        ("YT", 'Z filmu na YouTube'),
+        ("I", 'Inne'),
+    )
+    event = models.ForeignKey(Event, verbose_name="Wydarzenie", related_name="event_person", null=False, blank=False)
+    person = models.ForeignKey(Person, verbose_name="Uczestnik", related_name="person_ev", null=True, blank=True)
+    volunteer = models.ForeignKey(Volunteer, verbose_name="Wolontariusz", related_name="ev", null=True, blank=True)
+    how_know_dj = models.CharField("Skąd znasz DJ?", max_length=2, null=True, blank=True, choices=HOW_KNOW)
+    total_cost = models.FloatField("Pełny koszt", default=0, blank=True)
+    is_paid = models.BooleanField("Zapłacono", default=False, blank=True, null=False)
+    data_processing_agreement = models.BooleanField("Zgoda na przetwarzanie danych osobowych", default=False,
+                                                    blank=False, null=False)
+    photographing_agreement = models.BooleanField("Zgoda na fotografowanie", default=False, blank=True, null=False)
+    sign_date = models.DateTimeField("Kiedy zapisano", default=timezone.now, null=False, blank=True)
+
+    def __str__(self):
+        return self.event.name+" "+str(self.event.begin_date.year)+" "\
+               + self.person.first_name + " " + self.person.surname
+
+    class Meta:
+        verbose_name = "Uczestnik wydarzenia"
+        verbose_name_plural = "Wydarzenia - uczestnik"

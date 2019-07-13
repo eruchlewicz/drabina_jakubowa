@@ -56,7 +56,12 @@ class UserForm(forms.ModelForm):
 
         if User.objects.filter(username=cleaned_username).first():
             msg = _("Użytkownik o tej nazwie już istnieje.")
-            self.errors["pesel"] = self.error_class([msg])
+            self.errors["username"] = self.error_class([msg])
+
+        if User.objects.filter(email=cleaned_email_address).first():
+            msg = _("Konto z tym adresem e-mail już istnieje. "
+                    "Skorzystaj z opcji odzyskiwania hasła na stronie logowania.")
+            self.errors["email"] = self.error_class([msg])
 
         if len(cleaned_email_address) == 0:
             msg = _("Pole jest wymagane.")
@@ -771,3 +776,32 @@ class UserRemindPasswordForm(forms.ModelForm):
         if cleaned_email is None:
             msg = _("Pole jest wymagane.")
             self.errors["email"] = self.error_class([msg])
+
+
+class EventSignForm(forms.ModelForm):
+    captcha = CaptchaField()
+
+    class Meta:
+        model = EventPerson
+        fields = ['event', 'how_know_dj', 'data_processing_agreement', 'photographing_agreement',
+                  'total_cost']
+        labels = {
+            'event': _('Wydarzenie'),
+            'how_know_dj': _('Skąd dowiedziałeś/aś się o Drabinie Jakubowej?'),
+            'data_processing_agreement': _('Wyrażam zgodę na przetwarzanie moich danych osobowych'),
+            'photographing_agreement': _('Wyrażam zgodę na fotografowanie i przetwarzanie wizerunku'),
+            'total_cost': _('Koszt'),
+        }
+
+    def clean(self):
+        cleaned_data = super(EventSignForm, self).clean()
+        cleaned_how_know_dj = cleaned_data.get('how_know_dj')
+        cleaned_data_processing_agreement = cleaned_data.get('data_processing_agreement')
+
+        if not cleaned_how_know_dj:
+            msg = _("Pole jest wymagane.")
+            self.errors["how_know_dj"] = self.error_class([msg])
+
+        if not cleaned_data_processing_agreement:
+            msg = _("Pole jest wymagane.")
+            self.errors["data_processing_agreement"] = self.error_class([msg])

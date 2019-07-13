@@ -1412,3 +1412,27 @@ def update_participants_count(request):
         return redirect('homepanel:all_participants')
     else:
         return redirect('homepanel:home_coordinator_login')
+
+
+class LetterPDFView(PDFTemplateResponseMixin, DetailView):
+    template_name = 'homepanel/certificate/participant-letter.html'
+    download_filename = 'letter.pdf'
+    model = BatchParticipant
+
+    def get_object(self, queryset=None):
+        obj = BatchParticipant.objects.filter(unique_key=self.kwargs["id"]).first()
+        if obj:
+            return obj
+        return None
+
+    def get_context_data(self, **kwargs):
+        return super(LetterPDFView, self).get_context_data(
+            pagesize='A4',
+            title='List potwierdzający',
+            congregation=Congregation.objects.first(),
+            home=Home.objects.first(),
+            heaven_gate=Event.objects.filter(begin_date__year=now.year, name="Brama Nieba").first(),
+            central_dj=Event.objects.filter(begin_date__year=now.year, name="Sztab Centralny").first(),
+            date=now,
+            **kwargs
+        )

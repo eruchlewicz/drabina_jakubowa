@@ -17,6 +17,8 @@ urlpatterns = [
         views.move_participant_to_reserve_list, name='move_participant_to_reserve_list'),
     url(r'^turnus/(?P<pk>[0-9]+)/podopieczni/(?P<id>[\w{}.-]{1,36})/zaswiadczenie.pdf/$',
         login_required(CertificatePDFView.as_view()), name='certificate'),
+    url(r'^turnus/(?P<pk>[0-9]+)/podopieczni/(?P<id>[\w{}.-]{1,36})/list.pdf/$',
+        login_required(LetterPDFView.as_view()), name='letter'),
     url(r'^turnus/(?P<pk>[0-9]+)/podopieczni/(?P<batch_participant_id>[0-9]+)/$', views.batch_participant_edit,
         name='batch_participant_edit'),
     url(r'^turnusy/$', views.batches, name='batches'),
