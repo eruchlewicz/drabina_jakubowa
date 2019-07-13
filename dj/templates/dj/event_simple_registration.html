@@ -8,28 +8,28 @@
                 <div class="col-lg-10 mx-auto">
 
                     <span class="float-right">
-                        <a class="link-decoration-none" href="{% url 'dj:event_registration' %}">
-                            <button class="btn btn-primary m-b-10">Wydarzenia</button>
-                        </a>
                         <a class="link-decoration-none" href="{% url 'dj:workshop_sign' %}">
-                            <button class="btn btn-warning m-b-10">Warsztaty</button>
+                            <button class="btn btn-primary m-b-10">Warsztaty</button>
                         </a>
                         <a class="link-decoration-none" href="{% url 'dj:music_training_sign' %}">
-                            <button class="btn btn-info m-b-10">Muzyczne</button>
+                            <button class="btn btn-warning m-b-10">Muzyczne</button>
+                        </a>
+                        <a class="link-decoration-none" href="{% url 'dj:registration' %}">
+                            <button class="btn btn-info m-b-10">Turnusy</button>
                         </a>
                         <a class="link-decoration-none" href="{% url 'dj:retreat_sign' %}">
                             <button class="btn btn-success m-b-10">Rekolekcje</button>
                         </a>
-                        <a class="link-decoration-none" href="{% url 'dj:event_simple_registration' %}">
-                            <button class="btn btn-danger m-b-10">Inne</button>
+                        <a class="link-decoration-none" href="{% url 'dj:event_registration' %}">
+                            <button class="btn btn-danger m-b-10">Wydarzenia</button>
                         </a>
                     </span>
 
-                    <h2>Zapisz się na turnus</h2>
+                    <h2>Zapisz się na inne wydarzenie</h2>
                     <hr /><br />
                     <form class="form-horizontal" action="" role="form" method="post">
                         {% csrf_token %}
-                        {% include 'dj/includes/volunteer_form_template.html' %}
+                        {% include 'dj/includes/event_registration_form.html' %}
 
                         <div class="form-group bold">
                             Oświadczenie:<br />

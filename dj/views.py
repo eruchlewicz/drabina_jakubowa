@@ -1135,7 +1135,7 @@ def event_registration(request):
     else:
         form_class = PersonForm
         form_class2 = EventSignForm
-        template_name = 'dj/simple_event_registration.html'
+        template_name = 'dj/event_simple_registration.html'
         today = now
         form = form_class(request.POST or None)
         form2 = form_class2(request.POST or None)

@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^rekolekcje/(?P<pk>[0-9]+)/$', views.retreat_details, name='retreat_details'),
     url(r'^turnusy/$', views.batches_view, name='batches'),
     url(r'^wydarzenia/$', views.UserEventFormView.as_view(), name='event_registration'),
+    url(r'^inne-wydarzenia/$', views.event_registration, name='event_simple_registration'),
     url(r'^wydarzenia/(?P<pk>[0-9]+)/$', views.event_details, name='event_details'),
     url(r'^turnusy/(?P<pk>[0-9]+)/$', views.batch_view, name='batch_view'),
     url(r'^turnusy/(?P<pk>[0-9]+)/podopieczni/(?P<participant_id>[0-9]+)/$', views.participant_details,
