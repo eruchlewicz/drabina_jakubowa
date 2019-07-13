@@ -167,6 +167,13 @@ class EventVolunteerAdmin(admin.ModelAdmin):
     search_fields = ['volunteer__surname', 'volunteer__first_name', 'event__begin_date']
 
 
+class EventPersonAdmin(admin.ModelAdmin):
+    ordering = ('-event__begin_date', 'event__name')
+    list_filter = ('event__name', 'event__begin_date', 'person__city')
+    list_display = ('event', 'person', 'is_paid')
+    search_fields = ['person__surname', 'person__first_name', 'event__begin_date']
+
+
 admin.site.register(Director, DirectorAdmin)
 admin.site.register(Institution, InstitutionAdmin)
 admin.site.register(Priest, PriestAdmin)
@@ -184,3 +191,4 @@ admin.site.register(EventParticipant, EventParticipantAdmin)
 admin.site.register(Person, PersonAdmin)
 admin.site.register(RetreatOrMusicTraining, RetreatOrMusicTrainingAdmin)
 admin.site.register(RetreatOrMusicTrainingPerson, RetreatOrMusicTrainingPersonAdmin)
+admin.site.register(EventPerson, EventPersonAdmin)
