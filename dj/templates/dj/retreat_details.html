@@ -1,0 +1,62 @@
+{% extends "dj/base.html" %}
+
+{% block content %}
+    <section id="training" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>{{ training }}</h2>
+                    <hr /><br />
+
+                    <span class="bold">Termin: </span>
+                    {% if training.begin_date.day == training.end_date.day %}
+                        {{ training.begin_date|date:"d.m.Y" }}
+                    {% else %}
+                        {{ training.begin_date|date:"d.m.Y" }} - {{ training.end_date|date:"d.m.Y" }}
+                    {% endif %}
+                    <br />
+                    <span class="bold">Miejsce: </span>
+                    {% if not training.institution is None %}
+                        {{ training.institution.address }}, {{ training.institution.zip_code }} {{ training.institution.city }}
+                    {% endif %}
+                    <br />
+                    <span class="bold">Koordynatorzy: </span>
+                    {% if not training.main_coordinator is None %}
+                        {{ training.main_coordinator }} - {{ training.main_coordinator.volunteer.phone_number }}
+                        ({{ training.main_coordinator.volunteer.email_address }})
+
+                    {% endif %}
+                    {% if not training.auxiliary_coordinator is None %}
+                        , <br/>
+                        {{ training.auxiliary_coordinator }} - {{ training.auxiliary_coordinator.volunteer.phone_number }}
+                        ({{ training.auxiliary_coordinator.volunteer.email_address }})
+                    {% endif %}
+                    <br />
+                    <span class="bold">Informacje: </span>
+                    {% if not training.info is None %}
+                        {{ training.info }}
+                    {% endif %}
+                    <br />
+                    <span class="bold">Koszt: </span>
+                    {{ training_volunteer.total_cost }} zł
+                    <br />
+                    <span class="bold">Potwierdzenie wpłaty: </span>
+                        {% if training_volunteer.is_paid == True %}
+                            Tak
+                        {% else %}
+                            Nie
+                        {% endif %}
+
+                    <br />
+                    <br />
+
+                    <a class="link-decoration-none" href="{% url 'dj:retreat_sign' %}">
+                        <button class="btn btn-default">Wróć</button>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

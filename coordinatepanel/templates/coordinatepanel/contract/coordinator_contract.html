@@ -1,0 +1,297 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+{% load mathfilters %}
+
+{% block extra_style %}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}" />
+    <style type="text/css">
+        @page {
+            margin-left: 0.8cm;
+            margin-right: 0.8cm;
+            margin-top: 0.5cm;
+            margin-bottom: 0.5cm;
+        }
+        @font-face {
+            font-family: Cuprum;
+            src: url(/static/fonts/Cuprum-Regular.ttf); }
+        @font-face {
+            font-family: CuprumBold;
+            src: url(/static/fonts/Cuprum-Bold.ttf); }
+        .cuprum {
+            font-family: Cuprum, sans-serif;
+        }
+        .font-24 {
+            font-size: 24px;
+        }
+        .font-16 {
+            font-size: 16px;
+        }
+        .bold {
+            font-family: CuprumBold, sans-serif;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="main cuprum font-16">
+            <div class="container">
+                <table class="m-0 m-b-25">
+                     <tr>
+                        <td class="center" colspan="2">
+                            <span class="font-24 bold">
+                                Centrum Księdza Orione
+                                <br />
+                                w Brańszczyku
+                                <br/>
+                            </span>
+                            <span class="font-16 font">
+                                Dom Emeryta | Dom Rekolekcyjny <br />
+                                Drabina Jakubowa | Rehabilitacja+
+                            </span>
+                        </td>
+                        <td colspan="3">
+                            <img src="{% static '/images/icons.png' %}" />
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="center m-0 m-b-15">
+                    <span class="bold font-24">Umowa o wolontariat Koordynatora Turnusu</span>
+                </div>
+
+            <div class="text-indent justify m-0 m-b-25">
+                W dniu {{ batchvolunteer.batch_begin_date|date:"d.m.Y" }}r. w miejscowości {{ batchvolunteer.batch.institution.city }},
+                pomiędzy {{ congregation }}, {{ congregation.main_institution }}, które reprezentuje {{ congregation.director }} – kierownik dzieła {{ congregation.community }},
+                zwanym w dalszej części Organizatorem, a
+                {% if batchvolunteer.volunteer.sex == 'K' %}
+                    Panią
+                {% else %}
+                    Panem
+                {% endif %}
+                {{ batchvolunteer.volunteer.first_name }} {{ batchvolunteer.volunteer.surname }},
+                zam. w {{ batchvolunteer.volunteer.zip_code }} {{  batchvolunteer.volunteer.city }},
+                {{ batchvolunteer.volunteer.address }},
+                {% if batchvolunteer.volunteer.sex == 'K' %}
+                    legitymującą
+                {% else %}
+                    legitymującym
+                {% endif %}
+                się nr PESEL {{ batchvolunteer.volunteer.pesel }},
+                {% if batchvolunteer.volunteer.sex == 'K' %}
+                    zwaną
+                {% else %}
+                    zwanym
+                {% endif %}
+                w dalszej części Koordynatorem turnusu, została zawarta umowa następującej treści:
+            </div>
+
+
+            <div class="m-0">
+                <div class="center">§ 1 </div>
+                <div class="left">
+                    Koordynator turnusu pracuje bezinteresownie, za swoją pracę nie pobiera wynagrodzenia. Wartość
+                    świadczeń Koordynatora turnusu nie stanowi darowizny na rzecz korzystającego w rozumieniu przepisów
+                    Kodeksu Cywilnego i przepisów podatkowych.
+                </div>
+                <div class="center">§ 2 </div>
+                <div class="left">
+                    Koordynator turnusu, z którym podpisano umowę jest zobowiązany do wykonywania świadczeń zgodnie
+                    z harmonogramem ustalonym z Organizatorem.
+                </div>
+                <div class="center">§ 3 </div>
+                <div class="left">
+                    Koordynatorem turnusu może zostać każda osoba, która w ocenie organizatora posiada predyspozycje
+                    do kierowania turnusem. Organizator powołuje koordynatora turnusu spośród osób, które przynajmniej
+                    raz uczestniczyły w turnusie Drabiny Jakubowej jako wolontariusz.
+                </div>
+            </div>
+            <div class="bold center m-0 m-t-10">Zakres świadczeń wykonywanych przez Koordynatora turnusu</div>
+            <div class="m-0">
+                <div class="center">§ 4 </div>
+                <div class="left">
+                        Szczegółowy zakres świadczeń wykonywanych przez Koordynatora turnusu, ustalany jest z
+                        Organizatorem i może obejmować m.in. następujące czynności:
+                        <br />
+                        1.	Współpraca z Szefem Sztabu podczas przygotowywania turnusu przed i po jego rozpoczęciu.
+                        W zakres współpracy może wchodzić: Poszukiwanie pielęgniarek, wolontariuszy i darczyńców na
+                        turnus Drabiny Jakubowej, współtworzenie akcji promocyjnych mających na celu poszukiwanie ww
+                        osób oraz budowanie pozytywnego wizerunku Drabiny Jakubowej wśród społeczeństwa.
+                        <br />
+                        2.	Zakwaterowanie wolontariuszy i podopiecznych.
+                        <br />
+                        3.	Przydzielenie podopiecznym wolontariuszy, którzy będą sprawować nad nimi opiekę w czasie
+                        turnusu w taki sposób, aby zabezpieczyć potrzeby podopiecznych i umożliwić wolontariuszom
+                        wywiązanie się z powierzonego zadania.
+                        <br />
+                        4.	Wyłonienie spośród wolontariuszy grup funkcyjnych, do których w zależności od potrzeb
+                        i w uzgodnieniu z Organizatorem mogą należeć grupa: muzyczna, porządkowa, kuchenna, animacyjna,
+                        techniczna oraz wyznaczenie liderów tych grup.
+                        <br />
+                        5.	Dbanie o prawidłowy przebieg turnusu Drabiny Jakubowej, zgodnie z ustalonym harmonogramem,
+                        w harmonii z tematami rekolekcji.
+                        <br />
+                        6.	Rozliczenie z organizowanego turnusu w oparciu o Kartę obiegową turnusu, która stanowi
+                        załącznik nr 4 do Regulaminu, najpóźniej 14 dni roboczych po zakończeniu turnusu.
+                        <br /><br />
+                </div>
+            </div>
+            <div class="bold center m-0 m-t-5">Prawa Koordynatora turnusu</div>
+            <div class="m-0">
+                <div class="center">§ 5 </div>
+                <div class="left">
+                        1.	Koordynator turnusu ma prawo do uzyskania informacji o przysługujących mu prawach i
+                        obowiązkach.
+                        <br />
+                        2.	Koordynator turnusu ma prawo do bezpiecznych i higienicznych warunków wykonywania świadczeń.
+                        <br />
+                        3.	Koordynator turnusu ma prawo do uzyskania informacji o ryzyku dla zdrowia i bezpieczeństwa
+                        związanych z wykonywanymi świadczeniami oraz o zasadach ochrony przed zagrożeniami.
+                        <br />
+                        4.	Koordynator turnusu ma prawo do szkoleń i formacji przygotowujących go do pełnienia swojej
+                        funkcji.
+                        <br />
+                        5.	Koordynator turnusu ma prawo do uzyskania wsparcia w sytuacjach kryzysowych, wynikających
+                        z pełnionej posługi w czasie turnusu.
+                        <br />
+                        6.	Koordynator turnusu ma prawo do otrzymania pisemnego zaświadczenia o wykonywaniu świadczeń,
+                        z określeniem ich zakresu.
+                </div>
+            </div>
+            <div class="bold center m-0 m-t-5">Obowiązki Koordynatora turnusu</div>
+            <div class="m-0">
+                <div class="center">§ 6 </div>
+                <div class="left">
+                    1.	W czasie współpracy Koordynator turnusu jest zobowiązany:
+                    <br />
+                    Przestrzegać obowiązujących przepisów prawa, oraz przepisów wewnętrznych Centrum Księdza Orione w
+                    szczególności Regulaminu Organizacyjnego i zasad zawartych w umowie koordynatora turnusu oraz
+                    niniejszym regulaminie.
+                    <br />
+                    2.	Nosić identyfikator w trakcie pracy.
+                    <br />
+                    3.	Przestrzegać praw pacjenta.
+                    <br />
+                    4.	Koordynować opiekę wolontariuszy nad podopiecznymi tak by nie dopuścić do zaniedbań szczególnie
+                    w zakresie bezpieczeństwa, wyglądu, higieny i zdrowia podopiecznego.
+                    <br />
+                    5.	Wykonywać podjęte zadania sumiennie, z zachowaniem należytej staranności, w poszanowaniu
+                    godności osób chorych oraz we współpracy z innymi wolontariuszami i personelem.
+                    <br />
+                    6.	Dbać o majątek powierzony przez Organizatora.
+                    <br />
+                    7.	Przestrzegać ochrony danych osobowych zgodnie z obowiązującym prawem i w taki sposób, by
+                    wykluczyć jakąkolwiek możliwość udostępnienia ich osobom trzecim oraz zgodnie z polityką
+                    przetwarzania danych osobowych organizatora.
+                    <br />
+                    8.	Przekazywać jak najszybciej każdą zauważoną zmianę w stanie zdrowia podopiecznych Pielęgniarce.
+                    <br />
+                    9.	Koordynować wykonywane przez wolontariuszy codzienne zadania zgodnie z harmonogramem pracy i
+                    planem dnia, który ustala wraz z Organizatorem.
+                    <br />
+                    10.	W przypadku nieprzewidzianej konieczności wyjazdu z turnusu Koordynator turnusu przekazuje
+                    swoje obowiązki zastępcy koordynatora. Wyjazd koordynatora może nastąpić jedynie po wcześniejszej
+                    konsultacji z Organizatorem.
+                    <br />
+                    11.	Przewodniczyć w zebraniach wolontariuszy. Koordynator odpowiedzialny jest za przygotowanie
+                    podsumowania dnia, wydarzenia, a także przekazanie wolontariuszom informacji dotyczących planu
+                    pracy na kolejne dni.
+                    <br />
+                    12.	Kontrolować miejsca zajęć podopiecznych (teren, budynek, pomieszczenia) oraz dróg do nich
+                    prowadzących, w szczególności sprawdzenie, czy ich aktualny stan odpowiada wymogom i przepisom z
+                    zakresu bezpieczeństwa i higieny.
+                    <br />
+                    13.	Zgłaszać administratorowi budynku wszelkie usterki i uszkodzenia wyposażenia, urządzeń
+                    technicznych, instalacji, sprzętu.
+                    <br />
+                    14.	Podejmować próbę usunięcia wszelkich dostrzeżonych braków i usterek, jeżeli usunięcie ich we
+                    własnym zakresie jest możliwe. Usunięcie tych usterek Koordynator może zgłosić liderowi grupy
+                    technicznej (jeśli taka jest), a jeśli naprawa nie będzie leżała w kompetencji grupy, zobowiązany
+                    jest niezwłocznie zgłosić je do organizatora.
+                    <br />
+                    15.	Natychmiastowo przerwać zajęcia, gdy stan terenu, budynku, pomieszczenia, sprzętu, instalacji,
+                    materiału zagraża podopiecznym, wolontariuszom, pracownikom lub innym osobom.
+                    <br />
+                    16.	Natychmiastowo udzielić lub zapewnić podopiecznemu pierwszej pomocy i dalszej opieki.
+                    <br />
+                    17.	W razie nieszczęśliwego wypadku, powiadomić o wypadku organizatora lub osoby zastępującej go,
+                    przeciwdziałać ujemnym skutkom wypadku i podjąć inne niezbędne środki.
+                    <br />
+                    18.	Współpracować z wolontariatami innych dzieł organizaora.
+                </div>
+            </div>
+            <div class="bold center m-0 m-t-5">Zakończenie pracy koordynatora</div>
+            <div class="m-0">
+                <div class="center">§ 7 </div>
+                <div class="left">
+                    1.	Umowa kończy się z datą zawartą w jej treści. Koordynator zobowiązany jest rozliczyć się z
+                    organizatorem w oparciu o kartę obiegową (załącznik nr 4).
+                    <br />
+                    2.	Każda ze stron może wypowiedzieć Umowę Wolontariatu z zachowaniem 5–dniowego okresu
+                    wypowiedzenia.
+                    <br />
+                    3.	Centrum Księdza Orione może rozwiązać Umowę w trybie natychmiastowym w razie niewykonania
+                    lub nienależytego wypełnienia przez Wolontariusza podstawowych obowiązków wynikających z Umowy,
+                    a w szczególności:
+                    <br />
+                    a) Za naruszenie przez Wolontariusza Regulaminu Wolontariatu lub innych wewnętrznych aktów
+                    normatywnych Centrum Księdza Orione,
+                    <br />
+                    b) Za spożywanie alkoholu i środków odurzających podczas trwającego turnusu,
+                    <br />
+                    c) Za nieobyczajne zachowanie.
+                </div>
+            </div>
+            <div class="bold center m-0 m-t-5">Postanowienia końcowe</div>
+            <div class="m-0">
+                <div class="center">§ 8 </div>
+                <div class="left">
+                    1.	W sprawach nie uregulowanych porozumieniem zastosowanie ma regulamin turnusu, warunki
+                    uczestnictwa, ustawa Kodeks cywilny oraz ustawa o działalności pożytku publicznego i o wolontariacie.
+                    <br />
+                    2.	Wszelkie zmiany w umowie powinny być sporządzone w formie pisemnej.
+                    3.	Regulamin może ulec zmianie. Organizator ma obowiązek poinformować o zmianach wszystkich,
+                    którzy mają podpisaną i trwającą umowę opartą na regulaminie.
+                    <br />
+                    4.	Umowa wolontariacka zawarta jest na okres od daty podpisania umowy, do końca koordynowanego
+                    turnusu, którego termin przypada w dniach:
+                    {{ batchvolunteer.batch_begin_date|date:"d.m.Y" }} - {{ batchvolunteer.batch_end_date|date:"d.m.Y" }}
+                </div>
+            </div>
+
+
+                <table class="m-t-15">
+                    <tr>
+                        <td align="center"><br /></td>
+                        <td align="center"><br /></td>
+                        <td align="center"><br /></td>
+                    </tr>
+                    <tr>
+                        <td align="center">................................................................</td>
+                        <td align="center">................................................................</td>
+                        <td align="center">................................................................</td>
+                    </tr>
+                    <tr>
+                        <td align="center">ORGANIZATOR</td>
+                        <td align="center">DATA PODPISANIA</td>
+                        <td align="center">WOLONTARIUSZ</td>
+                    </tr>
+                </table>
+
+                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+                 <div class="center font-14">
+                    ul. Jana Pawła II 1, 07-221 Brańszczyk, branszczyk.orione.pl | branszczyk@orione.pl; tel. 297423565
+                    <br />
+                    NIP: PL7621267298, Regon: 550462602
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

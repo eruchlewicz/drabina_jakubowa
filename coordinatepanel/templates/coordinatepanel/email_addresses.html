@@ -1,0 +1,23 @@
+{% extends "coordinatepanel/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="emails">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Adresy e-mail</h2>
+                    <hr /><br />
+
+                    {% for batch_vol in batch_volunteers %}
+                        {{ batch_vol.volunteer.email_address }},
+                    {% endfor %}
+
+                    <br />
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

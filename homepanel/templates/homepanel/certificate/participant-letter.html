@@ -1,0 +1,202 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+{% load mathfilters %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}" />
+    <style type="text/css">
+        @page {
+            margin-left: 1.5cm;
+            margin-right: 1.5cm;
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+        }
+        @font-face {
+            font-family: Cuprum;
+            src: url(/static/fonts/Cuprum-Regular.ttf); }
+        @font-face {
+            font-family: CuprumBold;
+            src: url(/static/fonts/Cuprum-Bold.ttf); }
+        @font-face {
+            font-family: CuprumItalic;
+            src: url(/static/fonts/Cuprum-Italic.ttf); }
+        .cuprum {
+            font-family: Cuprum, sans-serif;
+        }
+        .italic {
+            font-family: CuprumItalic, sans-serif;
+        }
+        .font-24 {
+            font-size: 24px;
+        }
+        .font-20 {
+            font-size: 20px;
+        }
+        .font-18 {
+            font-size: 18px;
+        }
+        .font-16 {
+            font-size: 16px;
+        }
+        .bold {
+            font-family: CuprumBold, sans-serif;
+        }
+        .font-12 {
+            font-size: 12px;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+        .m-t-8- {
+            margin-top: -8px;
+        }
+        .m-l-8 {
+            margin-left: 8px;
+        }
+        .m-b-8- {
+            margin-bottom: -8px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="main cuprum font-16">
+            <div class="container">
+                <table class="m-b-25">
+                    <tr>
+                        <td class="center" colspan="2">
+                            <span class="font-24 bold">
+                                Centrum Księdza Orione
+                                <br />
+                                w Brańszczyku
+                                <br/>
+                            </span>
+                            <span class="font-16 font">
+                                Dom Emeryta | Dom Rekolekcyjny <br />
+                                Drabina Jakubowa | Rehabilitacja+
+                            </span>
+                        </td>
+                        <td colspan="3">
+                            <img src="{% static '/images/icons.png' %}" />
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="center m-0 m-b-15">
+                    <span class="bold font-24">Zgłoszenie na turnus Drabiny Jakubowej</span>
+                </div>
+
+            <div class="justify m-0 m-b-5 font-16">
+                <h2 class="bold">Potwierdzenie</h2>
+
+                Podopieczny/a <span class="bold">{{ batchparticipant.participant.surname }}
+                {{ batchparticipant.participant.first_name }}</span>,
+                o nr PESEL {{ batchparticipant.participant.pesel }} został/a zapisany/a na
+                {% if batchparticipant.reserve_list == True %}
+                    listę rezerwową
+                {% else %}
+                    listę podstawową
+                {% endif %}
+                na {{ batchparticipant.batch }}  w dniach
+                {{ batchparticipant.batch_begin_date|date:"d.m.Y" }}-{{ batchparticipant.batch_end_date|date:"d.m.Y" }},
+                który odbędzie się przy ul. {{ batchparticipant.batch.institution.address }}, w miejscowości
+                {{ batchparticipant.batch.institution.city }}.
+                Całkowity koszt turnusu wynosi {{ batchparticipant.batch.batch_price }}0 złotych.
+                Uwaga: umieszczenie na liście rezerwowej nie oznacza przyjęcia na turnus.
+                Ostatecznie przyjęcie na turnus jest uzależnione od znalezienia wolontariuszy!!!
+                Uwaga: przyjazd od godziny 9.00; wyjazd z turnusu do 12.00.
+
+                <h2 class="bold">RODO</h2>
+
+                Niniejszym wyrażam zgodę zgodnie z aktualnie obowiązującym prawem na przetwarzanie danych osobowych
+                podopiecznego do celów organizacji turnusów rekolekcyjnych Drabina Jakubowa administratorowi, którym
+                jest Zgromadzenie Zakonne Małe Dzieło Boskiej Opatrzności - Orioniści Prowincja Polska, które
+                reprezentuje mianowany do tego zadania Kierownik.
+                Dane te mogą być również przetwarzane przez koordynatorów wyznaczonych do organizacji danego turnusu
+                przez danego kierownika oraz przez wolontariuszy wyznaczonych do opieki nad podopiecznym zgłoszonym
+                do udziału w turnusie.
+                W sprawach związanych z administrowaniem tymi danymi m.in. poprawianiem ich lub ich zapomnieniem oraz
+                kontakt z inspektorem ochrony danych odbywa się przez pocztę elektroniczną pod adresem
+                <span class="dark-blue underline">daneosobowe@drabinajakubowa.pl</span>.
+                Dane te będą przetwarzane zgodnie z dokumentem “Polityka przetwarzania danych osobowych w
+                Drabinie Jakubowej”.
+                <br />
+                <div class="center m-t-15">
+                    ............................................................................................
+                    <br />
+                    dnia {{ date|date:"d.m.Y" }}
+                    {% if batchparticipant.participant.guardian_name is None %}
+                        {{ batchparticipant.participant.first_name }} {{ batchparticipant.participant.surname }}
+                    {% else %}
+                        {{ batchparticipant.participant.guardian_name }}
+                    {% endif %}
+                </div>
+
+                ---------------------------------------------------------------------------------------------------------------------
+                <h2 class="bold">Potwierdzenie wpłaty</h2>
+
+                Dnia {{ date|date:"d.m.Y" }}, L.dz. KP{{ date|date:"Y" }}/{{ date|date:"m" }}/DJ_ _
+                <br />
+                Niniejszym potwierdzam przyjęcie zaliczki od podopiecznego/ej
+                {{ batchparticipant.participant.surname }} {{ batchparticipant.participant.first_name }} na turnusie:
+                {{ batchparticipant.batch }} w {{ batchparticipant.batch.institution }}
+                w gotówce, w kwocie {{ batchparticipant.installment }}0.
+                Numer zgłoszenia: {{ batchparticipant.payment_id }}
+
+                <div class="center m-t-15">
+                    ............................................................................................
+                    <br />
+                    podpis
+                </div>
+
+                <h1 class="bold">Informacje o płatnościach</h1>
+
+                Potwierdzeniem zgłoszenia jest wpłacenie zaliczki w wysokości 100,- złotych na konto bankowe:
+                <br />
+
+                <div class="bold m-t-5 m-b-8 font-18">{{ home.bank_account }}</div>
+
+                <span>- w przypadku Sylwestra do końca listopada {{ batchparticipant.batch_begin_date|date:"Y" }},</span><br />
+                <span>- w przypadku Wakacji do końca kwietnia {{ batchparticipant.batch_begin_date|date:"Y" }}.</span>
+
+                <div class="bold m-t-5 m-b-8 font-18">W tytule przelewu należy umieścić kod: {{ batchparticipant.payment_id }} </div>
+
+                Uprzejmie prosimy o przywiezienie ze sobą na turnus potwierdzenia dokonania wpłaty.
+                Nieopłacenie zaliczki będzie skutkować usunięciem z turnusu.
+                Zwrócenie zaliczki w przypadku rezygnacji jest możliwe nie później niż tydzień przed rozpoczęciem turnusu.
+
+                <h1 class="bold">Zaproszenie</h1>
+
+                Zapraszamy do Brańszczyka nie tylko na turnusy. {{ heaven_gate.begin_date|date:"d.m.Y" }} organizujemy kolejny raz
+                uwielbieniowe spotkanie integracyjne Brama Nieba. Rodzice naszych podopiecznych są mile widziani jako obserwatorzy
+                podczas tzw. Sztabu Centralnego {{ central_dj.begin_date|date:"d.m.Y" }}, kiedy Drabina Jakubowa planuje swój
+                nowy sezon pracy śródrocznej.
+
+                <h1 class="bold">Co zabrać na turnus?</h1>
+
+                    <span class="text-indent-0">- potwierdzenie wpłaty zaliczki lub całej kwoty za turnus </span><br />
+                    <span>- zaświadczenie od lekarza o branych lekach </span><br />
+                    <span>- leki w oryginalnych opakowaniach (Drabina Jakubowa ich nie zapewnia) </span><br />
+                    <span>- pieluchy, podkłady i środki pielęgnacyjne (Drabina Jakubowa ich nie zapewnia) </span><br />
+                    <span>- nakrycie głowy, krem do opalania </span><br />
+                    <span>- kieszonkowe pieniądze </span><br />
+
+                <h1 class="bold">Kontakt</h1>
+                We wszystkich sprawach dotyczących zapisów prosimy kontaktować się pod numerem tel. 796 899 047.
+                Koordynator zapisów odbiera bezpośrednio lub oddzwania w dogodnym momencie.
+
+            </div>
+                <br />
+                <div class="center font-14">
+                    {{ home.address }}, {{ home.zip_code }} {{ home.city }}, {{ home.page_url }} | {{ home.email_address }};
+                    tel. {{ home.phone_number }}
+                    <br />
+                    NIP: {{ home.nip }}, Regon: {{ home.regon }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

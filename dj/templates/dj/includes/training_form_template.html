@@ -1,0 +1,41 @@
+{% load widget_tweaks %}
+{% for field in form %}
+    <div class="form-group row">
+        <label class="medium-bold col-form-label col-12 col-sm-5 col-lg-3">{{ field.label_tag }}</label>
+        <div class="col-12 col-sm-7 col-lg-5">
+            {{ field|attr:"class:form-control" }}
+        </div>
+        <span class="text-danger small">{{ field.errors }}</span>
+        <span class="offset-lg-3 offset-sm-5 f-10 gray p-l-15">{{ field.help_text }}</span>
+    </div>
+{% endfor %}
+{% for field in form2 %}
+    <div class="form-group row">
+        <label class="medium-bold col-12 col-sm-5 col-lg-3">{{ field.label_tag }}</label>
+        <div class="col-12 col-sm-7 col-lg-5">
+            {{ field|attr:"class:form-control" }}
+        </div>
+        <span class="text-danger small col-lg-4">{{ field.errors }}</span>
+    {% ifequal field.name 'saturday_sunday' %}
+        <label class="medium-bold col-12 col-sm-5 col-lg-3 mt-sm-3 mt-3">Koszt:</label>
+        <div id="total_price" class="col-12 col-sm-7 col-lg-5 mt-sm-3 bold red">
+        </div>
+    {% endifequal %}
+    {% ifequal field.name 'data_processing_agreement' %}
+
+        <div class="small col-sm-12 text-right">
+            Wyrażam zgodę na przetwarzanie podanych danych osobowych do celów statutowych Zgromadzenia Zakonnego
+            Małe Dzieło Boskiej Opatrzności – Orioniści Prowincja Polska zgodnie z ustawą z dnia 29.08.1997 o Ochronie
+            Danych Osobowych Dz. U. Nr 133 poz. 883 z póź. zm. <br/>
+            <a href="{% url 'dj:index' %}#rodo">Polityka Przetwarzania Danych Osobowych</a>
+        </div>
+    {% endifequal %}
+    {% ifequal field.name 'photographing_agreement' %}
+        <div class="small col-sm-12 text-right">
+            Wyrażam zgodę Zgromadzeniu Zakonnemu Małe Dzieło Boskiej Opatrzności - Orioniści Prowincja Polska na
+            fotografowanie i publikację zdjęć z moją osobą tylko do celów promocji Drabiny Jakubowej - Rekolekcji dla
+            osób niepełnosprawnych.
+        </div>
+    {% endifequal %}
+    </div>
+{% endfor %}

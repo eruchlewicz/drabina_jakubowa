@@ -1,0 +1,62 @@
+{% extends "coordinatepanel/base.html" %}
+{% load mathfilters %}
+{% load static %}
+
+{% block content %}
+    <section id="batch_volunteers" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Lista wolontariuszy</h2>
+                    <hr /><br />
+                    <ul>
+                        {% for obj in event_volunteers_list %}
+                            <li class="lead">
+                                <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                    <span class="col-xs-6 col-sm-5 col-md-4 col-lg-5">
+                                        <a class="medium-bold" href="{% url 'coordinatepanel:event_volunteer_details' event_id obj.volunteer.id %}">
+                                            {{ obj.volunteer.surname }} {{ obj.volunteer.first_name }}
+                                        </a>
+                                        <span class="bd_cake"></span>
+                                        {% if obj.is_paid is True %}
+                                            <span class="green medium-bold">(zapłacono)</span>
+                                        {% else %}
+                                            <span class="red medium-bold">(nie zapłacono)</span>
+                                        {% endif %}
+                                        <span class="if_bd hidden">{{ obj.volunteer.pesel }}</span>
+                                    </span>
+                                    <span class="col-xs-6 col-sm-7 col-md-8 col-lg-7 float-right text-right">
+                                        {% if obj.event.end_date >= now %}
+                                        <a onclick="return confirm('Czy na pewno chcesz wypisać tego wolontariusza?')" class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:delete_event_volunteer' obj.event.id obj.id %}">
+                                            <button class="btn btn-danger btn-sm">Usuń</button>
+                                        </a>
+                                        {% endif %}
+                                        <a class="link-decoration-none"
+                                           href="{% url 'coordinatepanel:event_volunteer_payment' obj.event.id obj.id %}">
+                                            <button class="btn btn-success btn-sm">Płatności</button>
+                                        </a>
+                                    </span>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <span id="begin_date" class="hidden">{{ event.event.begin_date|date:"Y.m.d" }}</span>
+                    <span id="end_date" class="hidden">{{ event.event.end_date|date:"Y.m.d" }}</span>
+
+                    <br />
+                    <a class="link-decoration-none" href="{% url 'coordinatepanel:event_details' event_id %}">
+                        <button class="btn btn-default">Wróć</button>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/count_birthday.js' %}"></script>
+{% endblock %}

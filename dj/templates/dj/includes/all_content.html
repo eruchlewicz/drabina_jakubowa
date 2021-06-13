@@ -1,0 +1,110 @@
+{% load staticfiles %}
+{% block content %}
+    <p class="lead">
+        {% for post in event_posts %}
+            <div class="white-container">
+                <div class="flex row">
+                    <div class="col-lg-5 col-md-5 col-sm-6 col-12 p-t-10 p-b-10 p-l-20">
+                        {% if post.photo.url is not None %}
+                            <img class="img-fluid d-block border-radius-3" src="{{ post.photo.url }}">
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-7 col-md-5 col-sm-6 col-12">
+                        {% if post.title is None %}
+                            {% if post.batch is not None %}
+                                <span class="medium-bold f-24">{{ post.batch.name }} - {{ post.batch.institution.city }}</span><br />
+                                {% if post.batch.begin_date.date == post.batch.end_date.date %}
+                                    <p class="gray f-16 m-b-10">{{ post.batch.begin_date|date:'d.m.Y' }}</p>
+                                {% else %}
+                                    <p class="gray f-16 m-b-10">{{ post.batch.begin_date|date:'d.m.Y' }} - {{ post.batch.end_date|date:'d.m.Y' }}</p>
+                                {% endif %}
+                            {% elif post.event is not None %}
+                                <span class="medium-bold f-24">{{ post.event.name }}</span><br />
+                                {% if post.event.begin_date.date == post.event.end_date.date %}
+                                    <p class="gray f-16 m-b-10">{{ post.event.begin_date|date:'d.m.Y' }}</p>
+                                {% else %}
+                                    <p class="gray f-16 m-b-10">{{ post.event.begin_date|date:'d.m.Y' }} - {{ post.event.end_date|date:'d.m.Y' }}</p>
+                                {% endif %}
+                            {% elif post.retreat_or_music_training is not None %}
+                                <span class="medium-bold f-24">{{ post.retreat_or_music_training.name }}</span><br />
+                                {% if post.retreat_or_music_training.begin_date.date == post.retreat_or_music_training.end_date.date %}
+                                    <p class="gray f-16 m-b-10">{{ post.retreat_or_music_training.begin_date|date:'d.m.Y' }}</p>
+                                {% else %}
+                                    <p class="gray f-16 m-b-10">{{ post.retreat_or_music_training.begin_date|date:'d.m.Y' }} - {{ post.retreat_or_music_training.end_date|date:'d.m.Y' }}</p>
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            <span class="medium-bold f-24">{{ post.title }}</span><br />
+                            {% if post.batch is not None %}
+                                {% if post.batch.begin_date.date == post.batch.end_date.date %}
+                                    <p class="gray f-16 m-b-10">{{ post.batch.begin_date|date:'d.m.Y' }}</p>
+                                {% else %}
+                                    <p class="gray f-16 m-b-10">{{ post.batch.begin_date|date:'d.m.Y' }} - {{ post.batch.end_date|date:'d.m.Y' }}</p>
+                                {% endif %}
+                            {% elif post.event is not None %}
+                                {% if post.event.begin_date.date == post.event.end_date.date %}
+                                    <p class="gray f-16 m-b-10">{{ post.event.begin_date|date:'d.m.Y' }}</p>
+                                {% else %}
+                                    <p class="gray f-16 m-b-10">{{ post.event.begin_date|date:'d.m.Y' }} - {{ post.event.end_date|date:'d.m.Y' }}</p>
+                                {% endif %}
+                            {% elif post.retreat_or_music_training is not None %}
+                                {% if post.retreat_or_music_training.begin_date.date == post.retreat_or_music_training.end_date.date %}
+                                    <p class="gray f-16 m-b-10">{{ post.retreat_or_music_training.begin_date|date:'d.m.Y' }}</p>
+                                {% else %}
+                                    <p class="gray f-16 m-b-10">{{ post.retreat_or_music_training.begin_date|date:'d.m.Y' }} - {{ post.retreat_or_music_training.end_date|date:'d.m.Y' }}</p>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                        <span class="dark-gray">
+                            {% if post.content is not None %}
+                                {{ post.content }}
+                            {% endif %}
+                            {% if post.batch is not None %}
+                                {% if post.batch.is_closed is True %}
+                                <span class="color-gray" style="text-decoration: line-through;">Zapisz się już dziś!</span>
+                                <span class="medium-bold">Zapisy zakończone!</span>
+                                {% else %}
+                                    <a href="{% url 'dj:registration' %}">Zapisz się już dziś!</a>
+                                {% endif %}
+                            {% elif post.event is not None %}
+                                {% if post.event.is_closed is True %}
+                                    <span class="color-gray" style="text-decoration: line-through;">Zapisz się już dziś!</span>
+                                    <span class="medium-bold">Zapisy zakończone!</span>
+                                {% else %}
+                                    <a href="{% url 'dj:event_registration' %}">Zapisz się już dziś! </a>
+                                {% endif %}
+                            {% elif post.retreat_or_music_training is not None %}
+                                {% if post.retreat_or_music_training.type == 'R' %}
+                                    {% if post.retreat_or_music_training.is_closed is True %}
+                                        <span class="color-gray" style="text-decoration: line-through;">Zapisz się już dziś!</span>
+                                        <span class="medium-bold">Zapisy zakończone!</span>
+                                    {% else %}
+                                        <a href="{% url 'dj:retreat_sign' %}">Zapisz się już dziś! </a>
+                                    {% endif %}
+                                {% elif post.retreat_or_music_training.type == 'W' %}
+                                    {% if post.retreat_or_music_training.is_closed is True %}
+                                        <span class="color-gray" style="text-decoration: line-through;">Zapisz się już dziś!</span>
+                                        <span class="medium-bold">Zapisy zakończone!</span>
+                                    {% else %}
+                                        <a href="{% url 'dj:workshop_sign' %}">Zapisz się już dziś! </a>
+                                    {% endif %}
+                                {% else %}
+                                    {% if post.retreat_or_music_training.is_closed is True %}
+                                        <span class="color-gray" style="text-decoration: line-through;">Zapisz się już dziś!</span>
+                                        <span class="medium-bold">Zapisy zakończone!</span>
+                                    {% else %}
+                                        <a href="{% url 'dj:music_training_sign' %}">Zapisz się już dziś! </a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+        <br />
+        {% endfor %}
+    </p>
+    <br /><br />
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "homepanel/base.html" %}
+
+{% block content %}
+    <section id="batches" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <span class="float-right">
+                        <a class="link-decoration-none"  href="{% url 'homepanel:batch_export_data_to_xlsx' batch_details.id %}">
+                            <button class="btn btn-info m-b-10">Eksport do xlsx</button>
+                        </a>
+                    </span>
+                    
+                    <h2>{{ batch_details }}</h2>
+                    <hr /><br />
+
+                    <span class="bold">Termin: </span>
+                    {{ batch_details.begin_date|date:"d.m.Y" }} - {{ batch_details.end_date|date:"d.m.Y" }}
+                    <br />
+                    <span class="bold">Placówka: </span>
+                    {{ batch_details.institution }}
+                    <br />
+                    <span class="bold">Rekolekcjoniści: </span>
+                    {% if not batch_details.main_priest is None %}
+                    {{ batch_details.main_priest }}
+                    {% endif %}
+                    {% if not batch_details.auxiliary_priest is None %}
+                    , {{ batch_details.auxiliary_priest }}
+                    {% endif %}
+                    <br />
+                    <span class="bold">Koordynatorzy: </span>
+                    {% if not batch_details.main_coordinator is None %}
+                    {{ batch_details.main_coordinator }}
+                    {% endif %}
+                    {% if not batch_details.auxiliary_coordinator is None %}
+                    , {{ batch_details.auxiliary_coordinator }}
+                    {% endif %}
+                    <br />
+                    <span class="bold">Uczestnicy:</span> {{ summary }}
+                    <br />
+                    <span class="bold">Mężczyźni:</span> {{ men }}
+                    <br />
+                    <span class="bold">Mężczyźni na wózkach:</span> {{ men_wheelchair }}
+                    <br />
+                    <span class="bold">Kobiety:</span> {{ women }}
+                    <br />
+                    <span class="bold">Kobiety na wózkach:</span> {{ women_wheelchair }}
+                    <br />
+                    <span class="bold">Lista rezerowowa:</span> {{ reserve_list }}
+                    <br />
+                    <a class="medium-bold" href="{% url 'homepanel:participants_list' pk=batch_details.id %}">Podopieczni</a> |
+                    <a class="medium-bold" href="{% url 'homepanel:volunteers_list' pk=batch_details.id %}">Wolontariusze</a>
+                    <br />
+
+                    <br />
+
+                    <a href="{% url 'homepanel:batches' %}">
+                        <button class="btn btn-default">Wróć</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

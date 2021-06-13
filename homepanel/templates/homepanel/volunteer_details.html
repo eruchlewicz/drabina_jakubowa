@@ -1,0 +1,72 @@
+{% extends "homepanel/base.html" %}
+
+{% block content %}
+    <section id="volunteer-details">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2 class="bold">{{ volunteer.first_name}} {{ volunteer.surname }}</h2>
+                    <span class="lead medium-bold">
+                    {% if volunteer.email_address is not None %}
+                        <br />
+                        Adres e-mail: {{ volunteer.email_address }}
+                    {% endif %}
+
+                    {% if volunteer.phone_number is not None %}
+                        <br />
+                        Nr telefonu: {{ volunteer.phone_number }}
+                    {% endif %}
+                    </span>
+
+                    <br /><br />
+
+                    <h4 class="bold">Turnusy</h4>
+                    <span class="lead medium-bold">
+                        {% for b in all_batches %}
+                            {% if b.was_there is True %}
+                                <i class="fa fa-check-circle green"></i>
+                            {% else %}
+                                <i class="fa fa-times-circle red"></i>
+                            {% endif %}
+                            - {{ b.batch }}
+                        <br />
+                        {% endfor %}
+                    </span>
+
+                    <br /><br />
+
+                    <h4 class="bold">Wydarzenia</h4>
+                    <span class="lead medium-bold">
+                        {% for e in all_events %}
+                            {% if e.was_there is True %}
+                                <i class="fa fa-check-circle green"></i>
+                            {% else %}
+                                <i class="fa fa-times-circle red"></i>
+                            {% endif %}
+                            - {{ e.event }}
+                        <br />
+                        {% endfor %}
+                    </span>
+
+                    <br /><br />
+
+                    <h4 class="bold">Warsztaty/Rekolekcje</h4>
+                    <span class="lead medium-bold">
+                        {% for r in all_retreats_and_trainings %}
+                            {% if r.was_there is True %}
+                                <i class="fa fa-check-circle green"></i>
+                            {% else %}
+                                <i class="fa fa-times-circle red"></i>
+                            {% endif %}
+                            - {{ r.retreat_or_music_training }}
+                        <br />
+                        {% endfor %}
+                    </span>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

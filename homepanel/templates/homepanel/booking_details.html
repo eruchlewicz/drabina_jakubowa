@@ -1,0 +1,85 @@
+{% extends "homepanel/base.html" %}
+
+{% block content %}
+    <section id="participant-details">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Rezerwacja - {{ booking }}</h2>
+
+                    <hr /><br />
+                    <span class="bold">Imię:</span> {{ booking.first_name }}
+                    <br />
+                    <span class="bold">Nazwisko:</span> {{ booking.surname }}
+                    <br />
+                    <span class="bold">Nr telefonu:</span>
+                    {% if booking.phone_number is not None %}
+                        {{ booking.phone_number }}
+                    {% endif %}
+                    <br />
+                    <span class="bold">Adres e-mail:</span>
+                    {% if booking.email_address is not None %}
+                        {{ booking.email_address }}
+                    {% endif %}
+                    <br />
+                    {% if booking.room.count is not 0 %}
+                        <span class="bold">Pokoje:</span>
+                        {% for obj in booking.room.all %}
+                            {{ obj }},
+                        {% endfor %}
+                        <br />
+                    {% endif %}
+                    <span class="bold">Początek pobytu:</span> {{ booking.begin_date|date:"d.m.Y H:i" }}
+                    <br />
+                    <span class="bold">Koniec pobytu:</span> {{ booking.end_date|date:"d.m.Y H:i" }}
+                    <br />
+                    <span class="bold">Dorośli i młodzież:</span> {{ booking.adults }}
+                    <br />
+                    <span class="bold">Dzieci (2+):</span> {{ booking.kids }}
+                    <br />
+                    {% if booking.who_where is not None %}
+                        <span class="bold">Kto? Gdzie?:</span> {{ booking.who_where }}
+                        <br />
+                    {% endif %}
+                    <span class="bold">Posiłki?:</span>
+                    {% if booking.meals == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <span class="bold">Finalna cena:</span> {{ booking.full_cost|floatformat:-2 }} zł
+                    <br />
+                    <span class="bold">Zapłacono?:</span>
+                    {% if booking.is_paid == False %}
+                        Nie
+                    {% else %}
+                        Tak
+                    {% endif %}
+                    <br />
+                    <br /><br />
+
+                    {% if booking.room.count is not 0 %}
+                        <a class="link-decoration-none" href="{% url 'homepanel:all_bookings' %}">
+                            <button class="btn btn-default btn-sm">Wróć</button>
+                        </a>
+                        <a class="link-decoration-none" href="{% url 'homepanel:edit_booking' booking.id %}">
+                            <button class="btn btn-warning btn-sm">Edytuj</button>
+                        </a>
+                    {% else %}
+                        <a class="link-decoration-none" href="{% url 'homepanel:all_bookings_meals' %}">
+                            <button class="btn btn-default btn-sm">Wróć</button>
+                        </a>
+                        <a class="link-decoration-none" href="{% url 'homepanel:edit_meals_booking' booking.id %}">
+                            <button class="btn btn-warning btn-sm">Edytuj</button>
+                        </a>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

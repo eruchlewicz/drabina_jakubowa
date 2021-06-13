@@ -1,0 +1,165 @@
+{% extends "coordinatepanel/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <span class="float-right">
+                    {% if "/turnus/" in request.path %}
+                        <a class="link-decoration-none" href="{% url 'coordinatepanel:participant_photo_edit' batch_id participant.id %}">
+                            <button class="btn btn-default m-b-10">Edytuj zdjęcie</button>
+                        </a>
+                        <a class="link-decoration-none" href="{% url 'coordinatepanel:edit_participant' batch_id participant.id %}">
+                            <button class="btn btn-warning btn-sm m-b-10">Edytuj</button>
+                        </a>
+                    {% else %}
+                        <a class="link-decoration-none" href="{% url 'coordinatepanel:participant_photo_edit' event_id participant.id %}">
+                            <button class="btn btn-default m-b-10">Edytuj zdjęcie</button>
+                        </a>
+                    {% endif %}
+                    </span>
+
+                    <h2>Podopieczny - {{ participant }}</h2>
+                    <hr /><br />
+
+                    <span class="bold">Wiek: </span>
+                    <span id="age" class="hidden">{{ participant.pesel }}</span>
+
+                    {% if participant.email_address is not None %}
+                        <br />
+                        <span class="bold">Adres e-mail:</span>
+                        {{ participant.email_address }}
+                    {% endif %}
+
+                    <br />
+                    <span class="bold">Płeć:</span> {{ participant.get_sex_display }}
+
+                    {% if participant.phone_number is not None %}
+                        <br />
+                        <span class="bold">Nr telefonu:</span>
+                        {{ participant.phone_number }}
+                    {% endif %}
+
+                    {% if participant.guardian_name is not None %}
+                        <br />
+                        <span class="bold">Dane opiekuna:</span>
+                        {{ participant.guardian_name }}
+                    {% endif %}
+
+                    {% if participant.guardian_phone_number is not None %}
+                        <br />
+                        <span class="bold">Nr telefonu opiekuna:</span>
+                        {{ participant.guardian_phone_number }}
+                    {% endif %}
+
+                    <br />
+                    <span class="bold">Adres: </span>
+                    {{ participant.address }}, {{ participant.zip_code }} {{ participant.city }}
+                    <br />
+                    <span class="bold">Pierwszy raz:</span>
+                    {% if participant.is_first_time is True %}
+                        Tak
+                    {% else %}
+                        Nie
+                    {% endif %}
+                    <br />
+                    <span class="bold">Skąd zna DJ:</span> {{ participant.get_how_know_dj_display }}
+                    <br />
+                    <span class="bold">Kwiatek:</span> {{ participant.get_flower_display }}
+
+                    {% if participant.foundation is not None %}
+                        <br />
+                        <span class="bold">Fundacja:</span>
+                        {{ participant.foundation }}
+                    {% endif %}
+
+                    {% if participant.candies == 'T' %}
+                        <br />
+                        <span class="bold">Je słodycze:</span>
+                        {{ participant.get_candies_display }}
+                    {% endif %}
+
+                    <br />
+                    <span class="bold">Inne:</span>
+                        <ul>
+                        {% if participant.cat is True %}
+                            <li>Kot</li>
+                        {% endif %}
+
+                        {% if participant.dog is True %}
+                            <li>Pies</li>
+                        {% endif %}
+
+                        {% if participant.bear is True %}
+                            <li>Miś</li>
+                        {% endif %}
+
+                        {% if participant.monkey is True %}
+                            <li>Małpka</li>
+                        {% endif %}
+
+                        {% if participant.frog is True %}
+                            <li>Żaba</li>
+                        {% endif %}
+
+                        {% if participant.bat is True %}
+                            <li>Nietoperz</li>
+                        {% endif %}
+
+                        {% if participant.spider is True %}
+                            <li>Pająk</li>
+                        {% endif %}
+
+                        {% if participant.fish is True %}
+                            <li>Ryba</li>
+                        {% endif %}
+                        </ul>
+                    <!--{{ participant.others }}-->
+
+                    {% if participant.photo.url is not None %}
+                        <br /><br />
+                        <img class="img-fluid d-block col-lg-5 col-md-6 col-sm-8 col-12" src="{{ participant.photo.url }}">
+                    {% endif %}
+
+                    <br />
+
+                    <span class="bold">Notatki:</span>
+                    <ul>
+                        {% for p in all_batches %}
+                            {% if p.note is not None and p.note != "" %}
+                                <li>{{ p.note }} - {{ p.batch }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    
+                    <br /><br />
+
+                    {% if "/turnus/" in request.path %}
+                        <span class="hidden" id="begin_date">{{ batch.begin_date|date:"Y.m.d" }}</span>
+                        <span class="hidden" id="end_date">{{ batch.end_date|date:"Y.m.d" }}</span>
+
+                        <a  class="link-decoration-none" href="{% url 'coordinatepanel:participants_list' batch_id %}">
+                            <button class="btn btn-default">Wróć</button>
+                        </a>
+                    {% else %}
+                        <span class="hidden" id="begin_date">{{ event.begin_date|date:"Y.m.d" }}</span>
+                        <span class="hidden" id="end_date">{{ event.end_date|date:"Y.m.d" }}</span>
+
+                        <a  class="link-decoration-none" href="{% url 'coordinatepanel:event_participants' event_id %}">
+                            <button class="btn btn-default">Wróć</button>
+                        </a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/count_age.js' %}"></script>
+{% endblock %}

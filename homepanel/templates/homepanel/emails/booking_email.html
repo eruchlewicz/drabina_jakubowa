@@ -1,0 +1,59 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <style>
+        .red {
+            color: red;
+        }
+        .center {
+            position: absolute;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+<img src="cid:image2">
+<img src="cid:image1">
+<div>
+<h2>Rezerwacja</h2>
+
+    <b>Imię i nazwisko:</b>  {{ booking.first_name }} {{ booking.surname }}
+<br />
+    <b>Dorośli i młodzież:</b> {{ booking.adults }}
+<br />
+    <b>Dzieci:</b> {{ booking.kids }}
+<br />
+    <b>Termin:</b> {{ booking.begin_date|date:"d.m.Y" }} - {{ booking.end_date|date:"d.m.Y" }}
+<br />
+    <b>Posiłki:</b>
+{% if booking.meals %}
+    Tak
+{% else %}
+    Nie
+{% endif %}
+<br />
+    <b>Finalna cena: <span class="red">{{ booking.full_cost }} zł</span></b>
+<br /><br />
+    Prosimy wykonać <b>przelew</b> z następującymi danymi:
+<br /><br />
+    <b>Odbiorca:</b> Centrum Księdza Orione w Brańszczyku
+<br />
+    <b>Adres:</b> ul. Jana Pawła II 1, 07-221 Brańszczyk
+<br />
+    <b>Numer rachunku:</b> 64 1600 1462 1842 6409 5000 0002
+<br /><br />
+    W <b>tytule</b> przelewu należy podać swoje <b>imię, nazwisko oraz datę przyjazdu</b>.
+<br /><br /><br />
+
+<div class="center">
+    ul. Jana Pawła II 1, 07-221 Brańszczyk, branszczyk.orione.pl | branszczyk@orione.pl; tel. 297423565
+    <br />
+    NIP: PL7621267298, Regon: 550462602
+</div>
+
+</div>
+
+</body>
+</html>

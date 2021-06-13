@@ -1,0 +1,44 @@
+{% load embed_video_tags %}
+
+{% for post in post_list %}
+    <div class="display-inline-block col-sm-12">
+        <span class="fa fa-clock-o color-gray"></span> <span class="color-gray">{{ post.date|date:"d-m-Y h:m" }}</span>
+        <br /><br />
+        <h4>{{ post.title }}</h4>
+        <br />
+        <p class="lead">
+            {{ post.content|safe }}
+        </p>
+
+        <div class="display-block" style="overflow: auto">
+            {% if post.photo.count is not 0 %}
+                {% if post.photo.count is 1 %}
+                    <br />
+                    {% for obj in post.photo.all %}
+                        <img class="img-fluid mx-auto d-block col-lg-12 float-left m-0 p-0" src="{{ obj.image.url }}">
+                    {% endfor %}
+                     <br /><br />
+                {% else %}
+                <br />
+                {% for obj in post.photo.all %}
+                    <img class="img-fluid mx-auto d-block col-lg-6 col-md-12  float-left m-0 p-0" src="{{ obj.image.url }}">
+                {% endfor %}
+                 <br /><br />
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <div class="text-center m-t-15">
+        <br />
+            {% if post.video is not None %}
+            {% video post.video as my_video %}
+            {% video my_video "medium" %}
+            {% endvideo %}
+        {% endif %}
+        </div>
+
+        <br /><br />
+    </div>
+    <hr />
+                        
+{% endfor %}

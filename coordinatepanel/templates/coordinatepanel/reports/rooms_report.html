@@ -1,0 +1,79 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% load auth_extras %}
+
+{% block extra_style %}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}" />
+    <style type="text/css">
+        @page {
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+        }
+        @font-face {
+            font-family: Cuprum;
+            src: url(/static/fonts/Cuprum-Regular.ttf); }
+        @font-face {
+            font-family: CuprumBold;
+            src: url(/static/fonts/Cuprum-Bold.ttf); }
+        .cuprum {
+            font-family: Cuprum, sans-serif;
+        }
+        .font-18 {
+            font-size: 18px;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+        .bold {
+            font-family: CuprumBold, sans-serif;
+        }
+        .border {
+            border: 1px solid black;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="main cuprum font-14">
+            <div class="container">
+
+                <div class="font-18 m-0 m-b-5 bold">Pokoje</div>
+
+                <table class="m-0 border">
+                    <thead>
+                        <tr class="p-t-2 bold">
+                            <th class="gray-background">Pokój</th>
+                            <th class="gray-background" colspan="10">Lokatorzy</th>
+                        </tr>
+                    </thead>
+                    {% for room in room_list %}
+                    <tr class="p-t-2">
+                        <td class="center">
+                             {{ room.number }}
+                        </td>
+                        <td class="center" colspan="10">
+                            {% for obj in batchvolunteers %}
+                                {% if obj.room == room %}
+                                    <div>{{ obj.volunteer.surname }} {{ obj.volunteer.first_name }}</div>
+                                {% endif %}
+                            {% endfor %}
+                            {% for obj in batchparticipants %}
+                                {% if obj.room == room %}
+                                    <div>{{ obj.participant.surname }} {{ obj.participant.first_name }} - wolontariusz: {{ obj.volunteer.surname }} {{ obj.volunteer.first_name }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "coordinatepanel/base.html" %}
+
+{% block content %}
+    <section id="batches" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <span class="float-right">
+                        <a class="link-decoration-none" href="{% url 'coordinatepanel:event_info_edit' event.id %}">
+                            <button class="btn btn-info m-b-10">Edytuj info</button>
+                        </a>
+                        <a class="link-decoration-none" href="{% url 'coordinatepanel:event_report' event.id %}">
+                            <button class="btn btn-default m-b-10">Raport</button>
+                        </a>
+                        <a class="link-decoration-none" href="{% url 'coordinatepanel:event_report_list' event.id %}">
+                            <button class="btn btn-primary m-b-10">Przydział</button>
+                        </a>
+                    </span>
+
+                    <h2>{{ event }}</h2>
+                    <hr /><br />
+
+                    <span class="bold">Termin: </span>
+                    {% if event.begin_date.day == event.end_date.day %}
+                        {{ event.begin_date|date:"d.m.Y" }}
+                    {% else %}
+                        {{ event.begin_date|date:"d.m.Y" }} - {{ event.end_date|date:"d.m.Y" }}
+                    {% endif %}
+                    <br />
+                    <span class="bold">Koordynatorzy: </span>
+                    {% if not event.main_coordinator is None %}
+                        {{ event.main_coordinator }} - {{ event.main_coordinator.volunteer.phone_number }}
+                        ({{ event.main_coordinator.volunteer.email_address }})
+
+                    {% endif %}
+                    {% if not event.auxiliary_coordinator is None %}
+                        , <br/>
+                        {{ event.auxiliary_coordinator }} - {{ event.auxiliary_coordinator.volunteer.phone_number }}
+                        ({{ event.auxiliary_coordinator.volunteer.email_address }})
+                    {% endif %}
+                    <br />
+                    <span class="bold">Pielęgniarki: </span>
+                    {% for nurse in event.nurse.all %}
+                        {{ nurse }} - {{ nurse.volunteer.phone_number }},
+                    {% endfor %}
+                    <br />
+                    <span class="bold">Lekarze: </span>
+                    {% for doctor in event.doctor.all %}
+                        {{ doctor }} - {{ doctor.volunteer.phone_number }},
+                    {% endfor %}
+                    <br />
+                    <span class="bold">Koszt: </span>
+                        {{ event.price }} zł
+                    <br />
+                    <span class="bold">Informacje: </span>
+                    {% if not event.info is None %}
+                        {{ event.info|safe }}
+                    {% endif %}
+                    <br />
+
+                    <a class="medium-bold" href="{% url 'coordinatepanel:event_participants' pk=event.id %}">Podopieczni</a> |
+                    <a class="medium-bold" href="{% url 'coordinatepanel:event_volunteers' pk=event.id %}">Wolontariusze</a>
+                    <br />
+
+                    <br />
+
+                    <a class="link-decoration-none" href="{% url 'coordinatepanel:events' %}">
+                        <button class="btn btn-default">Wróć</button>
+                    </a>
+
+                    <br /><br /><br />
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "coordinatepanel/base.html" %}
+
+{% block content %}
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load("visualization", "1", {packages:["corechart"]});
+    </script>
+
+    <section id="batches" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+					
+                    <h2>Statystyki {{ now|date:"Y" }}</h2>
+                    <hr /><br />
+
+                    <div class="align-content-center">
+                        {{ chart.as_html }}
+
+                        {{ chart2.as_html }}
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

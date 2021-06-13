@@ -1,0 +1,176 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+{% load mathfilters %}
+
+{% block extra_style %}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}" />
+    <style type="text/css">
+        @page {
+            margin-left: 1.5cm;
+            margin-right: 1.5cm;
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+        }
+        @font-face {
+            font-family: Cuprum;
+            src: url(/static/fonts/Cuprum-Regular.ttf); }
+        @font-face {
+            font-family: CuprumBold;
+            src: url(/static/fonts/Cuprum-Bold.ttf); }
+        .cuprum {
+            font-family: Cuprum, sans-serif;
+        }
+        .font-24 {
+            font-size: 24px;
+        }
+        .font-16 {
+            font-size: 16px;
+        }
+        .bold {
+            font-family: CuprumBold, sans-serif;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="main cuprum font-16">
+            <div class="container">
+                <div class="center m-0 m-b-15">
+                    <span class="bold font-24">POROZUMIENIE O WSPÓŁPRACY WOLONTARYSTYCZNEJ LEKARZA</span>
+                </div>
+
+            <div class="justify m-0 m-b-25">
+                W dniu {{ batchvolunteer.batch_begin_date|date:"d.m.Y" }}r. w miejscowości {{ batchvolunteer.batch.institution.city }},
+                pomiędzy
+                <br /><br />
+                <span class="bold">{{ congregation }}</span> -
+                {{ congregation.main_institution }}, reprezentowanym przez Przełożonego
+                Prowincjonalnego {{ congregation.chief }},
+                zwanym dalej <span class="bold">Organizatorem</span>,
+                <br />a
+                <br />
+                {% if batchvolunteer.volunteer.sex == 'K' %}
+                     Panią
+                {% else %}
+                    Panem
+                {% endif %}
+                {{ batchvolunteer.volunteer.first_name }} {{ batchvolunteer.volunteer.surname }},
+                legitymującym się dowodem osobistym
+                nr ......................................................................................,
+                PESEL {{ batchvolunteer.volunteer.pesel }},
+                zam. w {{ batchvolunteer.volunteer.zip_code }} {{  batchvolunteer.volunteer.city }},
+                {{ batchvolunteer.volunteer.address }},
+                pełniącym funkcję lekarza, zwanym dalej <span class="bold">Lekarzem</span>,
+                <br /><br />
+                zostało zawarte porozumienie następującej treści:
+            </div>
+
+            <ol>
+                <li class="m-0 m-b-5">
+                    Strony zawierają porozumienie o współpracy, którego celem jest:
+                <ul>
+                    <li>udzielanie świadczeń zdrowotnych przez Lekarza w rozumieniu przepisów ustawy z dnia 15
+                kwietnia 2011 r. o działalności leczniczej (tj. Dz.U.2015.618 ze zm.) w trakcie turnusów
+                wczasowo-rekolekcyjnych dla osób niepełnosprawnych, samotnych i starszych w miejscowości
+                {{ batchvolunteer.batch.institution.city }}.</li>
+                </ul>
+                </li>
+                <li class="m-0 m-b-5">
+                Lekarz zobowiązuje się wykonywać w ramach Porozumienia świadczenia w zakresie:
+
+                <div class="m-0 m-l-25 m-b-5">
+                    <ol>
+                    <li>
+                    opieki lekarskiej rozumianej jako wykonywanie czynności, o których mowa w art. 1 niniejszego
+                    porozumienia na rzecz podopiecznych w trakcie turnusów wczasowo-rekolekcyjnych dla osób
+                    niepełnosprawnych, samotnych i starszych w Brańszczyku,
+                    </li>
+                    <li>
+                    z troską dbać o bezpieczeństwo powierzonych do opieki osób,
+                    </li>
+                    <li>
+                    sumiennie współpracować z zespołem koordynującym turnusu i Dyrekcją Domu Emeryta,
+                    </li>
+                    <li>
+                    przestrzegać regulaminu Ośrodka, w którym przebywają wszyscy uczestnicy turnusów.
+                    </li>
+                    </ol>
+                </div>
+                </li>
+                <li class="m-0 m-b-5">Rozpoczęcie wykonywania świadczeń strony ustalają na dzień
+                {{ batchvolunteer.batch_begin_date|date:"d.m.Y" }},
+                a zakończenie do dnia {{ batchvolunteer.batch_end_date|date:"d.m.Y" }}.
+                </li>
+                <li class="m-0 m-b-5">
+                Lekarz turnusu, w duchu i według ideału wolontariatu, pracuje bezinteresownie, za swoją pracę
+                nie pobiera wynagrodzenia. Wartość świadczeń Lekarza turnusu nie stanowi darowizny na rzecz
+                Organizatora w rozumieniu przepisów Kodeksu Cywilnego i przepisów podatkowych.
+                </li>
+                <li class="m-0 m-b-5">
+                Organizator poinformował Lekarza o zasadach bezpiecznego i higienicznego wykonywania świadczeń
+                oraz takie warunki zapewnia.
+                </li>
+                <li class="m-0 m-b-5">
+                Lekarzowi przysługuje zaopatrzenie z tytułu wypadku przy wykonywaniu świadczeń wymienionych w
+                ust. 2 niniejszego Porozumienia, na zasadach wynikających z odrębnych przepisów.
+                </li>
+                <li class="m-0 m-b-5">Lekarz w pełni odpowiada za wykonanie Porozumienia.
+                </li>
+                <li class="m-0 m-b-5">
+                Lekarz zobowiązuje się do zachowania w tajemnicy wszelkich informacji w zakresie wykonywanego
+                Porozumienia, a zwłaszcza informacji dotyczących danych osobowych oraz sytuacji socjalnej i zdrowotnej
+                osób, na rzecz których świadczy pomoc.
+                </li>
+                <li class="m-0 m-b-5">
+                Czynności o których mowa w ust. 1 będą wykonywane z należytą starannością zawodową osobiście przez
+                Lekarza.
+                </li>
+                <li class="m-0 m-b-5">
+                Lekarz zobowiązuje się działać ściśle według zasad i organizacji przyjętych u Organizatora.
+                </li>
+                <li class="m-0 m-b-5">
+                W sprawach nieuregulowanych Porozumieniem zastosowanie ma ustawa z dnia 24 kwietnia 2003 r. o
+                działalności pożytku publicznego i wolontariacie (tj. Dz.U.2016.239 ze zm) oraz Kodeks Cywilny.
+                </li>
+                <li class="m-0 m-b-5">
+                Porozumienie może być wypowiedziane przez każdą ze stron za 14-dniowym wyprzedzeniem.
+                </li>
+                <li class="m-0">
+                Porozumienie sporządzono w dwóch jednobrzmiących egzemplarzach, po jednym dla każdej ze stron.
+                </li>
+            </ol>
+
+
+                <table>
+                    <tr>
+                        <td align="center"><br /></td>
+                        <td align="center"><br /></td>
+                    </tr>
+                    <tr>
+                        <td align="center">................................................................</td>
+                        <td align="center">................................................................</td>
+                    </tr>
+                    <tr>
+                        <td align="center">ORGANIZATOR</td>
+                        <td align="center">LEKARZ</td>
+                    </tr>
+                </table>
+
+                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                <br /><br /><br /><br /><br /><br /><br />
+
+                 <div class="center font-14">
+                    ul. Jana Pawła II 1, 07-221 Brańszczyk, branszczyk.orione.pl | branszczyk@orione.pl; tel. 297423565
+                    <br />
+                    NIP: PL7621267298, Regon: 550462602
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

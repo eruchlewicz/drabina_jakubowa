@@ -1,0 +1,28 @@
+{% extends "coordinatepanel/base.html" %}
+
+{% block content %}
+    <section id="registration" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Logowanie</h2>
+                    <hr /><br />
+                    <form class="form-horizontal" action="" role="form" method="post">
+                        {% csrf_token %}
+                        {% include 'coordinatepanel/includes/form_template.html' %}
+
+                        <div class="form-group">
+                            <div class="p-l-5 offset-lg-3 col-lg-10 offset-sm-3 col-sm-9">
+                                <button id="login_btn" type="submit" class="btn btn-primary">Zaloguj</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="h-15 max-w-15" ><a href="{% url 'homepanel:home_coordinator_login' %}"><div class="h-15 max-w-15"></div></a></div>
+    </section>
+
+{% endblock %}

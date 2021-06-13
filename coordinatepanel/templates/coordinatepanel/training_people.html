@@ -1,0 +1,70 @@
+{% extends "coordinatepanel/base.html" %}
+{% load mathfilters %}
+{% load static %}
+
+{% block content %}
+    <section id="batch_volunteers" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Lista uczestników</h2>
+                    <hr /><br />
+                    <ul>
+                        {% for obj in training_people_list %}
+                            <li class="lead">
+                                <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                    <span class="col-xs-6 col-sm-5 col-md-6 col-lg-7">
+                                        <a class="medium-bold" href="{% url 'coordinatepanel:person_details' training.id obj.person.id %}">
+                                            {{ obj.person.surname }} {{ obj.person.first_name }}
+                                        </a>
+                                        <span class="bd_cake"></span>
+                                        - pokój:
+                                        {% if obj.room is not None %}
+                                            {{ obj.room }}
+                                        {% endif %}
+                                        {% if obj.is_paid is True %}
+                                            <span class="green medium-bold">(zapłacono)</span>
+                                        {% else %}
+                                            <span class="red medium-bold">(nie zapłacono)</span>
+                                        {% endif %}
+                                        <span class="if_bd hidden">{{ obj.volunteer.pesel }}</span>
+                                    </span>
+                                    <span class="col-xs-6 col-sm-7 col-md-6 col-lg-5 float-right text-right">
+                                        {% if obj.retreat_or_music_training.end_date >= now %}
+                                        <a class="link-decoration-none" href="{% url 'coordinatepanel:training_person_edit' obj.retreat_or_music_training.id obj.id %}">
+                                            <button class="btn btn-warning btn-sm">Zarządzaj</button>
+                                        </a>
+                                        <a onclick="return confirm('Czy na pewno chcesz wypisać tego uczestnika?')"
+                                           class="link-decoration-none" href="{% url 'coordinatepanel:delete_person' obj.retreat_or_music_training.id obj.id %}">
+                                            <button class="btn btn-danger btn-sm">Usuń</button>
+                                        </a>
+                                        {% endif %}
+                                        <a class="link-decoration-none" href="{% url 'coordinatepanel:person_payment' obj.retreat_or_music_training.id obj.id %}">
+                                             <button class="btn btn-success btn-sm">Płatności</button>
+                                        </a>
+                                    </span>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <span id="begin_date" class="hidden">{{ training.begin_date|date:"Y.m.d" }}</span>
+                    <span id="end_date" class="hidden">{{ training.end_date|date:"Y.m.d" }}</span>
+
+                    <br />
+                    <a class="link-decoration-none" href="{% url 'coordinatepanel:training_details' training.id %}">
+                        <button class="btn btn-default">Wróć</button>
+                    </a>
+
+                    <br /><br />
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_body_base %}
+    <script src="{% static 'js/count_birthday.js' %}"></script>
+{% endblock %}

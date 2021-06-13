@@ -1,0 +1,126 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% load auth_extras %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}" />
+    <style type="text/css">
+        @page {
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+        }
+        @font-face {
+            font-family: Cuprum;
+            src: url(/static/fonts/Cuprum-Regular.ttf); }
+        @font-face {
+            font-family: CuprumBold;
+            src: url(/static/fonts/Cuprum-Bold.ttf); }
+        .cuprum {
+            font-family: Cuprum, sans-serif;
+        }
+        .font-18 {
+            font-size: 18px;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+        .bold {
+            font-family: CuprumBold, sans-serif;
+        }
+        .border {
+            border: 1px solid black;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="main cuprum font-14">
+            <div class="container">
+
+                <div class="font-18 m-0 m-b-15 bold">{{ event.name }},
+                    {% if event.begin_date.day == event.end_date.day %}
+                        {{ event.begin_date|date:"d.m.Y" }}
+                    {% else %}
+                        {{ event.begin_date|date:"d.m.Y" }} - {{ event.end_date|date:"d.m.Y" }}
+                    {% endif %}
+                </div>
+
+                <table class="m-0 border m-b-25">
+                    <thead>
+                        <tr class="p-t-2 bold">
+                            <th class="gray-background">Nr</th>
+                            <th class="gray-background" colspan="4">Podopieczny</th>
+                            <th class="gray-background" colspan="5">Adres</th>
+                            <th class="gray-background" colspan="2">Telefon</th>
+                            <th class="gray-background" colspan="2">Opiekun</th>
+                            <th class="gray-background" colspan="4">Wolontariusz</th>
+                        </tr>
+                    </thead>
+                    {% for eventparticipant in eventparticipants %}
+                    {% if eventparticipant.participant.sex == 'K' %}
+                    <tr class="p-t-2">
+                        <td class="center pink-background">
+                             {{ forloop.counter }}.
+                        </td>
+                        <td class="center pink-background" colspan="4">
+                            {{ eventparticipant.participant.surname }} {{ eventparticipant.participant.first_name }}
+                        </td>
+                        <td class="center pink-background" colspan="5">
+                            {{ eventparticipant.participant.address }}, {{ eventparticipant.participant.city }}
+                        </td>
+                        <td class="center pink-background" colspan="2">
+                            {% if eventparticipant.participant.phone_number is not None %}
+                                {{ eventparticipant.participant.phone_number }}
+                            {% endif %}
+                        </td>
+                        <td class="center pink-background" colspan="2">
+                            {% if eventparticipant.participant.guardian_phone_number is not None %}
+                                {{ eventparticipant.participant.guardian_phone_number }}
+                            {% endif %}
+                        </td>
+                        <td class="center pink-background" colspan="4">
+                            {% if eventparticipant.volunteer is not None %}
+                                {{ eventparticipant.volunteer }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr class="p-t-2">
+                        <td class="center blue-background">
+                             {{ forloop.counter }}.
+                        </td>
+                        <td class="center blue-background" colspan="4">
+                            {{ eventparticipant.participant.surname }} {{ eventparticipant.participant.first_name }}
+                        </td>
+                        <td class="center blue-background" colspan="5">
+                            {{ eventparticipant.participant.address }}, {{ eventparticipant.participant.city }}
+                        </td>
+                        <td class="center blue-background" colspan="2">
+                            {% if eventparticipant.participant.phone_number is not None %}
+                                {{ eventparticipant.participant.phone_number }}
+                            {% endif %}
+                        </td>
+                        <td class="center blue-background" colspan="2">
+                            {% if eventparticipant.participant.guardian_phone_number is not None %}
+                                {{ eventparticipant.participant.guardian_phone_number }}
+                            {% endif %}
+                        </td>
+                        <td class="center blue-background" colspan="4">
+                            {% if eventparticipant.volunteer is not None %}
+                                {{ eventparticipant.volunteer }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

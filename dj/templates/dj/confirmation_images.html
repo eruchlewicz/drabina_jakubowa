@@ -1,0 +1,31 @@
+{% extends "dj/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="batches" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <div class="img-container col-12">
+                        <img id="confirmation-image-1" class="col-12" src="">
+                        <br /><br />
+                    </div>
+
+                    <div class="img-container col-12">
+                        <img id="confirmation-image-2" class="col-12" src="">
+                        <br /><br />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_body_base %}
+    <script>
+        document.getElementById("confirmation-image-1").src = "data:image/png;base64," + "{{ img_byte_array_1 }}";
+        document.getElementById("confirmation-image-2").src = "data:image/png;base64," + "{{ img_byte_array_2 }}";
+    </script>
+{% endblock %}

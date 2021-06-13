@@ -1,0 +1,65 @@
+{% extends "homepanel/base.html" %}
+
+{% block content %}
+    <section class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <form type="get" action="." style="margin: 0">
+                        <div class="form-group row">
+                            <div class="col-12 col-sm-12 col-lg-8">
+                                <input id="search" class="form-control" type="text" name="search"  placeholder="Imię lub nazwisko..." >
+                            </div>
+                            <div class="col-lg-2 col-sm-12 col-12">
+                                <button id="search_submit" class="btn btn-primary" type="submit" >Szukaj</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <h2>Lista wolontariuszy</h2>
+                    <hr /><br />
+
+                    <ul>
+                        {% for volunteer in volunteers_list %}
+                            <li class="lead">
+                                <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                     <span class="col-xs-6 col-sm-6 col-md-6 col-lg-7">
+                                         <a class="medium-bold" href="{% url 'homepanel:volunteer_details' volunteer.id %}">
+                                             {{ volunteer.surname }} {{ volunteer.first_name }}
+                                         </a>
+                                     </span>
+                                </span>
+
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <br /><br />
+
+                      <ul class="pagination offset-5">
+                        {% if volunteers_list.has_previous %}
+                          <li class="page-item"><a class="page-link" href="?page={{ volunteers_list.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                          <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                        {% endif %}
+                        {% for i in volunteers_list.paginator.page_range %}
+                          {% if volunteers_list.number == i %}
+                            <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                          {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                        {% if volunteers_list.has_next %}
+                          <li class="page-item"><a class="page-link" href="?page={{ volunteers_list.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                          <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                        {% endif %}
+                      </ul>
+
+                    <br />
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

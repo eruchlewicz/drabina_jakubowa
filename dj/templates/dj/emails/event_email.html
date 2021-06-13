@@ -1,0 +1,45 @@
+<html>
+<head>
+    <style>
+        .red {
+            color: red;
+        }
+        .center {
+            position: absolute;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+<img src="cid:image1">
+<div>
+<h3>Zapisy na {{ event }}</h3>
+
+    Witaj {{ volunteer.first_name }} {{ volunteer.surname }}, <br /><br />
+    Przyjęliśmy Twoje zgłoszenie na wydarzenie. <br /><br />
+
+    {% if cost > 0 %}
+    W celu potwierdzenia uczestnictwa wpłać kwotę <b>{{ cost }}zł</b> na konto <b>{{ bank_account }}</b> <br />
+    W tytule płatności prosimy o wpisanie tylko: <b>{{ id }}</b> <br /><br />
+    {% endif %}
+
+    Wkrótce koordynator skontaktuje się z Tobą, aby zatwierdzić Twój udział. <br />
+    W razie pytań prosimy pisać pod adres: kontakt@drabinajakubowa.pl <br /><br />
+    Serdecznie pozdrawiamy!
+
+    <br /><br /><br />
+
+<div class="center">
+    ul. Jana Pawła II 1, 07-221 Brańszczyk, branszczyk.orione.pl | branszczyk@orione.pl; tel. 297423565
+    <br />
+    NIP: PL7621267298, Regon: 550462602
+</div>
+
+    <br /><br /><br />
+
+</div></div>
+
+</body>
+</html>

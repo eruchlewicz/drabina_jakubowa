@@ -1,0 +1,55 @@
+{% extends "homepanel/base.html" %}
+
+{% block content %}
+    <section id="batches" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <span class="float-right">
+                        <a class="link-decoration-none"  href="{% url 'homepanel:export_email_addresses_to_csv' %}">
+                            <button class="btn btn-primary m-b-10">Eksport adresów email do csv</button>
+                        </a>
+                        <a class="link-decoration-none"  href="{% url 'homepanel:export_data_to_xlsx' %}">
+                            <button class="btn btn-info m-b-10">Eksport do xlsx</button>
+                        </a>
+                    </span>
+
+                    <h2>Turnusy</h2>
+                    <hr /><br />
+                    <ul>
+                        {% for batch in batches_list %}
+                            <li class="lead">
+                                <a class="medium-bold" href="{% url 'homepanel:batch_view' pk=batch.id %}">{{ batch.name }} {{ batch.institution.city }} {{ batch.begin_date|date:"Y" }}</a>,
+                                {{ batch.begin_date|date:"d.m.Y" }} - {{ batch.end_date|date:"d.m.Y" }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <br /><br />
+
+                      <ul class="pagination offset-5">
+                        {% if batches_list.has_previous %}
+                          <li class="page-item"><a class="page-link" href="?page={{ batches_list.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                          <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                        {% endif %}
+                        {% for i in batches_list.paginator.page_range %}
+                          {% if batches_list.number == i %}
+                            <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                          {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                        {% if batches_list.has_next %}
+                          <li class="page-item"><a class="page-link" href="?page={{ batches_list.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                          <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                        {% endif %}
+                      </ul>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

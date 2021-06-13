@@ -1,0 +1,272 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% load auth_extras %}
+
+{% block extra_style %}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}" />
+    <style type="text/css">
+        @page {
+            margin-left: 1cm;
+            margin-right: 1cm;
+            margin-top: 1cm;
+            margin-bottom: 1cm;
+        }
+        @font-face {
+            font-family: Cuprum;
+            src: url(/static/fonts/Cuprum-Regular.ttf); }
+        @font-face {
+            font-family: CuprumBold;
+            src: url(/static/fonts/Cuprum-Bold.ttf); }
+        .cuprum {
+            font-family: Cuprum, sans-serif;
+        }
+        .font-18 {
+            font-size: 18px;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+        .bold {
+            font-family: CuprumBold, sans-serif;
+        }
+        .border {
+            border: 1px solid black;
+        }
+        .new-page {
+            page-break-before: always;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="main cuprum font-14">
+            <div class="container">
+
+                <div class="font-18 m-0 m-b-5 bold">Podopieczni</div>
+
+                <table class="m-0 border">
+                    <thead>
+                        <tr class="p-t-2 bold">
+                            <th class="gray-background">Nr</th>
+                            <th class="gray-background" colspan="6">Podopieczny</th>
+                            <th class="gray-background" colspan="2">Wiek</th>
+                            <th class="gray-background" colspan="3">Miasto</th>
+                            <th class="gray-background" colspan="3">Telefon</th>
+                            <th class="gray-background" colspan="3">Opiekun</th>
+                            <th class="gray-background" colspan="2">Pokój</th>
+                            <th class="gray-background" colspan="6">Wolontariusz</th>
+                            <th class="gray-background" colspan="2">Pokój</th>
+                        </tr>
+                    </thead>
+                    {% for batchparticipant in batchparticipants %}
+                    {% if batchparticipant.participant.sex == 'K' %}
+                    <tr class="p-t-2">
+                        <td class="center pink-background">
+                             {{ forloop.counter }}.
+                        </td>
+                        <td class="center pink-background" colspan="6">
+                            {{ batchparticipant.participant.surname }} {{ batchparticipant.participant.first_name }}
+                        </td>
+                         <td class="center pink-background" colspan="2">
+                            {{ batchparticipant.participant.pesel|get_age }}
+                        </td>
+                        <td class="center pink-background" colspan="3">
+                            {{ batchparticipant.participant.city }}
+                        </td>
+                        <td class="center pink-background" colspan="3">
+                            {% if batchparticipant.participant.phone_number is not None %}
+                                {{ batchparticipant.participant.phone_number }}
+                            {% endif %}
+                        </td>
+                        <td class="center pink-background" colspan="3">
+                            {% if batchparticipant.participant.guardian_phone_number is not None %}
+                                {{ batchparticipant.participant.guardian_phone_number }}
+                            {% endif %}
+                        </td>
+                        <td class="center pink-background" colspan="2">
+                            {% if batchparticipant.room is not None %}
+                                {{ batchparticipant.room }}
+                            {% endif %}
+                        </td>
+                        <td class="center pink-background" colspan="6">
+                            {% if batchparticipant.volunteer is not None %}
+                                {{ batchparticipant.volunteer.surname }} {{ batchparticipant.volunteer.first_name }}
+                            {% endif %}
+                        </td>
+                        <td class="center pink-background" colspan="2">
+                            {% for obj in batchvolunteers %}
+                                {% if obj.volunteer == batchparticipant.volunteer %}
+                                    {% if obj.room is not None %}
+                                        {{ obj.room }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                        {% else %}
+                    <tr class="p-t-2">
+                        <td class="center blue-background">
+                             {{ forloop.counter }}.
+                        </td>
+                        <td class="center blue-background" colspan="6">
+                            {{ batchparticipant.participant.surname }} {{ batchparticipant.participant.first_name }}
+                        </td>
+                         <td class="center blue-background" colspan="2">
+                            {{ batchparticipant.participant.pesel|get_age }}
+                        </td>
+                        <td class="center blue-background" colspan="3">
+                            {{ batchparticipant.participant.city }}
+                        </td>
+                        <td class="center blue-background" colspan="3">
+                            {% if batchparticipant.participant.phone_number is not None %}
+                                {{ batchparticipant.participant.phone_number }}
+                            {% endif %}
+                        </td>
+                        <td class="center blue-background" colspan="3">
+                            {% if batchparticipant.participant.guardian_phone_number is not None %}
+                                {{ batchparticipant.participant.guardian_phone_number }}
+                            {% endif %}
+                        </td>
+                        <td class="center blue-background" colspan="2">
+                            {% if batchparticipant.room is not None %}
+                                {{ batchparticipant.room }}
+                            {% endif %}
+                        </td>
+                        <td class="center blue-background" colspan="6">
+                            {% if batchparticipant.volunteer is not None %}
+                                {{ batchparticipant.volunteer }}
+                            {% endif %}
+                        </td>
+                        <td class="center blue-background" colspan="2">
+                            {% for obj in batchvolunteers %}
+                                {% if obj.volunteer == batchparticipant.volunteer %}
+                                    {% if obj.room is not None %}
+                                        {{ obj.room }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+
+                <br/>
+                
+                <div class="font-18 m-0 m-b-5 bold new-page">Lista rezerwowa</div>
+                
+                <table class="m-0 border">
+                    <thead>
+                        <tr class="p-t-2 bold">
+                            <th class="gray-background">Nr</th>
+                            <th class="gray-background" colspan="6">Podopieczny</th>
+                            <th class="gray-background" colspan="2">Wiek</th>
+                            <th class="gray-background" colspan="3">Miasto</th>
+                            <th class="gray-background" colspan="3">Telefon</th>
+                            <th class="gray-background" colspan="3">Opiekun</th>
+                            <th class="gray-background" colspan="2">Pokój</th>
+                            <th class="gray-background" colspan="6">Wolontariusz</th>
+                            <th class="gray-background" colspan="2">Pokój</th>
+                        </tr>
+                    </thead>
+                    {% for batchparticipant in reserveparticipants %}
+                    {% if batchparticipant.participant.sex == 'K' %}
+                    <tr class="p-t-2">
+                        <td class="center pink-background">
+                             {{ forloop.counter }}.
+                        </td>
+                        <td class="center pink-background" colspan="6">
+                            {{ batchparticipant.participant.surname }} {{ batchparticipant.participant.first_name }}
+                        </td>
+                         <td class="center pink-background" colspan="2">
+                            {{ batchparticipant.participant.pesel|get_age }}
+                        </td>
+                        <td class="center pink-background" colspan="3">
+                            {{ batchparticipant.participant.city }}
+                        </td>
+                        <td class="center pink-background" colspan="3">
+                            {% if batchparticipant.participant.phone_number is not None %}
+                                {{ batchparticipant.participant.phone_number }}
+                            {% endif %}
+                        </td>
+                        <td class="center pink-background" colspan="3">
+                            {% if batchparticipant.participant.guardian_phone_number is not None %}
+                                {{ batchparticipant.participant.guardian_phone_number }}
+                            {% endif %}
+                        </td>
+                        <td class="center pink-background" colspan="2">
+                            {% if batchparticipant.room is not None %}
+                                {{ batchparticipant.room }}
+                            {% endif %}
+                        </td>
+                        <td class="center pink-background" colspan="6">
+                            {% if batchparticipant.volunteer is not None %}
+                                {{ batchparticipant.volunteer.surname }} {{ batchparticipant.volunteer.first_name }}
+                            {% endif %}
+                        </td>
+                        <td class="center pink-background" colspan="2">
+                            {% for obj in batchvolunteers %}
+                                {% if obj.volunteer == batchparticipant.volunteer %}
+                                    {% if obj.room is not None %}
+                                        {{ obj.room }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                        {% else %}
+                    <tr class="p-t-2">
+                        <td class="center blue-background">
+                             {{ forloop.counter }}.
+                        </td>
+                        <td class="center blue-background" colspan="6">
+                            {{ batchparticipant.participant.surname }} {{ batchparticipant.participant.first_name }}
+                        </td>
+                         <td class="center blue-background" colspan="2">
+                            {{ batchparticipant.participant.pesel|get_age }}
+                        </td>
+                        <td class="center blue-background" colspan="3">
+                            {{ batchparticipant.participant.city }}
+                        </td>
+                        <td class="center blue-background" colspan="3">
+                            {% if batchparticipant.participant.phone_number is not None %}
+                                {{ batchparticipant.participant.phone_number }}
+                            {% endif %}
+                        </td>
+                        <td class="center blue-background" colspan="3">
+                            {% if batchparticipant.participant.guardian_phone_number is not None %}
+                                {{ batchparticipant.participant.guardian_phone_number }}
+                            {% endif %}
+                        </td>
+                        <td class="center blue-background" colspan="2">
+                            {% if batchparticipant.room is not None %}
+                                {{ batchparticipant.room }}
+                            {% endif %}
+                        </td>
+                        <td class="center blue-background" colspan="6">
+                            {% if batchparticipant.volunteer is not None %}
+                                {{ batchparticipant.volunteer }}
+                            {% endif %}
+                        </td>
+                        <td class="center blue-background" colspan="2">
+                            {% for obj in batchvolunteers %}
+                                {% if obj.volunteer == batchparticipant.volunteer %}
+                                    {% if obj.room is not None %}
+                                        {{ obj.room }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

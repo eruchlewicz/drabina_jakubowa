@@ -1,0 +1,329 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+{% load mathfilters %}
+
+{% block extra_style %}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}" />
+    <style type="text/css">
+        @page {
+            margin-left: 1.5cm;
+            margin-right: 1.5cm;
+            margin-top: 1.5cm;
+            margin-bottom: 0.5cm;
+        }
+        @font-face {
+            font-family: Cuprum;
+            src: url(/static/fonts/Cuprum-Regular.ttf); }
+        @font-face {
+            font-family: CuprumBold;
+            src: url(/static/fonts/Cuprum-Bold.ttf); }
+        .cuprum {
+            font-family: Cuprum, sans-serif;
+        }
+        .font-24 {
+            font-size: 24px;
+        }
+        .font-20 {
+            font-size: 20px;
+        }
+        .font-16 {
+            font-size: 16px;
+        }
+        .bold {
+            font-family: CuprumBold, sans-serif;
+        }
+        .font-18 {
+            font-size: 18px;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+        .m-t-8- {
+            margin-top: -8px;
+        }
+        .m-l-8 {
+            margin-left: 8px;
+        }
+        .m-b-8- {
+            margin-bottom: -8px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div class="main cuprum font-16">
+            <div class="container">
+                <table class="m-0">
+                    <tr>
+                        <td class="center" colspan="2">
+                            <span class="font-24 bold">
+                                Centrum Księdza Orione
+                                <br />
+                                w Brańszczyku
+                                <br/>
+                            </span>
+                            <span class="font-16 font">
+                                Dom Emeryta | Dom Rekolekcyjny <br />
+                                Drabina Jakubowa | Rehabilitacja+
+                            </span>
+                        </td>
+                        <td colspan="3">
+                            <img src="{% static '/images/icons.png' %}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-16" colspan="2">
+                        </td>
+                        <td class="right font-16 p-t-5" colspan="3">
+                            Brańszczyk, {{ batchvolunteer.batch_end_date|date:"d.m.Y" }}
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="center m-0">
+                    <span class="bold font-24">ZAŚWIADCZENIE</span>
+                </div>
+
+            <div class="justify m-0 m-b-5 text-indent">
+                Zaświadcza się, że: <br />
+                <div class="text-indent">
+                    {{ batchvolunteer.volunteer.first_name }} {{ batchvolunteer.volunteer.surname }},
+
+                    {% if batchvolunteer.volunteer.sex == 'K' %}
+                        zamieszkała
+                    {% else %}
+                        zamieszkały
+                    {% endif %}
+
+                    w {{  batchvolunteer.volunteer.zip_code }} {{  batchvolunteer.volunteer.city }},
+                    przy ulicy {{ batchvolunteer.volunteer.address }}, o numerze PESEL {{ batchvolunteer.volunteer.pesel }}
+
+                    {% if batchvolunteer.volunteer.sex == 'K' %}
+                        uczestniczyła
+                    {% else %}
+                        uczestniczył
+                    {% endif %}
+
+                    w Turnusie Rekolekcyjnym dla Osób Niepełnosprawnych, Chorych, Starszych i Samotnych –
+                    {{ congregation.community }}, którego Organizatorem było {{ congregation }}, jako
+
+                    {% if batchvolunteer.volunteer.sex == 'K' %}
+                        wolontariuszka
+                    {% else %}
+                        wolontariusz
+                    {% endif %}
+
+                    w charakterze pielęgniarza.
+                    Turnus odbywał się w dniach
+                    {{ batchvolunteer.batch_begin_date|date:"d.m" }} - {{ batchvolunteer.batch_end_date|date:"d.m.Y" }} r.
+                    w placówce: {{ batchvolunteer.batch.institution.name }} w miejscowości {{ batchvolunteer.batch.institution.city }}.
+                    Wymiar godzinowy wolontariatu:
+                </div>
+            </div>
+
+                <table class="m-t-5 m-b-5">
+                    <tr>
+                        <td class="center">
+                            praca przy podopiecznych,
+                            <br />
+                            {% with batchvolunteer.batch_days|mul:14 as days %}
+                                {{ days }}
+                        </td>
+                        <td class="center">
+                            dyżur nocny,
+                            <br />
+                            {% with batchvolunteer.nights|mul:9 as nights %}
+                                {{ nights }}
+                        </td>
+                        <td class="center">
+                            szkolenie,
+                            <br />
+                            {% if batchvolunteer.training_days >= 1 %}
+                                {{ batchvolunteer.batch.training_duration }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </td>
+                        <td class="center">
+                            w sumie (godzin).
+                            <br />
+                                {% if batchvolunteer.training_days >= 1 %}
+                                    {{ days|add:nights|add:batchvolunteer.batch.training_duration }}
+                                {% else %}
+                                    {{ days|add:nights }}
+                                {% endif %}
+                            {% endwith %}{% endwith %}
+                        </td>
+                    </tr>
+                </table>
+
+                Do obowiązków pielęgniarki w trakcie turnusu należało:
+
+                <table class="m-0 m-b-15">
+                    <tr class="light-blue">
+                        <td class="p-l-5">
+                            <div class="light-blue p-t-5 p-b-0">
+                                <img src="{% static '/images/dot.png' %}" />
+                            </div>
+                        </td>
+                        <td colspan="19">
+                            <div class="light-blue p-t-5 p-b-0">
+                                szkolenie wolontariuszy z zakresu pielęgnacji osób chorych, niepełnosprawnych, starszych
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td class="p-l-5">
+                            <img src="{% static '/images/dot.png' %}" />
+                        </td>
+                        <td colspan="19">
+                            przyjęcie podopiecznych w dzień przyjazdu i zebranie wywiadu o stanie ich zdrowia
+                        </td>
+                    </tr>
+                    <tr class="light-blue">
+                        <td class="p-l-5">
+                            <div class="light-blue p-t-5 p-b-0">
+                                <img src="{% static '/images/dot.png' %}" />
+                            </div>
+                        </td>
+                        <td colspan="19">
+                            <div class="light-blue p-t-5 p-b-0">
+                                sporządzenie listy czynności do wykonania dla dyżuru nocnego
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td class="p-l-5">
+                            <img src="{% static '/images/dot.png' %}" />
+                        </td>
+                        <td colspan="19">
+                            odnotowanie, kto ma konieczną dietę i zgłoszenie tego do koordynatora
+                        </td>
+                    </tr>
+                    <tr class="light-blue">
+                        <td class="p-l-5">
+                            <div class="light-blue p-t-5 p-b-0">
+                                <img src="{% static '/images/dot.png' %}" />
+                            </div>
+                        </td>
+                        <td colspan="19">
+                            <div class="light-blue p-t-5 p-b-0">
+                                monitorowanie stanu zdrowia podopiecznych (i wolontariuszy)
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td class="p-l-5">
+                            <img src="{% static '/images/dot.png' %}" />
+                        </td>
+                        <td colspan="19">
+                            prawidłowe dysponowanie lekami podopiecznych wg zlecenia lekarskiego oraz aplikowanie ich
+                            (wraz z iniekcjami itp.)
+                        </td>
+                    </tr>
+                    <tr class="light-blue">
+                        <td class="p-l-5">
+                            <div class="light-blue p-t-5 p-b-0">
+                                <img src="{% static '/images/dot.png' %}" />
+                            </div>
+                        </td>
+                        <td colspan="19">
+                            <div class="light-blue p-t-5 p-b-0">
+                                zmiana opatrunków
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td class="p-l-5">
+                            <img src="{% static '/images/dot.png' %}" />
+                        </td>
+                        <td colspan="19">
+                            podejmowanie decyzji o wezwaniu pogotowia lub lekarza
+                        </td>
+                    </tr>
+                    <tr class="light-blue">
+                        <td class="p-l-5">
+                            <div class="light-blue p-t-5 p-b-0">
+                                <img src="{% static '/images/dot.png' %}" />
+                            </div>
+                        </td>
+                        <td colspan="19">
+                            <div class="light-blue p-t-5 p-b-0">
+                                pierwsza pomoc medyczna
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td class="p-l-5">
+                            <img src="{% static '/images/dot.png' %}" />
+                        </td>
+                        <td colspan="19">
+                            dysponowanie zasobem podręcznych leków i środków opatrunkowych na wypadek nagłych sytuacji,
+                            wraz z obowiązkiem zlecania ich uzupełnienia w razie wyczerpania
+                        </td>
+                    </tr>
+                    <tr class="light-blue">
+                        <td class="p-l-5">
+                            <div class="light-blue p-t-5 p-b-0">
+                                <img src="{% static '/images/dot.png' %}" />
+                            </div>
+                        </td>
+                        <td colspan="19">
+                            <div class="light-blue p-t-5 p-b-0">
+                                pielęgnowanie podopiecznych wymagających fachowej opieki
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="p-t-2">
+                        <td class="p-l-5">
+                            <img src="{% static '/images/dot.png' %}" />
+                        </td>
+                        <td colspan="19">
+                            profilaktyka przeciwodleżynowa
+                        </td>
+                    </tr>
+                    <tr class="light-blue">
+                        <td class="p-l-5">
+                            <div class="light-blue p-t-5 p-b-0">
+                                <img src="{% static '/images/dot.png' %}" />
+                            </div>
+                        </td>
+                        <td colspan="19">
+                            <div class="light-blue p-t-5 p-b-0">
+                                współpraca z koordynatorem turnusu w celu zapewnienia podopiecznym bezpieczeństwa i zdrowia
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="m-b-25">
+                    <tr>
+                        <td class="font-14 gray m-l-8" colspan="3">
+                            Nr unikatowy zaświadczenia: <span class="bold">{{ batchvolunteer.unique_key }}</span> <br />
+                            W celu sprawdzenia poprawności powyższych danych prosimy o kontakt <br/>
+                            mailowy na adres <span class="dark-blue underline">{{ home.email_address }}</span>,
+                            podanie numeru unikatowego, <br/>
+                            imienia, nazwiska i roku w którym odbył się wolontariat.
+                        </td>
+                        <td class="center dark-red bold" colspan="2">
+                            <div class="font-18 m-0">Kierownik Wspólnoty</div>
+                            <div class="font-18 m-0 m-b-15">{{ congregation.community }}</div>
+                            <div class="m-0 font-14">{{ congregation.director }}</div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="center font-14">
+                    {{ home.address }}, {{ home.zip_code }} {{ home.city }}, {{ home.page_url }} | {{ home.email_address }};
+                    tel. {{ home.phone_number }}
+                    <br />
+                    NIP: {{ home.nip }}, Regon: {{ home.regon }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "homepanel/base.html" %}
+
+{% block content %}
+    <section id="trainings" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Warsztaty i rekolekcje</h2>
+                    <hr /><br />
+                    <ul>
+                        {% for training in trainings_list %}
+                            <li class="lead">
+                                <a class="medium-bold" href="{% url 'homepanel:training_details' pk=training.id %}">
+                                    {{ training.name }}</a>, {{ training.institution.city }},
+                                {{ training.begin_date|date:"d.m.Y" }} - {{ training.end_date|date:"d.m.Y" }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <br /><br />
+
+                      <ul class="pagination offset-5">
+                        {% if trainings_list.has_previous %}
+                          <li class="page-item"><a class="page-link" href="?page={{ trainings_list.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                          <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                        {% endif %}
+                        {% for i in trainings_list.paginator.page_range %}
+                          {% if trainings_list.number == i %}
+                            <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                          {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                        {% if trainings_list.has_next %}
+                          <li class="page-item"><a class="page-link" href="?page={{ trainings_list.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                          <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                        {% endif %}
+                      </ul>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

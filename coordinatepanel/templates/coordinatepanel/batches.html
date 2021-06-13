@@ -1,0 +1,58 @@
+{% extends "coordinatepanel/base.html" %}
+{% load static %}
+
+{% block content %}
+    <section id="batches" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <span class="float-right">
+                         <a class="link-decoration-none" href="{% static "rozklad_pomieszczen.pdf" %}">
+                            <button class="btn btn-default btn-sm">Plan budynku</button>
+                         </a>
+                    </span>
+
+                    <h2>Moje turnusy</h2>
+
+                    <hr /><br />
+                    <ul>
+                        {% for batch in batches_list %}
+                            <li class="lead">
+                                <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                    <span class="col-xs-6 col-sm-6 col-md-7 col-lg-8">
+                                         <a class="medium-bold" href="{% url 'coordinatepanel:batch_view' pk=batch.id %}">
+                                            {{ batch.name }} {{ batch.institution.city }} {{ batch.begin_date|date:"Y" }}</a>: {{ batch.begin_date|date:"d.m.Y" }} - {{ batch.end_date|date:"d.m.Y" }}
+                                    </span>
+                                    <span class="col-xs-6 col-sm-6 col-md-5 col-lg-4 float-right text-right">
+                                        {% for obj in batch_volunteer_list %}
+                                            {% if obj.batch == batch %}
+                                                {% if batch.main_coordinator == coordinator %}
+                                                    {% if batch.main_coordinator_was_there %}
+                                                        <a class="link-decoration-none" href="{% url 'coordinatepanel:certificate' batch.id obj.unique_key %}">
+                                                            <button class="btn btn-success btn-sm">Zaświadczenie</button>
+                                                        </a>
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if batch.auxiliary_coordinator_was_there %}
+                                                        <a class="link-decoration-none" href="{% url 'coordinatepanel:certificate' batch.id obj.unique_key %}">
+                                                            <button class="btn btn-success btn-sm">Zaświadczenie</button>
+                                                        </a>
+                                                    {% endif %}
+                                                {% endif %}
+                                                <a class="link-decoration-none" href="{% url 'coordinatepanel:coordinator_contract' obj.unique_key %}">
+                                                    <button class="btn btn-warning btn-sm">Umowa</button>
+                                                </a>
+                                            {% endif %}
+                                        {% endfor %}
+                                     </span>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "homepanel/base.html" %}
+
+{% block content %}
+    <section id="batch_participants" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <span class="float-right">
+                        <a class="link-decoration-none" href="{% url 'homepanel:add_meals_booking' %}">
+                            <button class="btn btn-default m-b-10">Dodaj pobyt z posiłkami</button>
+                        </a>
+                    </span>
+
+                    <h2>Pobyty z posiłkami (bez pokoju)</h2>
+                    <hr /><br />
+
+                    <ul>
+                        {% for booking in booking_meals_list %}
+                            <li class="lead">
+                                <span class="col-sm-12 col-xs-12 col-md-12 row">
+                                     <span class="col-xs-6 col-sm-6 col-md-8 col-lg-9">
+                                         <a class="medium-bold" href="{% url 'homepanel:booking_details' booking.id %}">
+                                             {{ booking.begin_date|date:"Y.m" }} {{ booking.surname }} {{ booking.first_name }} -
+                                             {{ booking.full_cost }} zł -
+                                         </a>
+                                         {% if booking.is_paid is True %}
+                                             <span class="green medium-bold">(opłacono)</span>
+                                         {% elif booking.is_part_paid is True %}
+                                             <span class="blue medium-bold">(zaliczka)</span>
+                                         {% else %}
+                                             <span class="red medium-bold">(nie zapłacono)</span>
+                                         {% endif %}
+
+                                     </span>
+                                    <span class="col-xs-6 col-sm-6 col-md-4 col-lg-3 float-right text-right">
+                                         <a class="link-decoration-none"
+                                            href="{% url 'homepanel:booking_payment' booking.id %}">
+                                             <button class="btn btn-success btn-sm">Płatności</button>
+                                         </a>
+                                         <a onclick="return confirm('Czy na pewno chcesz usunąć tę rezerwację posiłków?')" class="link-decoration-none"
+                                            href="{% url 'homepanel:delete_meals_booking' booking.id %}">
+                                             <button class="btn btn-danger btn-sm">Usuń</button>
+                                         </a>
+                                     </span>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <br /><br />
+
+                      <ul class="pagination offset-5">
+                        {% if booking_meals_list.has_previous %}
+                          <li class="page-item"><a class="page-link" href="?page={{ booking_meals_list.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                          <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                        {% endif %}
+                        {% for i in booking_meals_list.paginator.page_range %}
+                          {% if booking_meals_list.number == i %}
+                            <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                          {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                        {% if booking_meals_list.has_next %}
+                          <li class="page-item"><a class="page-link" href="?page={{ booking_meals_list.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                          <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                        {% endif %}
+                      </ul>
+
+                        <br />
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

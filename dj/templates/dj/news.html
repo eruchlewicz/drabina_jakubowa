@@ -1,0 +1,17 @@
+{% extends "dj/base.html" %}
+
+{% block content %}
+    <section id="registration">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2>Aktualności</h2>
+                    <hr /><br />
+                    {% include "dj/includes/posts.html" %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

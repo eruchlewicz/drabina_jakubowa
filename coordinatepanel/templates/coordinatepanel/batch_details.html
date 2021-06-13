@@ -1,0 +1,85 @@
+{% extends "coordinatepanel/base.html" %}
+
+{% block content %}
+    <section id="batches" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <span class="float-right">
+                        <a class="link-decoration-none" href="{% url 'coordinatepanel:circulation_card' batch_details.id %}">
+                            <button class="btn btn-default m-b-10">Karta obiegowa</button>
+                        </a>
+                        <a class="link-decoration-none" href="{% url 'coordinatepanel:empty_rooms_report' batch_details.id %}">
+                            <button class="btn btn-default m-b-10">Pokoje</button>
+                        </a>
+                        <a class="link-decoration-none" href="{% url 'coordinatepanel:rooms_report' batch_details.id %}">
+                            <button class="btn btn-default m-b-10">Pokoje - raport</button>
+                        </a>
+                    </span>
+
+                    <h2>{{ batch_details }}</h2>
+                    <hr /><br />
+
+                    <span class="bold">Termin: </span>
+                    {{ batch_details.begin_date|date:"d.m.Y" }} - {{ batch_details.end_date|date:"d.m.Y" }}
+                    <br />
+                    <span class="bold">Placówka: </span>
+                    {{ batch_details.institution }}
+                    <br />
+                    <span class="bold">Rekolekcjoniści: </span>
+                    {% if not batch_details.main_priest is None %}
+                    {{ batch_details.main_priest }}
+                    {% endif %}
+                    {% if not batch_details.auxiliary_priest is None %}
+                    , {{ batch_details.auxiliary_priest }}
+                    {% endif %}
+                    <br />
+                    <span class="bold">Koordynatorzy: </span>
+                    {% if not batch_details.main_coordinator is None %}
+                        {{ batch_details.main_coordinator }} - {{ batch_details.main_coordinator.volunteer.phone_number }}
+                        ({{ batch_details.main_coordinator.volunteer.email_address }})
+
+                    {% endif %}
+                    {% if not batch_details.auxiliary_coordinator is None %}
+                        , <br/>
+                        {{ batch_details.auxiliary_coordinator }} - {{ batch_details.auxiliary_coordinator.volunteer.phone_number }}
+                        ({{ batch_details.auxiliary_coordinator.volunteer.email_address }})
+                    {% endif %}
+                    <br />
+                    <span class="bold">Pielęgniarki: </span>
+                    {% for nurse in batch_details.nurse.all %}
+                        {{ nurse }} - {{ nurse.volunteer.phone_number }},
+                    {% endfor %}
+                    <br />
+                    <span class="bold">Lekarze: </span>
+                    {% for doctor in batch_details.doctor.all %}
+                        {{ doctor }} - {{ doctor.volunteer.phone_number }},
+                    {% endfor %}
+                    <br />
+                    <span class="bold">Uczestnicy:</span> {{ summary }}
+                    <br />
+                    <span class="bold">Mężczyźni:</span> {{ men }}
+                    <br />
+                    <span class="bold">Mężczyźni na wózkach:</span> {{ men_wheelchair }}
+                    <br />
+                    <span class="bold">Kobiety:</span> {{ women }}
+                    <br />
+                    <span class="bold">Kobiety na wózkach:</span> {{ women_wheelchair }}
+                    <br />
+
+                    <a class="medium-bold" href="{% url 'coordinatepanel:participants_list' pk=batch_details.id %}">Podopieczni</a> |
+                    <a class="medium-bold" href="{% url 'coordinatepanel:volunteers_list' pk=batch_details.id %}">Wolontariusze</a>
+                    <br />
+
+                    <br />
+
+                    <a class="link-decoration-none" href="{% url 'coordinatepanel:batches' %}">
+                        <button class="btn btn-default">Wróć</button>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

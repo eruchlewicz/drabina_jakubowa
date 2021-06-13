@@ -1,0 +1,73 @@
+{% extends "dj/base.html" %}
+
+{% block content %}
+    <section id="batches" class="p-b-10">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+
+                    <h2 id="batch_name">{{ batch_details }}</h2>
+                    <hr /><br />
+
+                    <span class="bold">Termin: </span>
+                    {{ batch_details.begin_date|date:"d.m.Y" }} - {{ batch_details.end_date|date:"d.m.Y" }}
+                    <br />
+                    <span class="bold">Placówka: </span>
+                    {{ batch_details.institution }}
+                    <br />
+                    <span class="bold">Rekolekcjoniści: </span>
+                    {% if not batch_details.main_priest is None %}
+                    {{ batch_details.main_priest }}
+                    {% endif %}
+                    {% if not batch_details.auxiliary_priest is None %}
+                    , {{ batch_details.auxiliary_priest }}
+                    {% endif %}
+                    <br />
+                    <span class="bold">Koordynatorzy: </span>
+                    {% if not batch_details.main_coordinator is None %}
+                        {{ batch_details.main_coordinator }} - {{ batch_details.main_coordinator.volunteer.phone_number }}
+                        ({{ batch_details.main_coordinator.volunteer.email_address }})
+
+                    {% endif %}
+                    {% if not batch_details.auxiliary_coordinator is None %}
+                        , <br/>
+                        {{ batch_details.auxiliary_coordinator }} - {{ batch_details.auxiliary_coordinator.volunteer.phone_number }}
+                        ({{ batch_details.auxiliary_coordinator.volunteer.email_address }})
+                    {% endif %}
+                    <br />
+                    <span class="bold">Pielęgniarki: </span>
+                    {% for nurse in batch_details.nurse.all %}
+                        {{ nurse }} - {{ nurse.volunteer.phone_number }},
+                    {% endfor %}
+                    <br />
+                    <span class="bold">Lekarze: </span>
+                    {% for doctor in batch_details.doctor.all %}
+                        {{ doctor }} - {{ doctor.volunteer.phone_number }},
+                    {% endfor %}
+                    <br />
+                    <span class="bold">Mój pokój: </span>
+                    {% if not batch_volunteer.room is None %}
+                    {{ batch_volunteer.room }}
+                    {% endif %}
+                    <br />
+                    <span class="bold">Moi podopieczni: </span>
+                    {% if batch_details.begin_date <= now %}
+                        {% for obj in batch_participants %}
+                            <a href="{% url 'dj:participant_details' batch_details.id obj.participant.id %}">
+                                {{ obj.participant }}
+                            </a>
+                            - pokój:
+                            {% if obj.room is not None %}{{ obj.room }}{% endif %},
+                        {% endfor %}
+                    {% endif %}
+                    <br />
+                    <br />
+
+                    <a class="link-decoration-none" href="{% url 'dj:batches' %}">
+                        <button class="btn btn-default">Wróć</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
