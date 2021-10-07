@@ -114,7 +114,7 @@ def participants(request, **kwargs):
                 men_wheelchair) + ', "women": ' + str(women) + ', "women_wheelchair": ' + str(women_wheelchair) + '}'
 
     item_list += ']'
-        
+
     if user.groups.filter(name__in=['Koordynatorzy domu']).exists() or \
             user.groups.filter(name='Koordynatorzy zapisów').exists():
         batch_participants = BatchParticipant.objects.filter(batch__id=kwargs['pk'], reserve_list=False)\
@@ -224,7 +224,7 @@ def all_participants(request):
             participants_all = Participant.objects.all().order_by('surname')
             paginator = Paginator(participants_all, 50)
             page = request.GET.get('page', 1)
-            
+
         try:
             participants_list = paginator.page(page)
         except PageNotAnInteger:
@@ -519,7 +519,7 @@ def add_booking_2(request, **kwargs):
             fp = open('/home/drabinajakuba/websites/engineeringwork/drabinajakubowa/static/images/small-icons.png', 'rb')
             image = MIMEImage(fp.read())
             fp.close()
-    
+
             fp = open('/home/drabinajakuba/websites/engineeringwork/drabinajakubowa/static/images/orione-name.png', 'rb')
             image2 = MIMEImage(fp.read())
             fp.close()
@@ -1447,6 +1447,39 @@ def get_participants_from_csv(request):
                         is_part_paid=part_paid
                     )
         return redirect('homepanel:all_participants')
+    else:
+        return redirect('homepanel:home_coordinator_login')
+
+
+@login_required
+def export_participants_to_csv(request):
+    if request.user.groups.filter(name__in=['Koordynatorzy domu']).exists():
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="participants.csv"'
+
+        participants = Participant.objects.order_by('surname')
+        rows = []
+
+        for participant in participants:
+            person = [
+                participant.surname,
+                participant.first_name,
+                participant.address,
+                participant.city,
+                participant.zip_code,
+                participant.email_address
+            ]
+            rows.append(person)
+
+        csv.register_dialect(
+            'myDialect', delimiter=';', quoting=csv.QUOTE_ALL, skipinitialspace=True, lineterminator='\r'
+        )
+
+        writer = csv.writer(response, dialect='myDialect')
+        for row in rows:
+            writer.writerow(row)
+
+        return response
     else:
         return redirect('homepanel:home_coordinator_login')
 

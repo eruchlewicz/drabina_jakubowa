@@ -81,6 +81,7 @@ urlpatterns = [
     url(r'^rezerwacje/platnosci/(?P<booking_id>[0-9]+)/$', views.booking_payment, name='booking_payment'),
     url(r'^rezerwacje/(?P<pk>[0-9]+)/$', views.booking_details, name='booking_details'),
     url(r'^podopieczni/csv/$', views.get_participants_from_csv, name='get_participants_from_csv'),
+    url(r'^podopieczni/eksport-do-csv/$', views.export_participants_to_csv, name='export_participants_to_csv'),
     url(r'^podopieczni/aktualizacja/$', views.update_participants_count, name='update_participants_count'),
     url(r'^wolontariusze/$', views.all_volunteers, name='all_volunteers'),
     url(r'^wolontariusze/(?P<pk>[0-9]+)/$', views.volunteer_details, name='volunteer_details'),
