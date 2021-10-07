@@ -107,10 +107,12 @@ def participants(request, **kwargs):
                                                                             participant__sex='K')\
             .order_by('sign_date', 'participant__surname')
         batch_id = kwargs['pk']
+        batch = Batch.objects.filter(id=batch_id).first()
         return render(request, template_name, {'batch_participants_male': batch_participants_male, 'batch_id': batch_id,
                                                'batch_participants_female': batch_participants_female, 'now': now,
                                                'batch_participants_reserve_male': batch_participants_reserve_male,
-                                               'batch_participants_reserve_female': batch_participants_reserve_female})
+                                               'batch_participants_reserve_female': batch_participants_reserve_female,
+                                               'batch': batch})
     else:
         return redirect('coordinatepanel:coordinator_login')
 
