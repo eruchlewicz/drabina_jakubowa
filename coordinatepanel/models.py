@@ -276,7 +276,7 @@ class BatchVolunteer(models.Model):
     reserve_list = models.BooleanField("Lista rezerwowa", default=False, blank=False)
     note = models.TextField("Notatka", max_length=500, null=True, blank=True)
     sign_date = models.DateTimeField("Kiedy zapisano", default=timezone.now, null=False, blank=True)
-    participant_helper = models.BooleanField("Pomoc przy popdopiecznych", default=False, blank=False)
+    participant_helper = models.BooleanField("Pomoc przy popdopiecznych", default=True, blank=False)
     checked = models.BooleanField("Sprawdzony w rejestrze", default=False, blank=False)
 
     def __str__(self):
