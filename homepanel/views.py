@@ -216,8 +216,11 @@ def all_participants(request):
 
         search_query = request.GET.get('search', '')
         if len(search_query) > 0:
-            participants_all = (Participant.objects.filter(surname__contains=search_query) |
-                                Participant.objects.filter(first_name__contains=search_query)).order_by('surname')
+            participants_all = (
+                Participant.objects.filter(surname__contains=search_query) |
+                Participant.objects.filter(first_name__contains=search_query) |
+                Participant.objects.filter(zip_code__contains=search_query)
+            ).order_by('surname')
             paginator = Paginator(participants_all, 50)
             page = request.GET.get('page', 1)
         else:
