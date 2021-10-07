@@ -10,6 +10,9 @@
                         <!--<a class="link-decoration-none"  href="{% url 'homepanel:get_participants_from_csv' %}">
                             <button class="btn btn-info m-b-10">Dane z csv</button>
                         </a>-->
+                        <a class="link-decoration-none"  href="{% url 'homepanel:export_participants_to_csv' %}">
+                            <button class="btn btn-info m-b-10">Export do CSV</button>
+                        </a>
                         <a class="link-decoration-none" href="{% url 'homepanel:add_participant' %}">
                             <button class="btn btn-default m-b-10">Dodaj podopiecznego</button>
                         </a>
@@ -25,7 +28,7 @@
                             </div>
                         </div>
                     </form>
-                    
+
                     <h2>Lista podopiecznych</h2>
                     <hr /><br />
 
