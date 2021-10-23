@@ -29,7 +29,7 @@ class ParticipantForm(forms.ModelForm):
         fields = ["first_name", 'surname', 'sex', 'pesel', 'phone_number', 'guardian_name', 'guardian_phone_number',
                   'email_address', 'city', 'zip_code', 'address', 'is_first_time', 'how_know_dj', 'foundation',
                   'candies', 'flower', "cat", "dog", "bear", "monkey",
-                  "frog", "bat", "spider", "fish", 'others']
+                  "frog", "bat", "spider", "fish", 'others', 'k_1', 'k_2', 'k_3']
         labels = {
             "first_name": _('Imię'),
             'surname': _('Nazwisko'),
@@ -56,6 +56,9 @@ class ParticipantForm(forms.ModelForm):
             "spider": _('Niesprawny słuch'),
             "fish": _('Możliwe ataki padaczki'),
             'others': _('Uwagi'),
+            'k_1': _('K1'),
+            'k_2': _('K2'),
+            'k_3': _('K3'),
         }
 
     def clean(self):

@@ -127,6 +127,8 @@ class Volunteer(models.Model):
     mother_surname = models.CharField("Nazwisko panieńskie matki", max_length=100, null=True, blank=True)
     father_first_name = models.CharField("Imię ojca", max_length=100, null=True, blank=True)
     family_name = models.CharField("Nazwisko rodowe", max_length=100, null=True, blank=True)
+    experience = models.IntegerField("Doświadczenie", null=False, blank=True, default=0)
+    physical_performance = models.IntegerField("Wydolność fizyczna", null=False, blank=True, default=0)
 
     def __str__(self):
         return self.first_name + " " + self.surname
@@ -333,8 +335,8 @@ class Participant(models.Model):
     city = models.CharField("Miasto", max_length=40, null=False, blank=False)
     zip_code = models.CharField("Kod pocztowy", max_length=6, null=False, blank=False)
     address = models.CharField("Adres", max_length=50, null=False, blank=False)
-    flower= models.CharField("Kwiatek", max_length=2, null=False, blank=False, choices=COMMUNICATION)
-    others= EncryptedTextField("Inne", max_length=500, null=True, blank=True)
+    flower = models.CharField("Kwiatek", max_length=2, null=False, blank=False, choices=COMMUNICATION)
+    others = EncryptedTextField("Inne", max_length=500, null=True, blank=True)
     photo = models.ImageField("Zdjęcie", upload_to="gallery", null=True, blank=True)
     foundation = models.TextField("Dane fundacji np. do wystawienia zaświadczenia", max_length=200, null=True,
                                   blank=True)
@@ -350,6 +352,10 @@ class Participant(models.Model):
     bat = models.BooleanField("Nietoperz", default=False, blank=False)
     spider = models.BooleanField("Pająk", default=False, blank=False)
     fish = models.BooleanField("Ryba", default=False, blank=False)
+
+    k_1 = models.IntegerField("K1", null=False, blank=True, default=0)
+    k_2 = models.IntegerField("K2", null=False, blank=True, default=0)
+    k_3 = models.IntegerField("K3", null=False, blank=True, default=0)
 
     def __str__(self):
         return self.first_name + " " + self.surname

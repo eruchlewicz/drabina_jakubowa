@@ -146,10 +146,36 @@ def batch_view(request, **kwargs):
         women_wheelchair = BatchParticipant.objects.filter(batch=batch_details, participant__sex='K',
                                                            participant__bear=True).count()
         reserve_list = BatchParticipant.objects.filter(batch=batch_details, reserve_list=True).count()
+        batch_participants = BatchParticipant.objects.filter(batch=batch_details)
+        batch_volunteers = BatchVolunteer.objects.filter(batch=batch_details)
+        participant_points = sum(
+            [
+                sum([bp.participant.k_1, bp.participant.k_2, bp.participant.k_3])
+                for bp in batch_participants
+            ]
+        )
+        volunteer_points = sum(
+            [
+                sum([bv.volunteer.experience, bv.volunteer.physical_performance])
+                for bv in batch_volunteers
+            ]
+        )
 
-        return render(request, template_name, {'batch_details': batch_details, 'summary': summary, 'men': men,
-                                               'men_wheelchair': men_wheelchair, 'women': women,
-                                               'women_wheelchair': women_wheelchair, 'reserve_list': reserve_list})
+        return render(
+            request,
+            template_name,
+            {
+                'batch_details': batch_details,
+                'summary': summary,
+                'men': men,
+                'men_wheelchair': men_wheelchair,
+                'women': women,
+                'women_wheelchair': women_wheelchair,
+                'reserve_list': reserve_list,
+                'participant_points': participant_points,
+                'volunteer_points': volunteer_points,
+            }
+        )
     else:
         return redirect('homepanel:home_coordinator_login')
 

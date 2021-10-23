@@ -67,6 +67,10 @@
                     <br />
                     <span class="bold">Kobiety na wózkach:</span> {{ women_wheelchair }}
                     <br />
+                    <span class="bold">Punkty podopiecznych:</span> {{ participant_points }}
+                    <br />
+                    <span class="bold">Punkty wolontariuszy:</span> {{ volunteer_points }}
+                    <br />
 
                     <a class="medium-bold" href="{% url 'coordinatepanel:participants_list' pk=batch_details.id %}">Podopieczni</a> |
                     <a class="medium-bold" href="{% url 'coordinatepanel:volunteers_list' pk=batch_details.id %}">Wolontariusze</a>
