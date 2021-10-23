@@ -1,5 +1,6 @@
 {% extends "coordinatepanel/base.html" %}
 {% load mathfilters %}
+{% load auth_extras %}
 {% load static %}
 
 {% block content %}
@@ -18,7 +19,9 @@
                                         <a class="medium-bold" href="{% url 'coordinatepanel:event_volunteer_details' event_id obj.volunteer.id %}">
                                             {{ obj.volunteer.surname }} {{ obj.volunteer.first_name }}
                                         </a>
-                                        <span class="bd_cake"></span>
+                                        {% if obj|has_birthday %}
+                                             <i class="fa fa-birthday-cake blue"></i>
+                                        {% endif %}
                                         {% if obj.is_paid is True %}
                                             <span class="green medium-bold">(zapłacono)</span>
                                         {% else %}
@@ -43,9 +46,6 @@
                         {% endfor %}
                     </ul>
 
-                    <span id="begin_date" class="hidden">{{ event.event.begin_date|date:"Y.m.d" }}</span>
-                    <span id="end_date" class="hidden">{{ event.event.end_date|date:"Y.m.d" }}</span>
-
                     <br />
                     <a class="link-decoration-none" href="{% url 'coordinatepanel:event_details' event_id %}">
                         <button class="btn btn-default">Wróć</button>
@@ -55,8 +55,4 @@
             </div>
         </div>
     </section>
-{% endblock %}
-
-{% block extra_body_base %}
-    <script src="{% static 'js/count_birthday.js' %}"></script>
 {% endblock %}
