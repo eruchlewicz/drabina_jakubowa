@@ -31,7 +31,9 @@
                                         <a class="medium-bold" href="{% url 'coordinatepanel:volunteer_details' batch_id obj.volunteer.id %}">
                                             {{ obj.volunteer.surname }} {{ obj.volunteer.first_name }}
                                         </a>
-                                        <span class="bd_cake"></span>
+                                        {% if obj|has_birthday %}
+                                             <i class="fa fa-birthday-cake blue"></i>
+                                        {% endif %}
                                         - pokój:
                                         {% if obj.room is not None %}
                                             {{ obj.room }}
@@ -79,7 +81,9 @@
                                         <a class="medium-bold" href="{% url 'coordinatepanel:volunteer_details' batch_id obj.volunteer.id %}">
                                             {{ obj.volunteer.surname }} {{ obj.volunteer.first_name }}
                                         </a>
-                                        <span class="bd_cake"></span>
+                                        {% if obj|has_birthday %}
+                                             <i class="fa fa-birthday-cake blue"></i>
+                                        {% endif %}
                                         - pokój:
                                         {% if obj.room is not None %}
                                             {{ obj.room }}
@@ -130,7 +134,9 @@
                                         <a class="medium-bold" href="{% url 'coordinatepanel:volunteer_details' batch_id obj.volunteer.id %}">
                                             {{ obj.volunteer.surname }} {{ obj.volunteer.first_name }}
                                         </a>
-                                        <span class="bd_cake"></span>
+                                        {% if obj|has_birthday %}
+                                             <i class="fa fa-birthday-cake blue"></i>
+                                        {% endif %}
                                         - pokój:
                                         {% if obj.room is not None %}
                                             {{ obj.room }}
@@ -169,7 +175,9 @@
                                         <a class="medium-bold" href="{% url 'coordinatepanel:volunteer_details' batch_id obj.volunteer.id %}">
                                             {{ obj.volunteer.surname }} {{ obj.volunteer.first_name }}
                                         </a>
-                                        <span class="bd_cake"></span>
+                                        {% if obj|has_birthday %}
+                                             <i class="fa fa-birthday-cake blue"></i>
+                                        {% endif %}
                                         - pokój:
                                         {% if obj.room is not None %}
                                             {{ obj.room }}
@@ -198,9 +206,6 @@
                         {% endfor %}
                     </ul>
 
-                    <span id="begin_date" class="hidden">{{ batch.begin_date|date:"Y.m.d" }}</span>
-                    <span id="end_date" class="hidden">{{ batch.end_date|date:"Y.m.d" }}</span>
-
                     <br />
                     <a class="link-decoration-none" href="{% url 'coordinatepanel:batch_view' batch_id %}">
                         <button class="btn btn-default">Wróć</button>
@@ -211,8 +216,4 @@
             </div>
         </div>
     </section>
-{% endblock %}
-
-{% block extra_body_base %}
-    <script src="{% static 'js/count_birthday.js' %}"></script>
 {% endblock %}

@@ -40,6 +40,37 @@ def get_age(pesel):
     return age
 
 
+@register.filter(name='has_birthday')
+def has_birthday(event_person):
+    if type(event_person) in [BatchVolunteer, BatchParticipant]:
+        begin_date = event_person.batch.begin_date
+        end_date = event_person.batch.end_date
+    elif type(event_person) in [EventVolunteer, EventParticipant]:
+        begin_date = event_person.event.begin_date
+        end_date = event_person.event.end_date
+    else:
+        begin_date = event_person.retreat_or_music_training.begin_date
+        end_date = event_person.retreat_or_music_training.end_date
+
+    if type(event_person) in [BatchVolunteer, EventVolunteer]:
+        pesel = event_person.volunteer.pesel
+    elif type(event_person) in [BatchParticipant, EventParticipant]:
+        pesel = event_person.participant.pesel
+    else:
+        pesel = event_person.person.pesel
+
+    mm = pesel[2:4]
+    dd = pesel[4:6]
+    if int(mm) > 12:
+        mm = int(mm) - 20
+
+    if 0 < int(mm) <= 12 and 0 < int(dd) <= 31:
+        birthday = datetime.strptime(str(begin_date.year) + " " + str(mm) + " " + str(dd), '%Y %m %d')
+        return begin_date.date() <= birthday.date() <= end_date.date()
+    else:
+        return False
+
+
 @register.filter(name='is_nurse')
 def is_nurse(batch, volunteer):
     return batch.nurse.filter(volunteer_id=volunteer.id).exists()
