@@ -167,8 +167,6 @@ def empty_rooms_participant(batch, batch_participant):
     rooms = Room.objects.all()
     begin_date = batch.begin_date
     end_date = batch.end_date
-    home = Home.objects.first()
-    city = home.city
     bookings = Booking.objects.exclude(room=None).filter(begin_date__lte=end_date, begin_date__gte=begin_date) | \
                Booking.objects.exclude(room=None).filter(end_date__gte=begin_date, end_date__lte=end_date) | \
                Booking.objects.exclude(room=None).filter(end_date__lte=end_date, begin_date__gte=begin_date) | \
@@ -181,7 +179,7 @@ def empty_rooms_participant(batch, batch_participant):
                                                            retreat_or_music_training__begin_date__gte=begin_date) | \
                RetreatOrMusicTrainingPerson.objects.filter(retreat_or_music_training__end_date__gte=end_date,
                                                            retreat_or_music_training__begin_date__lte=begin_date)
-    if batch.institution.city == city:
+    if batch.institution.city == "Brańszczyk":
         participants = BatchParticipant.objects.filter(batch=batch)
         volunteers = BatchVolunteer.objects.filter(batch=batch)
 
@@ -224,8 +222,7 @@ def empty_rooms_person(retreat, retreat_person):
     rooms = Room.objects.all()
     begin_date = retreat.begin_date
     end_date = retreat.end_date
-    home = Home.objects.first()
-    city = home.city
+    city = "Brańszczyk"
     bookings = Booking.objects.exclude(room=None).filter(begin_date__lte=end_date, begin_date__gte=begin_date) | \
                Booking.objects.exclude(room=None).filter(end_date__gte=begin_date, end_date__lte=end_date) | \
                Booking.objects.exclude(room=None).filter(end_date__lte=end_date, begin_date__gte=begin_date) | \
@@ -287,8 +284,7 @@ def empty_rooms(begin_date, end_date, booking_id):
                Booking.objects.exclude(room=None).filter(end_date__gte=begin_date, end_date__lte=end_date) | \
                Booking.objects.exclude(room=None).filter(end_date__lte=end_date, begin_date__gte=begin_date) | \
                Booking.objects.exclude(room=None).filter(end_date__gte=end_date, begin_date__lte=begin_date)
-    home = Home.objects.first()
-    city = home.city
+    city = "Brańszczyk"
     batches = Batch.objects.filter(institution__city=city, begin_date__lte=end_date, begin_date__gte=begin_date) | \
               Batch.objects.filter(institution__city=city, end_date__gte=begin_date, end_date__lte=end_date) | \
               Batch.objects.filter(institution__city=city, end_date__lte=end_date, begin_date__gte=begin_date) | \
