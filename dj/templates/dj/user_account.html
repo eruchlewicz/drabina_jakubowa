@@ -204,13 +204,6 @@
                     {% endif %}
                     <br />
                     <span class="bold">Kilka słów o sobie:</span> {{ user_details.description }}
-                    <br />
-                    <span class="bold">Wyrażam zgodę na fotografowanie i przetwarzanie wizerunku:</span>
-                    {% if user_details.photographing_agreement == False %}
-                        Nie
-                    {% else %}
-                        Tak
-                    {% endif %}
 
                     <br /><br />
                     <a id="account_edit_link" href="{% url 'dj:account_edit' %}">

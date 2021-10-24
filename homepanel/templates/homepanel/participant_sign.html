@@ -12,7 +12,11 @@
                         <button class="btn btn-default">Wróć</button>
                     </a>
 
-                    <h2>{{ participant }} - turnusy</h2>
+                    <h2>{{ participant }} - turnusy
+                        {% if participant.warning %}
+                            <i class="fa fa-exclamation-triangle red" title="Przypał"></i>
+                        {% endif %}
+                    </h2>
                     <hr /><br />
 
                     <ul>

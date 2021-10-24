@@ -15,10 +15,11 @@ class BatchParticipantForm(forms.ModelForm):
 
     class Meta:
         model = BatchParticipant
-        fields = ['batch', 'reserve_list']
+        fields = ['batch', 'reserve_list', 'photographing_agreement']
         labels = {
             'batch': _('Turnus'),
             'reserve_list': _('Lista rezerwowa'),
+            'photographing_agreement': _('Zgoda na fotografowanie'),
         }
 
 
@@ -29,7 +30,7 @@ class ParticipantForm(forms.ModelForm):
         fields = ["first_name", 'surname', 'sex', 'pesel', 'phone_number', 'guardian_name', 'guardian_phone_number',
                   'email_address', 'city', 'zip_code', 'address', 'is_first_time', 'how_know_dj', 'foundation',
                   'candies', 'flower', "cat", "dog", "bear", "monkey",
-                  "frog", "bat", "spider", "fish", 'others', 'k_1', 'k_2', 'k_3']
+                  "frog", "bat", "spider", "fish", 'others', 'k_1', 'k_2', 'k_3', 'warning']
         labels = {
             "first_name": _('Imię'),
             'surname': _('Nazwisko'),
@@ -59,6 +60,7 @@ class ParticipantForm(forms.ModelForm):
             'k_1': _('K1'),
             'k_2': _('K2'),
             'k_3': _('K3'),
+            'warning': _('Przypał'),
         }
 
     def clean(self):
@@ -296,9 +298,10 @@ class EventParticipantForm(forms.ModelForm):
 
     class Meta:
         model = EventParticipant
-        fields = ['event']
+        fields = ['event', 'photographing_agreement']
         labels = {
             'event': _('Wydarzenie'),
+            'photographing_agreement': _('Zgoda na fotografowanie'),
         }
 
 

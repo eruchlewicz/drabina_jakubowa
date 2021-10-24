@@ -97,10 +97,8 @@ class BatchParticipantForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(BatchParticipantForm, self).clean()
-        today = now.replace(tzinfo=utc)
         cleaned_begin_date = cleaned_data.get('batch_begin_date')
         cleaned_end_date = cleaned_data.get('batch_end_date')
-        print(cleaned_begin_date)
         if cleaned_begin_date:
             cleaned_begin_date = cleaned_begin_date.replace(tzinfo=utc)
             if cleaned_end_date:

@@ -918,6 +918,9 @@ def music_training_sign(request):
 
                         return redirect('dj:index')
 
+                    else:
+                        messages.error(request, 'Jesteś już zapisany/a na to wydarzenie')
+
         else:
             form = form_class()
             form2 = form_class2()
@@ -1019,6 +1022,9 @@ def workshop_sign(request):
 
                         return redirect('dj:index')
 
+                    else:
+                        messages.error(request, 'Jesteś już zapisany/a na to wydarzenie')
+
         else:
             form = form_class()
             form2 = form_class2()
@@ -1081,7 +1087,6 @@ def music_training_view(request):
                     training.guardian_phone_number = volunteer.guardian_phone_number
                     training.sing_or_play = volunteer.sing_or_play
                     training.data_processing_agreement = volunteer.data_processing_agreement
-                    training.photographing_agreement = volunteer.photographing_agreement
                     training.payment_id = "#wm" + str(training.id) + "w" + str(volunteer.id)
                     training.save()
 
@@ -1203,7 +1208,6 @@ def workshop_view(request):
                     training.guardian_phone_number = volunteer.guardian_phone_number
                     training.sing_or_play = volunteer.sing_or_play
                     training.data_processing_agreement = volunteer.data_processing_agreement
-                    training.photographing_agreement = volunteer.photographing_agreement
                     training.payment_id = "#wa" + str(training.id) + "w" + str(volunteer.id)
                     training.save()
 
@@ -1396,6 +1400,9 @@ def retreat_sign(request):
 
                         return redirect('dj:index')
 
+                    else:
+                        messages.error(request, 'Jesteś już zapisany/a na to wydarzenie')
+
         else:
             form = form_class()
             form2 = form_class2()
@@ -1458,7 +1465,6 @@ def retreat_view(request):
                     training.guardian_phone_number = volunteer.guardian_phone_number
                     training.sing_or_play = volunteer.sing_or_play
                     training.data_processing_agreement = volunteer.data_processing_agreement
-                    training.photographing_agreement = volunteer.photographing_agreement
                     training.payment_id = "#r" + str(training.id) + "w" + str(volunteer.id)
                     training.save()
 
@@ -1615,9 +1621,7 @@ def remind_password(request):
             for u in user:
                 u.set_password(new_password)
                 u.save()
-                print(new_password)
             if user.count() > 0:
-                print(user)
 
                 admin_email = settings.EMAIL_HOST_USER
                 to_email = user.first().email

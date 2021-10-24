@@ -96,7 +96,6 @@ class Volunteer(models.Model):
     description = models.TextField("Opis", max_length=250, null=True, blank=True)
     data_processing_agreement = models.BooleanField("Zgoda na przetwarzanie danych osobowych", default=False,
                                                     blank=False, null=False)
-    photographing_agreement = models.BooleanField("Zgoda na fotografowanie", default=False, blank=True, null=False)
     study = models.BooleanField("Uczę sie", default=False, blank=True, null=False)
     work = models.BooleanField("Pracuję", default=False, blank=True, null=False)
     babysitting = models.BooleanField("Opiekuję się dziećmi", default=False, blank=True, null=False)
@@ -280,6 +279,7 @@ class BatchVolunteer(models.Model):
     sign_date = models.DateTimeField("Kiedy zapisano", default=timezone.now, null=False, blank=True)
     participant_helper = models.BooleanField("Pomoc przy popdopiecznych", default=True, blank=False)
     checked = models.BooleanField("Sprawdzony w rejestrze", default=False, blank=False)
+    photographing_agreement = models.BooleanField("Zgoda na fotografowanie", default=False, blank=False, null=False)
 
     def __str__(self):
         return self.batch.name+" "+str(self.batch.begin_date.year)+" "+self.batch.institution.city+" "\
@@ -357,6 +357,8 @@ class Participant(models.Model):
     k_2 = models.IntegerField("K2", null=False, blank=True, default=0)
     k_3 = models.IntegerField("K3", null=False, blank=True, default=0)
 
+    warning = models.BooleanField("Przypał", default=False, blank=False)
+
     def __str__(self):
         return self.first_name + " " + self.surname
 
@@ -397,6 +399,7 @@ class BatchParticipant(models.Model):
     reserve_list = models.BooleanField("Lista rezerwowa", default=False, blank=False)
     note = models.TextField("Notatka", max_length=500, null=True, blank=True)
     sign_date = models.DateTimeField("Kiedy zapisano", default=timezone.now, null=False, blank=True)
+    photographing_agreement = models.BooleanField("Zgoda na fotografowanie", default=True, blank=False, null=False)
 
     def __str__(self):
         return self.batch.name+" "+str(self.batch.begin_date.year)+" "+self.batch.institution.city+" "\
@@ -441,6 +444,7 @@ class EventVolunteer(models.Model):
     sign_date = models.DateTimeField("Kiedy zapisano", default=timezone.now, null=False, blank=True)
     payment_id = models.CharField("ID Płatności", default="#wy0w0", max_length=15)
     was_there = models.BooleanField("Wolontariusz pojawił się na wydarzeniu", default=False, blank=True, null=False)
+    photographing_agreement = models.BooleanField("Zgoda na fotografowanie", default=False, blank=False, null=False)
 
     def __str__(self):
         return self.event.name+" "+str(self.event.begin_date.year)+" "+self.volunteer.first_name + " " + \
@@ -460,6 +464,7 @@ class EventParticipant(models.Model):
     payment_id = models.CharField("ID Płatności", default="#"+str(randrange(100000000, 999999999)), max_length=15)
     sign_date = models.DateTimeField("Kiedy zapisano", default=timezone.now, null=False, blank=True)
     volunteer = models.ForeignKey(Volunteer, verbose_name="Wolontariusz", null=True, blank=True)
+    photographing_agreement = models.BooleanField("Zgoda na fotografowanie", default=True, blank=False, null=False)
 
     def __str__(self):
         return self.event.name+" "+str(self.event.begin_date.year)+" "+self.participant.first_name + " "\
