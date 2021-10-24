@@ -39,6 +39,8 @@ urlpatterns = [
         login_required(DoctorCertificatePDFView.as_view()), name='doctor_certificate'),
     url(r'^turnusy/(?P<pk>[0-9]+)/umowa.pdf$',
         login_required(ContractPDFView.as_view()), name='contract'),
+    url(r'^turnusy/(?P<pk>[0-9]+)/agreement.pdf$',
+        login_required(EnContractPDFView.as_view()), name='contract_en'),
     url(r'^turnusy/(?P<pk>[0-9]+)/umowa-pielegniarki.pdf$',
         login_required(NurseContractPDFView.as_view()), name='nurse_contract'),
     url(r'^turnusy/(?P<pk>[0-9]+)/umowa-lekarza.pdf$',
