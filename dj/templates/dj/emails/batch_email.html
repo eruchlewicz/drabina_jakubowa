@@ -20,7 +20,22 @@
     Witaj {{ volunteer.first_name }} {{ volunteer.surname }}, <br /><br />
     Przyjęliśmy Twoje zgłoszenie na turnus. <br />
     Wkrótce koordynator skontaktuje się z Tobą w celu potwierdzenia uczestnictwa.<br /><br />
-    Jeśli chcesz, możesz pomóc nam w poszukiwaniu wolontariuszy udostępniając w swoich mediach społecznościowych grafiki, 
+
+    {% if batch.main_coordinator %}
+        Koordynator:<br />
+        {{ batch.main_coordinator }}<br />
+        tel. {{ batch.main_coordinator.volunteer.phone_number }}<br />
+        {{ batch.main_coordinator.volunteer.email_address }}<br /><br />
+    {% endif %}
+
+    {% if batch.auxiliary_coordinator %}
+        Koordynator pomocniczy:<br />
+        {{ batch.auxiliary_coordinator }}<br />
+        tel. {{ batch.auxiliary_coordinator.volunteer.phone_number }}<br />
+        {{ batch.auxiliary_coordinator.volunteer.email_address }}<br /><br />
+    {% endif %}
+
+    Jeśli chcesz, możesz pomóc nam w poszukiwaniu wolontariuszy udostępniając w swoich mediach społecznościowych grafiki,
     które znajdują się w załączniku 🙂 <br />
     Mamy wielką nadzieję, że znajdzie się wystarczająca ilość wolontariuszy,
     aby wszyscy podopieczni mogli przyjechać na tegoroczne turnusy.
@@ -31,9 +46,7 @@
     <br /><br /><br />
 
 <div class="center">
-    ul. Jana Pawła II 1, 07-221 Brańszczyk, branszczyk.orione.pl | branszczyk@orione.pl; tel. 297423565
-    <br />
-    NIP: PL7621267298, Regon: 550462602
+    {{ home.address }}, {{ home.zip_code }} {{ home.city }}, {{ home.page_url }}; tel. {{ home.phone_number }}
 </div>
 
     <br /><br /><br />

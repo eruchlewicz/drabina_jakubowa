@@ -44,6 +44,9 @@
                                         <a class="link-decoration-none" href="{% url 'dj:contract' batch.batch_id %}">
                                             <button class="btn btn-warning btn-sm">Umowa</button>
                                         </a>
+                                        <a class="link-decoration-none" href="{% url 'dj:contract_en' batch.batch_id %}">
+                                            <button class="btn btn-warning btn-sm">Agreement</button>
+                                        </a>
                                     {% elif batch.batch.main_coordinator.volunteer == batch.volunteer or batch.batch.auxiliary_coordinator.volunteer == batch.volunteer %}
 									(koordynator)
                                     {% else %}
@@ -59,6 +62,9 @@
                                         {% endif %}
                                         <a class="link-decoration-none" href="{% url 'dj:contract' batch.batch_id %}">
                                             <button class="btn btn-warning btn-sm">Umowa</button>
+                                        </a>
+                                        <a class="link-decoration-none" href="{% url 'dj:contract_en' batch.batch_id %}">
+                                            <button class="btn btn-warning btn-sm">Agreement</button>
                                         </a>
                                         <a class="link-decoration-none" href="{% url 'dj:batch_tasks_edit' batch.batch.id %}">
                                              <button class="btn btn-primary btn-sm">Zadania</button>

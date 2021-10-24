@@ -90,6 +90,7 @@ class UserFormView(View):
 
     # process form data
     def post(self, request):
+        home = Home.objects.first()
         user_form = self.form_class(request.POST)
         volunteer_form = self.form_class_2(request.POST)
         volunteer_batch_form = self.form_class_3(request.POST)
@@ -145,7 +146,10 @@ class UserFormView(View):
                     else:
                         msg['Reply-To'] = 'mikolajczyk@orione.pl'
 
-                    html = render_to_string('dj/emails/batch_email.html', {'batch': batch, 'volunteer': volunteer})
+                    html = render_to_string(
+                        'dj/emails/batch_email.html',
+                        {'batch': batch, 'volunteer': volunteer, 'home': home}
+                    )
                     part = MIMEText(html, 'html')
                     msg.attach(part)
 
@@ -178,6 +182,10 @@ class UserFormView(View):
 
                     if batch.main_coordinator:
                         to_email = batch.main_coordinator.volunteer.email_address
+                        mail.sendmail(admin_email, to_email, msg.as_string())
+
+                    if batch.auxiliary_coordinator:
+                        to_email = batch.auxiliary_coordinator.volunteer.email_address
                         mail.sendmail(admin_email, to_email, msg.as_string())
 
                     mail.quit()
@@ -290,11 +298,17 @@ class UserEventFormView(View):
                             else:
                                 msg['Reply-To'] = 'mikolajczyk@orione.pl'
 
-                            html = render_to_string('dj/emails/event_email.html', {'event': event,
-                                                                                   'volunteer': volunteer,
-                                                                                   'cost': volunteer_event.total_cost,
-                                                                                   'id': volunteer_event.payment_id,
-                                                                                   'bank_account': home.bank_account})
+                            html = render_to_string(
+                                'dj/emails/event_email.html',
+                                {
+                                    'event': event,
+                                    'volunteer': volunteer,
+                                    'cost': volunteer_event.total_cost,
+                                    'id': volunteer_event.payment_id,
+                                    'bank_account': home.bank_account,
+                                    'home': home
+                                }
+                            )
                             part = MIMEText(html, 'html')
                             msg.attach(part)
 
@@ -313,6 +327,10 @@ class UserEventFormView(View):
 
                             if event.main_coordinator:
                                 to_email = event.main_coordinator.volunteer.email_address
+                                mail.sendmail(admin_email, to_email, msg.as_string())
+
+                            if event.auxiliary_coordinator:
+                                to_email = event.auxiliary_coordinator.volunteer.email_address
                                 mail.sendmail(admin_email, to_email, msg.as_string())
 
                             mail.quit()
@@ -360,6 +378,7 @@ def logout_view(request):
 
 @login_required
 def batches_view(request):
+    home = Home.objects.first()
     form_class = VolunteerBatchForm
     template_name = 'dj/batches.html'
     volunteer = Volunteer.objects.filter(user=request.user).first()
@@ -415,7 +434,10 @@ def batches_view(request):
                         else:
                             msg['Reply-To'] = 'mikolajczyk@orione.pl'
 
-                        html = render_to_string('dj/emails/batch_email.html', {'batch': batch, 'volunteer': volunteer})
+                        html = render_to_string(
+                            'dj/emails/batch_email.html',
+                            {'batch': batch, 'volunteer': volunteer, 'home': home}
+                        )
                         part = MIMEText(html, 'html')
                         msg.attach(part)
 
@@ -448,6 +470,10 @@ def batches_view(request):
 
                         if batch.main_coordinator:
                             to_email = batch.main_coordinator.volunteer.email_address
+                            mail.sendmail(admin_email, to_email, msg.as_string())
+
+                        if batch.auxiliary_coordinator:
+                            to_email = batch.auxiliary_coordinator.volunteer.email_address
                             mail.sendmail(admin_email, to_email, msg.as_string())
 
                         mail.quit()
@@ -657,6 +683,27 @@ class ContractPDFView(PDFTemplateResponseMixin, DetailView):
         )
 
 
+class EnContractPDFView(PDFTemplateResponseMixin, DetailView):
+    template_name = 'dj/contract/contract_en.html'
+    download_filename = 'agreement.pdf'
+    model = BatchVolunteer
+
+    def get_object(self, queryset=None):
+        obj = BatchVolunteer.objects.filter(volunteer__user=self.request.user, batch__id=self.kwargs["pk"]).first()
+        if obj:
+            return obj
+        return None
+
+    def get_context_data(self, **kwargs):
+        return super(EnContractPDFView, self).get_context_data(
+            pagesize='A4',
+            title='Agreement',
+            congregation=Congregation.objects.first(),
+            date=datetime.now(),
+            **kwargs
+        )
+
+
 class NurseContractPDFView(PDFTemplateResponseMixin, DetailView):
     template_name = 'dj/contract/nurse_contract.html'
     download_filename = 'contract.pdf'
@@ -770,11 +817,17 @@ def events_view(request):
                     else:
                         msg['Reply-To'] = 'mikolajczyk@orione.pl'
 
-                    html = render_to_string('dj/emails/event_email.html', {'event': event,
-                                                                           'volunteer': volunteer,
-                                                                           'cost': event_volunteer.total_cost,
-                                                                           'id': event_volunteer.payment_id,
-                                                                           'bank_account': home.bank_account})
+                    html = render_to_string(
+                        'dj/emails/event_email.html',
+                        {
+                            'event': event,
+                            'volunteer': volunteer,
+                            'cost': event_volunteer.total_cost,
+                            'id': event_volunteer.payment_id,
+                            'bank_account': home.bank_account,
+                            'home': home
+                        }
+                    )
                     part = MIMEText(html, 'html')
                     msg.attach(part)
 
@@ -793,6 +846,10 @@ def events_view(request):
 
                     if event.main_coordinator:
                         to_email = event.main_coordinator.volunteer.email_address
+                        mail.sendmail(admin_email, to_email, msg.as_string())
+
+                    if event.auxiliary_coordinator:
+                        to_email = event.auxiliary_coordinator.volunteer.email_address
                         mail.sendmail(admin_email, to_email, msg.as_string())
 
                     mail.quit()
@@ -885,11 +942,17 @@ def music_training_sign(request):
                             else:
                                 msg['Reply-To'] = 'mikolajczyk@orione.pl'
 
-                            html = render_to_string('dj/emails/workshop_email.html', {'training': music_training,
-                                                                                      'volunteer': person,
-                                                                                      'cost': training.total_cost,
-                                                                                      'id': training.payment_id,
-                                                                                      'bank_account': home.bank_account})
+                            html = render_to_string(
+                                'dj/emails/workshop_email.html',
+                                {
+                                    'training': music_training,
+                                    'volunteer': person,
+                                    'cost': training.total_cost,
+                                    'id': training.payment_id,
+                                    'bank_account': home.bank_account,
+                                    'home': home
+                                }
+                            )
                             part = MIMEText(html, 'html')
                             msg.attach(part)
 
@@ -908,6 +971,10 @@ def music_training_sign(request):
 
                             if music_training.main_coordinator:
                                 to_email = music_training.main_coordinator.volunteer.email_address
+                                mail.sendmail(admin_email, to_email, msg.as_string())
+
+                            if music_training.auxiliary_coordinator:
+                                to_email = music_training.auxiliary_coordinator.volunteer.email_address
                                 mail.sendmail(admin_email, to_email, msg.as_string())
 
                             mail.quit()
@@ -989,11 +1056,17 @@ def workshop_sign(request):
                             else:
                                 msg['Reply-To'] = 'mikolajczyk@orione.pl'
 
-                            html = render_to_string('dj/emails/workshop_email.html', {'training': music_training,
-                                                                                      'volunteer': person,
-                                                                                      'cost': training.total_cost,
-                                                                                      'id': training.payment_id,
-                                                                                      'bank_account': home.bank_account})
+                            html = render_to_string(
+                                'dj/emails/workshop_email.html',
+                                {
+                                    'training': music_training,
+                                    'volunteer': person,
+                                    'cost': training.total_cost,
+                                    'id': training.payment_id,
+                                    'bank_account': home.bank_account,
+                                    'home': home
+                                }
+                            )
                             part = MIMEText(html, 'html')
                             msg.attach(part)
 
@@ -1012,6 +1085,10 @@ def workshop_sign(request):
 
                             if music_training.main_coordinator:
                                 to_email = music_training.main_coordinator.volunteer.email_address
+                                mail.sendmail(admin_email, to_email, msg.as_string())
+
+                            if music_training.auxiliary_coordinator:
+                                to_email = music_training.auxiliary_coordinator.volunteer.email_address
                                 mail.sendmail(admin_email, to_email, msg.as_string())
 
                             mail.quit()
@@ -1115,11 +1192,17 @@ def music_training_view(request):
                         else:
                             msg['Reply-To'] = 'mikolajczyk@orione.pl'
 
-                        html = render_to_string('dj/emails/workshop_email.html', {'training': music_training,
-                                                                                  'volunteer': volunteer,
-                                                                                  'cost': training.total_cost,
-                                                                                  'id': training.payment_id,
-                                                                                  'bank_account': home.bank_account})
+                        html = render_to_string(
+                            'dj/emails/workshop_email.html',
+                            {
+                                'training': music_training,
+                                'volunteer': volunteer,
+                                'cost': training.total_cost,
+                                'id': training.payment_id,
+                                'bank_account': home.bank_account,
+                                'home': home
+                            }
+                        )
                         part = MIMEText(html, 'html')
                         msg.attach(part)
 
@@ -1138,6 +1221,10 @@ def music_training_view(request):
 
                         if music_training.main_coordinator:
                             to_email = music_training.main_coordinator.volunteer.email_address
+                            mail.sendmail(admin_email, to_email, msg.as_string())
+
+                        if music_training.auxiliary_coordinator:
+                            to_email = music_training.auxiliary_coordinator.volunteer.email_address
                             mail.sendmail(admin_email, to_email, msg.as_string())
 
                         mail.quit()
@@ -1236,11 +1323,16 @@ def workshop_view(request):
                         else:
                             msg['Reply-To'] = 'mikolajczyk@orione.pl'
 
-                        html = render_to_string('dj/emails/workshop_email.html', {'training': music_training,
-                                                                                  'volunteer': volunteer,
-                                                                                  'cost': training.total_cost,
-                                                                                  'id': training.payment_id,
-                                                                                  'bank_account': home.bank_account})
+                        html = render_to_string(
+                            'dj/emails/workshop_email.html',
+                            {
+                                'training': music_training,
+                                'volunteer': volunteer,
+                                'cost': training.total_cost,
+                                'id': training.payment_id,
+                                'bank_account': home.bank_account
+                            }
+                        )
                         part = MIMEText(html, 'html')
                         msg.attach(part)
 
@@ -1259,6 +1351,10 @@ def workshop_view(request):
 
                         if music_training.main_coordinator:
                             to_email = music_training.main_coordinator.volunteer.email_address
+                            mail.sendmail(admin_email, to_email, msg.as_string())
+
+                        if music_training.auxiliary_coordinator:
+                            to_email = music_training.auxiliary_coordinator.volunteer.email_address
                             mail.sendmail(admin_email, to_email, msg.as_string())
 
                         mail.quit()
@@ -1367,11 +1463,17 @@ def retreat_sign(request):
                             else:
                                 msg['Reply-To'] = 'mikolajczyk@orione.pl'
 
-                            html = render_to_string('dj/emails/retreat_email.html', {'training': music_training,
-                                                                                     'volunteer': person,
-                                                                                     'cost': training.total_cost,
-                                                                                     'id': training.payment_id,
-                                                                                     'bank_account': home.bank_account})
+                            html = render_to_string(
+                                'dj/emails/retreat_email.html',
+                                {
+                                    'training': music_training,
+                                    'volunteer': person,
+                                    'cost': training.total_cost,
+                                    'id': training.payment_id,
+                                    'bank_account': home.bank_account,
+                                    'home': home
+                                }
+                            )
                             part = MIMEText(html, 'html')
                             msg.attach(part)
 
@@ -1390,6 +1492,10 @@ def retreat_sign(request):
 
                             if music_training.main_coordinator:
                                 to_email = music_training.main_coordinator.volunteer.email_address
+                                mail.sendmail(admin_email, to_email, msg.as_string())
+
+                            if music_training.auxiliary_coordinator:
+                                to_email = music_training.auxiliary_coordinator.volunteer.email_address
                                 mail.sendmail(admin_email, to_email, msg.as_string())
 
                             mail.quit()
@@ -1493,11 +1599,17 @@ def retreat_view(request):
                         else:
                             msg['Reply-To'] = 'mikolajczyk@orione.pl'
 
-                        html = render_to_string('dj/emails/retreat_email.html', {'training': music_training,
-                                                                                 'volunteer': volunteer,
-                                                                                 'cost': training.total_cost,
-                                                                                 'id': training.payment_id,
-                                                                                 'bank_account': home.bank_account})
+                        html = render_to_string(
+                            'dj/emails/retreat_email.html',
+                            {
+                                'training': music_training,
+                                'volunteer': volunteer,
+                                'cost': training.total_cost,
+                                'id': training.payment_id,
+                                'bank_account': home.bank_account,
+                                'home': home
+                            }
+                        )
                         part = MIMEText(html, 'html')
                         msg.attach(part)
 
@@ -1516,6 +1628,10 @@ def retreat_view(request):
 
                         if music_training.main_coordinator:
                             to_email = music_training.main_coordinator.volunteer.email_address
+                            mail.sendmail(admin_email, to_email, msg.as_string())
+
+                        if music_training.auxiliary_coordinator:
+                            to_email = music_training.auxiliary_coordinator.volunteer.email_address
                             mail.sendmail(admin_email, to_email, msg.as_string())
 
                         mail.quit()
