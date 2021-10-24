@@ -22,6 +22,9 @@
                                         {% if obj|has_birthday %}
                                              <i class="fa fa-birthday-cake blue"></i>
                                         {% endif %}
+                                        {% if not obj.photographing_agreement %}
+                                             <i class="fa fa-eye-slash blue" title="Brak zgody na fotografowanie"></i>
+                                        {% endif %}
                                         - pokój:
                                         {% if obj.room is not None %}
                                             {{ obj.room }}

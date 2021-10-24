@@ -57,7 +57,7 @@ class UserForm(forms.ModelForm):
         if User.objects.filter(username=cleaned_username).first():
             msg = _("Użytkownik o tej nazwie już istnieje.")
             self.errors["username"] = self.error_class([msg])
-        
+
         if User.objects.filter(email=cleaned_email_address).first():
             msg = _("Konto z tym adresem e-mail już istnieje. "
                     "Skorzystaj z opcji odzyskiwania hasła na stronie logowania.")
@@ -104,7 +104,7 @@ class VolunteerForm(forms.ModelForm):
                   'unemployed', 'another_work', 'physical_health', 'mental_health', 'drugs', 'guardian_phone_number',
                   'first_air_training', 'sanitary_book', 'training_courses', 'experience_with_disabled', 'easy_going',
                   'teamwork', 'entertaining', 'sing_or_play', 'photographing', 'writing_articles', 'it', 'tidiness',
-                  'description', 'data_processing_agreement', 'photographing_agreement']
+                  'description', 'data_processing_agreement']
         labels = {
             'sex': _('Płeć'),
             'pesel': _('PESEL'),
@@ -120,7 +120,6 @@ class VolunteerForm(forms.ModelForm):
             'is_first_time': _('Będę pierwszy raz na Drabinie Jakubowej'),
             'description': _('Kilka słów o sobie'),
             'data_processing_agreement': _('Wyrażam zgodę na przetwarzanie moich danych osobowych'),
-            'photographing_agreement': _('Wyrażam zgodę na fotografowanie i przetwarzanie wizerunku'),
             'how_know_dj': _('Skąd dowiedziałeś/aś się o Drabinie Jakubowej?'),
             'study': _('Uczę się'),
             'work': _('Pracuję'),
@@ -237,7 +236,7 @@ class VolunteerEditForm(forms.ModelForm):
                   'unemployed', 'another_work', 'physical_health', 'mental_health', 'drugs', 'guardian_phone_number',
                   'first_air_training', 'sanitary_book', 'training_courses', 'experience_with_disabled', 'easy_going',
                   'teamwork', 'entertaining', 'sing_or_play', 'photographing', 'writing_articles', 'it', 'tidiness',
-                  'description', 'photographing_agreement']
+                  'description']
         labels = {
             'sex': _('Płeć'),
             "first_name": _('Imię'),
@@ -254,7 +253,6 @@ class VolunteerEditForm(forms.ModelForm):
             'address': _('Adres zamieszkania'),
             'education': _('Wykształcenie'),
             'description': _('Kilka słów o sobie'),
-            'photographing_agreement': _('Wyrażam zgodę na fotografowanie i przetwarzanie wizerunku'),
             'study': _('Uczę się'),
             'work': _('Pracuję'),
             'babysitting': _('Opiekuję się dziećmi'),
@@ -373,18 +371,20 @@ class VolunteerEditForm(forms.ModelForm):
 class VolunteerBatchForm(forms.ModelForm):
     class Meta:
         model = BatchVolunteer
-        fields = ['batch']
+        fields = ['batch', 'photographing_agreement']
         labels = {
             'batch': _('Turnus'),
+            'photographing_agreement': _('Wyrażam zgodę na fotografowanie i przetwarzanie wizerunku'),
         }
 
 
 class VolunteerEventForm(forms.ModelForm):
     class Meta:
         model = EventVolunteer
-        fields = ['event', 'total_cost']
+        fields = ['event', 'total_cost', 'photographing_agreement']
         labels = {
             'event': _('Wydarzenie'),
+            'photographing_agreement': _('Wyrażam zgodę na fotografowanie i przetwarzanie wizerunku'),
             'total_cost': _('Koszt'),
         }
 
@@ -482,7 +482,7 @@ class MusicTrainingVolunteerSignForm(forms.ModelForm):
     class Meta:
         model = RetreatOrMusicTrainingPerson
         fields = ['retreat_or_music_training', 'how_know_training', 'voice', 'experience', 'instrument',
-                  'accommodation', 'saturday_sunday', 'description', 'total_cost']
+                  'accommodation', 'saturday_sunday', 'description', 'total_cost', 'photographing_agreement']
         labels = {
             'retreat_or_music_training': _('Warsztaty'),
             'description': _('Dodatkowe informacje'),
@@ -492,6 +492,7 @@ class MusicTrainingVolunteerSignForm(forms.ModelForm):
             'instrument': _('Instrument'),
             'accommodation': _('Opcja noclegu'),
             'saturday_sunday': _('Dodatkowy nocleg po wydarzeniu'),
+            'photographing_agreement': _('Wyrażam zgodę na fotografowanie i przetwarzanie wizerunku'),
             'total_cost': _('Koszt'),
         }
 
@@ -699,7 +700,7 @@ class RetreatVolunteerSignForm(forms.ModelForm):
     class Meta:
         model = RetreatOrMusicTrainingPerson
         fields = ['retreat_or_music_training', 'how_know_training', 'is_first_time', 'communion',
-                  'communion_description', 'description_why', 'accommodation', 'total_cost']
+                  'communion_description', 'description_why', 'accommodation', 'total_cost', 'photographing_agreement']
         labels = {
             'retreat_or_music_training': _('Rekolekcje'),
             'how_know_training': _('Skąd dowiedziałeś/aś się o rekolekcjach Drabiny Jakubowej?'),
@@ -708,6 +709,7 @@ class RetreatVolunteerSignForm(forms.ModelForm):
                            'duszpasterstwa?'),
             'communion_description': _('Opisz, gdzie należysz i jak się angażujesz'),
             'description_why':  _('Kilka słów o sobie'),
+            'photographing_agreement': _('Wyrażam zgodę na fotografowanie i przetwarzanie wizerunku'),
             'accommodation': _('Opcja noclegu'),
             'total_cost': _('Koszt'),
         }
@@ -783,7 +785,7 @@ class WorkshopVolunteerSignForm(forms.ModelForm):
     class Meta:
         model = RetreatOrMusicTrainingPerson
         fields = ['retreat_or_music_training', 'how_know_training', 'is_first_time', 'communion',
-                  'communion_description', 'description_why', 'accommodation', 'total_cost']
+                  'communion_description', 'description_why', 'accommodation', 'total_cost', 'photographing_agreement']
         labels = {
             'retreat_or_music_training': _('Warsztaty'),
             'how_know_training': _('Skąd dowiedziałeś/aś się o warsztatach Drabiny Jakubowej?'),
@@ -793,6 +795,7 @@ class WorkshopVolunteerSignForm(forms.ModelForm):
             'communion_description': _('Opisz, gdzie należysz i jak się angażujesz'),
             'description_why': _('Kilka słów o sobie'),
             'accommodation': _('Opcja noclegu'),
+            'photographing_agreement': _('Wyrażam zgodę na fotografowanie i przetwarzanie wizerunku'),
             'total_cost': _('Koszt'),
         }
 

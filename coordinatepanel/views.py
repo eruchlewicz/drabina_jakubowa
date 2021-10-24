@@ -376,7 +376,6 @@ class AllVolunteersContractPDFView(PDFTemplateResponseMixin, ListView):
     model = BatchVolunteer
 
     def get_context_data(self, **kwargs):
-        print(BatchVolunteer.objects.filter(id=self.kwargs["pk"]))
         return super(AllVolunteersContractPDFView, self).get_context_data(
             pagesize='A4',
             title='Umowy',

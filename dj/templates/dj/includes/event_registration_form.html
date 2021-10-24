@@ -10,6 +10,7 @@
     </div>
 {% endfor %}
 {% for field in volunteer_event_form %}
+    {% if field.name != 'photographing_agreement' %}
     <div class="form-group row">
         <label class="medium-bold col-xs-12 col-sm-5 col-lg-3">{{ field.label_tag }}</label>
         <div class="col-xs-12 col-sm-7 col-lg-5">
@@ -24,6 +25,7 @@
             </div>
         {% endifequal %}
     </div>
+    {% endif %}
 {% endfor %}
 {% for field in volunteer_form %}
     <div class="form-group row">
@@ -40,12 +42,22 @@
             Danych Osobowych Dz. U. Nr 133 poz. 883 z póź. zm.
         </div>
     {% endifequal %}
-    {% ifequal field.name 'photographing_agreement' %}
+    </div>
+{% endfor %}
+{% for field in volunteer_event_form %}
+    {% if field.name == 'photographing_agreement' %}
+    <div class="form-group row">
+        <label class="medium-bold col-xs-12 col-sm-5 col-lg-3">{{ field.label_tag }}</label>
+        <div class="col-xs-12 col-sm-7 col-lg-5">
+            {{ field|attr:"class:form-control" }}
+        </div>
+        <span class="text-danger small">{{ field.errors }}</span>
+        <span class="offset-lg-3 offset-sm-5 f-10 gray p-l-15">{{ field.help_text }}</span>
         <div class="small col-sm-12 text-right">
             Wyrażam zgodę Zgromadzeniu Zakonnemu Małe Dzieło Boskiej Opatrzności - Orioniści Prowincja Polska na
             fotografowanie i publikację zdjęć z moją osobą tylko do celów promocji Drabiny Jakubowej - Rekolekcji dla
             osób niepełnosprawnych.
         </div>
-    {% endifequal %}
     </div>
+    {%  endif %}
 {% endfor %}

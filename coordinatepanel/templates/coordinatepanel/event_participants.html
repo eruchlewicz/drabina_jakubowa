@@ -22,6 +22,12 @@
                                     {% if obj|has_birthday %}
                                          <i class="fa fa-birthday-cake blue"></i>
                                     {% endif %}
+                                    {% if not obj.photographing_agreement %}
+                                         <i class="fa fa-eye-slash blue" title="Brak zgody na fotografowanie"></i>
+                                    {% endif %}
+                                    {% if obj.participant.warning %}
+                                        <i class="fa fa-exclamation-triangle blue" title="Przypał"></i>
+                                    {% endif %}
                                     {% if obj.is_paid is True %}
                                         <span class="green medium-bold">(zapłacono)</span>
                                     {% else %}

@@ -65,10 +65,30 @@ def has_birthday(event_person):
         mm = int(mm) - 20
 
     if 0 < int(mm) <= 12 and 0 < int(dd) <= 31:
-        birthday = datetime.strptime(str(begin_date.year) + " " + str(mm) + " " + str(dd), '%Y %m %d')
-        return begin_date.date() <= birthday.date() <= end_date.date()
+        birthday_begin_year = datetime.strptime(str(begin_date.year) + " " + str(mm) + " " + str(dd), '%Y %m %d')
+        birthday_end_year = datetime.strptime(str(end_date.year) + " " + str(mm) + " " + str(dd), '%Y %m %d')
+        return (
+            begin_date.date() <= birthday_begin_year.date() <= end_date.date() or
+            begin_date.date() <= birthday_end_year.date() <= end_date.date()
+        )
     else:
         return False
+
+
+@register.filter(name='which_batch')
+def which_batch(event_person):
+    end_date = event_person.batch.end_date
+
+    if type(event_person) == BatchVolunteer:
+        event_count = BatchVolunteer.objects.filter(
+            volunteer__id=event_person.volunteer.id, batch__begin_date__lte=end_date
+        ).count()
+    else:
+        event_count = BatchParticipant.objects.filter(
+            participant__id=event_person.participant.id, batch__begin_date__lte=end_date
+        ).count()
+
+    return event_count
 
 
 @register.filter(name='is_nurse')

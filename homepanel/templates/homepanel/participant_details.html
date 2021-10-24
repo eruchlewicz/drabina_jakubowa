@@ -84,6 +84,13 @@
                     <span class="medium-bold">K2: </span>{{ participant.k_2 }}
                     <br />
                     <span class="medium-bold">K3: </span>{{ participant.k_3 }}
+                    <br />
+                    <span class="medium-bold">Przypał: </span>
+                    {% if participant.warning %}
+                        Tak
+                    {% else %}
+                        Nie
+                    {% endif %}
 
                     <br />
                     <span class="medium-bold">Uwagi:</span>

@@ -34,6 +34,15 @@
                                         {% if obj|has_birthday %}
                                              <i class="fa fa-birthday-cake blue"></i>
                                         {% endif %}
+                                        {% if obj|which_batch|divisibleby:10 %}
+                                             <i class="fa fa-trophy blue" title={{ obj|which_batch }}></i>
+                                        {% endif %}
+                                        {% if obj|which_batch == 1 %}
+                                             <i class="fa fa-child blue" title="Pierwszy raz"></i>
+                                        {% endif %}
+                                        {% if not obj.photographing_agreement %}
+                                             <i class="fa fa-eye-slash blue" title="Brak zgody na fotografowanie"></i>
+                                        {% endif %}
                                         - pokój:
                                         {% if obj.room is not None %}
                                             {{ obj.room }}
@@ -83,6 +92,15 @@
                                         </a>
                                         {% if obj|has_birthday %}
                                              <i class="fa fa-birthday-cake blue"></i>
+                                        {% endif %}
+                                        {% if obj|which_batch|divisibleby:10 %}
+                                             <i class="fa fa-trophy blue" title={{ obj|which_batch }}></i>
+                                        {% endif %}
+                                        {% if obj|which_batch == 1 %}
+                                             <i class="fa fa-child blue" title="Pierwszy raz"></i>
+                                        {% endif %}
+                                        {% if not obj.photographing_agreement %}
+                                             <i class="fa fa-eye-slash blue" title="Brak zgody na fotografowanie"></i>
                                         {% endif %}
                                         - pokój:
                                         {% if obj.room is not None %}
@@ -137,6 +155,15 @@
                                         {% if obj|has_birthday %}
                                              <i class="fa fa-birthday-cake blue"></i>
                                         {% endif %}
+                                        {% if obj|which_batch|divisibleby:10 %}
+                                             <i class="fa fa-trophy blue" title={{ obj|which_batch }}></i>
+                                        {% endif %}
+                                        {% if obj|which_batch == 1 %}
+                                             <i class="fa fa-child blue" title="Pierwszy raz"></i>
+                                        {% endif %}
+                                        {% if not obj.photographing_agreement %}
+                                             <i class="fa fa-eye-slash blue" title="Brak zgody na fotografowanie"></i>
+                                        {% endif %}
                                         - pokój:
                                         {% if obj.room is not None %}
                                             {{ obj.room }}
@@ -177,6 +204,15 @@
                                         </a>
                                         {% if obj|has_birthday %}
                                              <i class="fa fa-birthday-cake blue"></i>
+                                        {% endif %}
+                                        {% if obj|which_batch|divisibleby:10 %}
+                                             <i class="fa fa-trophy blue" title={{ obj|which_batch }}></i>
+                                        {% endif %}
+                                        {% if obj|which_batch == 1 %}
+                                             <i class="fa fa-child blue" title="Pierwszy raz"></i>
+                                        {% endif %}
+                                        {% if not obj.photographing_agreement %}
+                                             <i class="fa fa-eye-slash blue" title="Brak zgody na fotografowanie"></i>
                                         {% endif %}
                                         - pokój:
                                         {% if obj.room is not None %}
