@@ -68,14 +68,13 @@
                     <tr>
                         <td class="center" colspan="2">
                             <span class="font-24 bold">
-                                Centrum Księdza Orione
-                                <br />
-                                w Brańszczyku
+                                Drabina Jakubowa
                                 <br/>
                             </span>
                             <span class="font-16 font">
-                                Dom Emeryta | Dom Rekolekcyjny <br />
-                                Drabina Jakubowa | Rehabilitacja+
+                                duszpasterstwo prowadzone przez<br />
+                                Zgromadzenie Zakonne Małe Dzieło Boskiej Opatrzności<br />
+                                Orioniści Prowincja Polska
                             </span>
                         </td>
                         <td colspan="3">
@@ -128,18 +127,17 @@
                 Należność została uiszczona
 
                 {% if batchparticipant.payment_method == 'G' %}
-                    gotówką
+                    gotówką.
                 {% elif batchparticipant.payment_method == 'K' %}
-                    kartą
+                    kartą.
                 {% else %}
-                    przelewem bankowym
+                    przelewem bankowym.
                 {% endif %}
 
-                do kasy placówki.
                 <br /><br />
-                Jako placówka nie możemy wystawić faktury ani rachunku, ponieważ nie prowadzimy działalności gospodarczej.
-                Wspieranie osób niepełnosprawnych, chorych, potrzebujących wsparcia należy do podstawowej
-                i statutowej działalności Kościoła oraz naszego Ośrodka.
+                Drabina Jakubowa nie może wystawić faktury ani rachunku, ponieważ nie prowadzi
+                działalności gospodarczej. Wspieranie osób niepełnosprawnych, chorych, potrzebujących
+                wsparcia należy do podstawowej i statutowej działalności Kościoła.
                 <br /><br />
                 <div style="text-align: right; margin-right: 50px">
                     Łączę wyrazy szacunku,
@@ -167,10 +165,7 @@
 
                 <br /><br /><br /><br />
                 <div class="center font-14">
-                    {{ home.address }}, {{ home.zip_code }} {{ home.city }}, {{ home.page_url }} | {{ home.email_address }};
-                    tel. {{ home.phone_number }}
-                    <br />
-                    NIP: {{ home.nip }}, Regon: {{ home.regon }}
+                    {{ home.address }}, {{ home.zip_code }} {{ home.city }}, {{ home.page_url }}; tel. {{ home.phone_number }}
                 </div>
 
             </div>

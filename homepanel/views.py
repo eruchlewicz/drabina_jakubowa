@@ -538,7 +538,7 @@ def add_booking_2(request, **kwargs):
             msg = MIMEMultipart('alternative')
             subject = "Rezerwacja nr " + str(booking.id) + " - Dom Rekolekcyjny Brańszczyk"
             msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-            msg['From'] = "Centrum Księdza Orione"
+            msg['From'] = "Drabina Jakubowa"
             msg['To'] = to_email
 
             html = render_to_string('homepanel/emails/booking_email.html', {'booking': booking})
@@ -644,7 +644,7 @@ def edit_booking_2(request, **kwargs):
             msg = MIMEMultipart('alternative')
             subject = "Zmiana rezerwacji nr " + str(booking.id) + " - Dom Rekolekcyjny Brańszczyk"
             msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-            msg['From'] = "Centrum Księdza Orione"
+            msg['From'] = "Drabina Jakubowa"
             msg['To'] = to_email
 
             html = render_to_string('homepanel/emails/booking_edit_email.html', {'booking': booking})
@@ -760,7 +760,7 @@ def add_meals_booking(request):
                 msg = MIMEMultipart('alternative')
                 subject = "Rezerwacja nr " + str(booking.id) + " - Dom Rekolekcyjny Brańszczyk"
                 msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-                msg['From'] = "Centrum Księdza Orione"
+                msg['From'] = "Drabina Jakubowa"
                 msg['To'] = to_email
 
                 html = render_to_string('homepanel/emails/meals_booking_email.html', {'booking': booking})
@@ -819,7 +819,7 @@ def edit_meals_booking(request, **kwargs):
                 msg = MIMEMultipart('alternative')
                 subject = "Zmiana rezerwacji nr " + str(booking.id) + " - Dom Rekolekcyjny Brańszczyk"
                 msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-                msg['From'] = "Centrum Księdza Orione"
+                msg['From'] = "Drabina Jakubowa"
                 msg['To'] = to_email
 
                 html = render_to_string('homepanel/emails/meals_booking_edit_email.html', {'booking': booking})
