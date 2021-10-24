@@ -138,7 +138,7 @@ class UserFormView(View):
                     msg = MIMEMultipart('alternative')
                     subject = "Zapisy na Drabinę Jakubową"
                     msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-                    msg['From'] = "Centrum Księdza Orione"
+                    msg['From'] = "Drabina Jakubowa"
                     msg['To'] = to_email
                     if batch.main_coordinator is not None:
                         msg['Reply-To'] = batch.main_coordinator.volunteer.email_address
@@ -283,7 +283,7 @@ class UserEventFormView(View):
                             msg = MIMEMultipart('alternative')
                             subject = "Zapisy na Drabinę Jakubową"
                             msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-                            msg['From'] = "Centrum Księdza Orione"
+                            msg['From'] = "Drabina Jakubowa"
                             msg['To'] = to_email
                             if event.main_coordinator is not None:
                                 msg['Reply-To'] = event.main_coordinator.volunteer.email_address
@@ -408,7 +408,7 @@ def batches_view(request):
                         msg = MIMEMultipart('alternative')
                         subject = "Zapisy na Drabinę Jakubową"
                         msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-                        msg['From'] = "Centrum Księdza Orione"
+                        msg['From'] = "Drabina Jakubowa"
                         msg['To'] = to_email
                         if batch.main_coordinator is not None:
                             msg['Reply-To'] = batch.main_coordinator.volunteer.email_address
@@ -763,7 +763,7 @@ def events_view(request):
                     msg = MIMEMultipart('alternative')
                     subject = "Zapisy na Drabinę Jakubową"
                     msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-                    msg['From'] = "Centrum Księdza Orione"
+                    msg['From'] = "Drabina Jakubowa"
                     msg['To'] = to_email
                     if event.main_coordinator is not None:
                         msg['Reply-To'] = event.main_coordinator.volunteer.email_address
@@ -878,7 +878,7 @@ def music_training_sign(request):
                             msg = MIMEMultipart('alternative')
                             subject = "Zapisy na Drabinę Jakubową"
                             msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-                            msg['From'] = "Centrum Księdza Orione"
+                            msg['From'] = "Drabina Jakubowa"
                             msg['To'] = to_email
                             if music_training.main_coordinator is not None:
                                 msg['Reply-To'] = music_training.main_coordinator.volunteer.email_address
@@ -982,7 +982,7 @@ def workshop_sign(request):
                             msg = MIMEMultipart('alternative')
                             subject = "Zapisy na Drabinę Jakubową"
                             msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-                            msg['From'] = "Centrum Księdza Orione"
+                            msg['From'] = "Drabina Jakubowa"
                             msg['To'] = to_email
                             if music_training.main_coordinator is not None:
                                 msg['Reply-To'] = music_training.main_coordinator.volunteer.email_address
@@ -1108,7 +1108,7 @@ def music_training_view(request):
                         msg = MIMEMultipart('alternative')
                         subject = "Zapisy na Drabinę Jakubową"
                         msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-                        msg['From'] = "Centrum Księdza Orione"
+                        msg['From'] = "Drabina Jakubowa"
                         msg['To'] = to_email
                         if music_training.main_coordinator is not None:
                             msg['Reply-To'] = music_training.main_coordinator.volunteer.email_address
@@ -1229,7 +1229,7 @@ def workshop_view(request):
                         msg = MIMEMultipart('alternative')
                         subject = "Zapisy na Drabinę Jakubową"
                         msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-                        msg['From'] = "Centrum Księdza Orione"
+                        msg['From'] = "Drabina Jakubowa"
                         msg['To'] = to_email
                         if music_training.main_coordinator is not None:
                             msg['Reply-To'] = music_training.main_coordinator.volunteer.email_address
@@ -1360,7 +1360,7 @@ def retreat_sign(request):
                             msg = MIMEMultipart('alternative')
                             subject = "Zapisy na Drabinę Jakubową"
                             msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-                            msg['From'] = "Centrum Księdza Orione"
+                            msg['From'] = "Drabina Jakubowa"
                             msg['To'] = to_email
                             if music_training.main_coordinator is not None:
                                 msg['Reply-To'] = music_training.main_coordinator.volunteer.email_address
@@ -1486,7 +1486,7 @@ def retreat_view(request):
                         msg = MIMEMultipart('alternative')
                         subject = "Zapisy na Drabinę Jakubową"
                         msg['Subject'] = Header(subject.encode('utf-8'), 'UTF-8').encode()
-                        msg['From'] = "Centrum Księdza Orione"
+                        msg['From'] = "Drabina Jakubowa"
                         msg['To'] = to_email
                         if music_training.main_coordinator is not None:
                             msg['Reply-To'] = music_training.main_coordinator.volunteer.email_address

@@ -1,0 +1,435 @@
+{% extends "easy_pdf/base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% load i18n %}
+
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static '/css/custom.css' %}" />
+    <style type="text/css">
+        @page {
+            margin-left: 0.8cm;
+            margin-right: 0.8cm;
+            margin-top: 0.5cm;
+            margin-bottom: 0.5cm;
+        }
+        @font-face {
+            font-family: Cuprum;
+            src: url(/static/fonts/Cuprum-Regular.ttf); }
+        @font-face {
+            font-family: CuprumBold;
+            src: url(/static/fonts/Cuprum-Bold.ttf); }
+        .cuprum {
+            font-family: Cuprum, sans-serif;
+        }
+        .small {
+            font-size: 12px;
+            line-height: 5px;
+        }
+        .font-24 {
+            font-size: 24px;
+        }
+        .font-18 {
+            font-size: 18px;
+        }
+        .font-16 {
+            font-size: 16px;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+        .bold {
+            font-family: CuprumBold, sans-serif;
+        }
+        .font-14 {
+            font-size: 14px;
+        }
+        .border-bottom {
+            border-bottom: 1px solid #000;
+            padding-top: 2px;
+        }
+        .border-top {
+            border-top: 1px solid #000;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+    {% language 'en-us' %}
+        <div class="main cuprum font-16">
+            <div class="container">
+                <table class="m-0 m-b-25">
+                    <tr>
+                        <td class="center" colspan="2">
+                            <span class="font-24 bold">
+                                Drabina Jakubowa
+                                <br/>
+                            </span>
+                            <span class="font-16 font">
+                                duszpasterstwo prowadzone przez<br />
+                                Zgromadzenie Zakonne Małe Dzieło Boskiej Opatrzności<br />
+                                Orioniści Prowincja Polska
+                            </span>
+                        </td>
+                        <td colspan="3">
+                            <img src="{% static '/images/icons.png' %}" />
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="center m-0 m-b-15">
+                    <span class="bold font-24">VOLUNTEER AGREEMENT</span>
+                </div>
+
+            <div class="justify m-b-5">
+            <div class="text-indent m-0 m-b-15">
+                On {{ batchvolunteer.batch_begin_date|date:'F jS Y' }} in {{ batchvolunteer.batch.institution.city }},
+                the Religious Congregation Little Work of Divine Providence, represented by Father
+                {{ congregation.director }} – head of Jacob's Ladder, referred to as the Organizer, and Mrs/Mr,
+                referred to as the Volunteer:
+            </div>
+
+            <table class="font-16 center">
+                <tr class="border-bottom border-top">
+                    <td class="right bold">Name and surname:</td>
+                    <td class="left p-l-5">{{ batchvolunteer.volunteer.first_name }} {{ batchvolunteer.volunteer.surname }}</td>
+                </tr>
+                <tr class="border-bottom">
+                    <td class="right bold">Personal identity number:</td>
+                    <td class="left p-l-5">{{ batchvolunteer.volunteer.pesel }}</td>
+                </tr>
+                <tr class="border-bottom">
+                    <td class="right bold">Age:</td>
+                    <td class="left p-l-5">
+                        {% if batchvolunteer.volunteer.age == "M" %}
+                            16 years or older
+                        {% else %}
+                            18 years or older
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr class="border-bottom">
+                    <td class="right bold">Address:</td>
+                    <td class="left p-l-5">{{ batchvolunteer.volunteer.address }}</td>
+                </tr>
+                <tr class="border-bottom">
+                    <td class="right bold">Postcode:</td>
+                    <td class="left p-l-5">{{ batchvolunteer.volunteer.zip_code }}</td>
+                </tr>
+                <tr class="border-bottom">
+                    <td class="right bold">City:</td>
+                    <td class="left p-l-5">{{  batchvolunteer.volunteer.city }}</td>
+                </tr>
+                <tr class="border-bottom">
+                    <td class="right bold">Telephone number:</td>
+                    <td class="left p-l-5">{{  batchvolunteer.volunteer.phone_number }}</td>
+                </tr>
+                <tr class="border-bottom">
+                    <td class="right bold">Place:</td>
+                    <td class="left p-l-5">{{  batchvolunteer.batch.institution.city }}</td>
+                </tr>
+                <tr class="border-bottom">
+                    <td class="right bold">Time period:</td>
+                    <td class="left p-l-5">{{ batchvolunteer.batch.name }}
+                        {{  batchvolunteer.batch.begin_date|date:'jS F Y' }} -
+                        {{  batchvolunteer.batch.end_date|date:'jS F Y' }}
+                    </td>
+                </tr>
+                <tr class="border-bottom">
+                    <td class="right bold">
+                        Does your physical health allow you to take part in the camp as a volunteer?:</td>
+                    <td class="left p-l-5">
+                        {% if batchvolunteer.volunteer.physical_health == False %}
+                            No
+                        {% else %}
+                            Yes
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr class="border-bottom">
+                    <td class="right bold">
+                        Does your mental health condition allow you to be a volunteer in a place like this?:
+                    </td>
+                    <td class="left p-l-5">
+                        {% if batchvolunteer.volunteer.mental_health == False %}
+                            No
+                        {% else %}
+                            Yes
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+            </div>
+            <div class="m-0 m-b-15 center">
+                <br />
+                an agreement has been made as follows:
+            </div>
+
+                <table class="m-0 small">
+                    <tr>
+                        <td valign="top">
+                            <div class="m-0">
+                            § 1 The <span class="bold">volunteer</span> works gratuitously and does not charge salary
+                                for his work. The value of the volunteer's benefits does not constitute a donation
+                                to the Organizer according to the Civil Code and tax regulations.
+                            <br />
+                            § 2 The <span class="bold">volunteer</span> with whom the contract has been signed is
+                                obliged to perform services according to the schedule (may be expressed verbally)
+                                agreed on with the <span class="bold">camp coordinator</span>. Any changes to the
+                                contract should be made in written form.
+                            <br />
+                            § 3 The <span class="bold">volunteer</span> declares that he has never been punished for
+                                an offense against minors.
+                            </div>
+                            <div class="bold center m-0 font-14 m-t-5">The range of the services provided by the volunteer</div>
+                            <div class="m-0">
+                            § 4 The detailed range of services provided by the <span class="bold">Volunteer</span>
+                                determined by him individually with the <span class="bold">Coordinator</span> and may
+                                include the following:
+                            <br />
+                            1. Accompanying the disabled person.
+                            <br />
+                            2. Acquainting the disabled person with the facilities where the camp takes place.
+                            <br />
+                            3. Helping the disabled person with their daily activities - body toilet, satisfying
+                                physiological needs, getting dressed, going for a walk, having meals.
+                            <br />
+                            4. Accompanying and helping the disabled person to participate in classes according to
+                                the scheduled plan of the day.
+                            </div>
+                        </td>
+                        <td valign="top">
+                            <div class="m-0 m-l-5">
+                            5. Organizing the disabled person’s free time (making them active through fun, games,
+                                reading, walking).
+                            <br />
+                            6. Doing small purchases.
+                            <br />
+                            7. Identifying the spiritual and religious needs of the person.
+                            <br />
+                            8. Various works for the Organizer (including cleaning in the House and in the surrounding
+                                area, helping with maintenance work depending on the Volunteer’s skills).
+                            <br />
+                            9. Taking the night duty for the disabled.
+                            </div>
+                            <div class="bold center m-0 font-14 m-t-5">Volunteer rights</div>
+                            <div class="m-0 m-l-5">
+                            § 5 The volunteer has the right to obtain information about his rights and obligations.
+                            <br />
+                            1.	The volunteer has the right to safe and hygienic conditions of performing his services.
+                            <br />
+                            2.	The volunteer has the right to be informed about the risks to his health and security
+                                relating to the services performed as well as protection rules against threats.
+                            <br />
+                            3.	The volunteer has the right to training and formation according to the program for
+                                the duration of his stay.
+                            <br />
+                            4.	The volunteer has the right to receive support in crisis resulting from the services
+                                performed during his stay.
+                            <br />
+                            5.	The volunteer has the right to receive a written certificate of his volunteer work,
+                                with the specification of their range.
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top">
+                            <br />
+                            <div class="bold center m-0 font-14 m-t-5">The volunteer’s Obligations</div>
+                            <div class="m-0">
+                            § 6 During his/her stay, the Volunteer is obliged to::
+                            <br />
+                            1.	Comply with applicable laws and the Organizer’s internal regulations, in particular
+                                the <span class="bold">Regulations of Jacob's Ladder, Standards and guidelines for the
+                                protection of minors in educational practice and pastoral care of the MDBO Religious
+                                Congregation of Orione Priests in Polish Province</span>.
+                            <br />
+                            2.	Wear an identification badge while working.
+                            <br />
+                            3.	Respect the universal "patient rights" of the disabled person, respect his dignity and
+                                keep his personal data secret, especially the knowledge about his/ her intimate sphere.
+                            <br />
+                            4.	Take care of the person entrusted - be responsible for his safety, appearance,
+                                hygiene and health.
+                            <br />
+                            5.	Carry out the undertaken tasks conscientiously, with due diligence, respecting the
+                                dignity of all the people participating in the camp and cooperating with other
+                                volunteers and staff.
+                            <br />
+                            6.	Take care of the property entrusted by the Organizer.
+                            <br />
+                            7.	7 Communicate any changes noticed in the patient's condition as soon as possible to the
+                                <span class="bold">Nurse/Coordinator</span>.
+                            <br />
+                            8.	Take up daily tasks according to the work schedule and the plan of the day agreed on
+                                with the <span class="bold">Coordinator</span>.
+                            <br />
+                            9.	In case of an unforeseen necessity to leave the camp, arrange it with the
+                                <span class="bold">Coordinator</span>.
+                            <br />
+                            10.	Attend volunteer meetings. The <span class="bold">Coordinator</span>
+                                may partially or fully release the Volunteer from this obligation.
+                            </div>
+                            <div class="m-0">
+                            11.	Control the places of activities of the disabled (the surrounding area, building, rooms)
+                                and roads leading to them, in particular check that their condition complies with the
+                                safety and hygiene laws and regulations.
+                            <br />
+                            12.	Control the equipment and the condition of technical devices and installations.
+                            <br />
+                            13.	Make an attempt to remove any deficiencies and defects noticed, remove them on his own
+                                if possible. Promptly report any noticed deficiencies and errors threatening the health
+                                and life of the disabled to the <span class="bold">Coordinator or the Organizer</span>.
+                            <br />
+                            14.	Stop the classes immediately when the condition of the site, building, room, equipment,
+                                installations, material is a threat to the disabled, volunteers, employees or other
+                                people.
+                            <br />
+                            15.	Provide first aid and the follow-up to the disabled person immediately.
+                            <br />
+                            16.	16 In case of an accident, notify the <span class="bold">Organizer</span> or the
+                                replacement person about the accident, counteract its negative effects and take other
+                                necessary measures.
+                            <br />
+                            17.	While performing your tasks, cooperate with other volunteer branches of the Organizer
+                                for the benefit of the disabled.
+                            </div>
+                            <div class="bold center m-0 font-14 m-t-5">The Organizer's obligations</div>
+                            <div class="m-0">
+                                § 7 The <span class="bold">Organizer</span> is obliged to provide and familiarize
+                                the Volunteer with <span class="bold">Regulations of Jacob's Ladder Camps</span>
+                                included in this contract.
+                                <br />
+                            1.	The organizer provides the Volunteer with free accommodation and meals for the duration
+                                of the camp.
+                                <br />
+                            2.	The Organizer provides the Volunteer with an ID badge.
+                                <br />
+                            3.	The Organizer is obliged to inform the Volunteer about the risk to health and security
+                                related to the services provided and about the rules of protection against threats.
+                                <br />
+                            4.	The organizer provides the Volunteer with support in crisis situations resulting from
+                                the service performed during the camp.
+                                <br />
+                            5.	The organizer is required to issue a certificate of the services performed by the
+                                Volunteer, at his request.
+                                <br />
+                            6.	The organizer provides training for the Volunteers.
+                                <br />
+                            7.	The Organizer is obliged to provide the Volunteer with an insurance against the
+                                consequences of accidents in accordance with applicable law regulations.
+                            </div>
+                        </td>
+                        <td class="p-l-5" valign="top">
+                            <br />
+                            <div class="bold center m-0 font-14 m-t-5 m-t-5">Termination of work on Voluntary basis</div>
+                            <div class="m-0">
+                            § 8 Either party may terminate this Volunteer Agreement immediately, but we try to keep
+                                a 2-day notice period.
+                                <br />
+                            1.	The Organizer may terminate this Agreement with immediate effect in case of
+                                non-performing or improper completion of basic obligations under this Agreement by
+                                the Volunteer and in particular:
+                                <br />
+                            1)	For the breach of this Agreement or the Regulations of Jacob's Ladder Camps or other
+                                internal normative acts of “Centrum Księdza Orione” (Father Orione Center),
+                                <br />
+                            2)	For the consumption of alcohol and drugs during the Camp,
+                                <br />
+                            3)	For indecent behavior.
+                            </div>
+                            <div class="bold center m-0 font-14 m-t-5 m-t-5">Personal data protection</div>
+                            <div class="m-0">
+                                Personal data protection and processing by the Organizer are determined by currently
+                                applicable legal regulations and the document Jacob’s Ladder Personal Data Processing of
+                                {{ congregation.rodo|date:'jS F Y' }} available in writing at the
+                                Organiser's seat and at the address www.drabinajakubowa.pl
+                                <br />
+                                We would like to briefly inform you that:
+                                <br />
+                            1.	The administrator of your personal data is the Religious Congregation of Little Work
+                                of Divine Providence – Orionie Fathers, Polish Province,
+                                <br />
+                            2.	Contact with the Data Protection Officer - daneosobowe@drabinajakubowa.pl
+                                <br />
+                            3.	Your personal data will be processed for the purpose of voluntary service.
+                                <br />
+                            4.	Apart from the administrator, there may also be separate "data processors" acting on
+                                behalf of the Organiser.
+                                <br />
+                            5.	Your personal data will be stored for the period enabling us to document legally valid
+                                conclusion of a volunteering contract.
+                                <br />
+                            6.	You have the right to request access to your personal data, the right to rectify or
+                                delete it (apart from the volunteering contract) or limit the processing.
+                                <br />
+                            7.	You have the right to file a complaint to the supervisory authority.
+                                <br />
+                                Providing personal data is obligatory under the law. In the remaining scope it is
+                                voluntary, but your refusal to provide data may result in the Administrator's refusal
+                                to cooperate.
+                            </div>
+                            <div class="bold center m-0 font-14 m-t-5">Final Provisions</div>
+                            <div class="m-0">
+                            § 9 In matters not covered by this agreement, The Civil Code and the act on public benefit
+                                activity and volunteering apply. Any changes to the contract should be made in the
+                                written form.
+                                <br />
+                            1.	The agreement has been drawn up in two identical copies, one for each party.
+                            <div class="light-blue m-0">
+                            2.	The contract has been concluded for the period from
+                                {{ batchvolunteer.batch_begin_date|date:'jS F Y' }} to
+                                {{ batchvolunteer.batch_end_date|date:'jS F Y' }}
+                            </div>
+                            <div>
+                            3.	By signing the agreement, the volunteer agrees to the processing of his personal data
+                                for the purpose of organizing the camp by  the Religious Congregation of Little Work
+                                of Divine Providence – Orione Fathers, Polish Province according to the Regulation of
+                                the European Parliament and the Council (EU) 2016/679 of 27th April 2016 on the
+                                protection of personal data and on the free movement of such data and repealing
+                                directive 95/46 / WE (general regulation on personal data protection (Journal of Laws
+                                EU. L No. 119 Z 4.5.2016) and according to the Personal Data Processing Policy of
+                                Jacob's Ladder of {{ congregation.rodo|date:'jS F Y' }} available at:
+                                www.drabinajakubowa.pl
+                            </div>
+                            <div class="light-blue m-0" style="display: inline-block;">
+                            4.	The volunteer gives consent
+                            </div>
+                            <img src="{% static '/images/checkbox-empty-small.jpg' %}" />
+                            <div class="light-blue m-0" style="display: inline-block;">/ does not give consent
+                            </div>
+                            <img src="{% static '/images/checkbox-empty-small.jpg' %}" />
+                            <div class="light-blue m-0" style="display: inline-block;">*
+                                (select the appropriate) 4 in accordance with applicable regulations to the Religious
+                                Congregation Little Work of Divine Providence – Orione Fathers, Polish Province to
+                                taking photos/filming, personal data processing and the publication of materials
+                                with Volunteer’s image only for the purpose of  promoting Jacob's Ladder in public
+                                space and in the media.
+                            </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+
+                <table>
+                    <tr>
+                        <td align="center"><br /></td>
+                        <td align="center"><br /></td>
+                    </tr>
+                    <tr>
+                        <td align="center">................................................................</td>
+                        <td align="center">................................................................</td>
+                    </tr>
+                    <tr>
+                        <td align="center">ORGANIZER</td>
+                        <td align="center">VOLUNTEER</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    {% endlanguage %}
+    </div>
+
+{% endblock %}
