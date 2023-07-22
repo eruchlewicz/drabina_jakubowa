@@ -8,7 +8,7 @@ selenium==3.11.0
 django-easy-pdf==0.1.1
 WeasyPrint==0.42.3
 cairocffi==0.6
-django-filter==1.1.0
+django-filter==2.4.0
 django-graphos==0.3.41
 django-simple-captcha==0.5.9
 pytz==2018.5
